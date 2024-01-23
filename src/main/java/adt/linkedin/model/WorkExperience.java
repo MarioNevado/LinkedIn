@@ -1,9 +1,7 @@
 package adt.linkedin.model;
 
 import jakarta.persistence.*;
-
 import java.time.LocalDateTime;
-
 @Entity
 @Table(name = "laboral_experience")
 public class WorkExperience {
@@ -23,6 +21,8 @@ public class WorkExperience {
     @Column(name = "company_id")
     private Company company;
     @Column(name = "user_id")
+    @ManyToOne(cascade = CascadeType.ALL)
+    @JoinColumn(name="user_id", nullable = false)
     private User user;
 
 }

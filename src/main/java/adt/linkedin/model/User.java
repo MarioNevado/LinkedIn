@@ -2,6 +2,8 @@ package adt.linkedin.model;
 
 
 import jakarta.persistence.*;
+
+import java.util.ArrayList;
 import java.util.List;
 
 @Entity
@@ -17,6 +19,9 @@ public class User {
     @ManyToMany(cascade = {CascadeType.PERSIST, CascadeType.MERGE})
     @JoinTable(name = "user_skills", joinColumns = @JoinColumn(name = "user_id"), inverseJoinColumns = @JoinColumn(name = "skill_id"))
     private List<Skill> skills;
+
+    @OneToMany(cascade = CascadeType.ALL, mappedBy = "user")
+    private List<WorkExperience> experiences = new ArrayList<>();
 
     public User() {
     }
