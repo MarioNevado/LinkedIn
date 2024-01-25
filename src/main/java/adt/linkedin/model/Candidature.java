@@ -15,7 +15,7 @@ public class Candidature {
     private String cvPath;
     @Column(name = "cover_letter_path")
     private String coverLetterPath;
-    @ManyToOne(cascade = {CascadeType.PERSIST, CascadeType.MERGE})
-    @JoinColumn(name = "user_id", nullable = false) // en entidad debil para 1:N
+    @ManyToMany(cascade = {CascadeType.PERSIST, CascadeType.MERGE})
+    @JoinTable(name = "users_candidatures", joinColumns = @JoinColumn(name = "candidature_id"), inverseJoinColumns = @JoinColumn(name = "user_id"))
     private User user;
 }
