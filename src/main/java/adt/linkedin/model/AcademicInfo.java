@@ -3,21 +3,22 @@ package adt.linkedin.model;
 import jakarta.persistence.*;
 
 import java.time.LocalDateTime;
+import java.util.Calendar;
 
 @Entity
 @Table(name = "academic_info")
 public class AcademicInfo {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private int id;
+    private long id;
     @Column(name = "current")
     private boolean current;
     @Column(name = "mean_score")
     private double meanScore;
     @Column(name = "init_date")
-    private LocalDateTime initDate;
+    private Calendar initDate;
     @Column(name = "end_date")
-    private LocalDateTime endDate;
+    private Calendar endDate;
     @Column(name = "title")
     private String title;
     @ManyToOne(cascade = CascadeType.ALL)
