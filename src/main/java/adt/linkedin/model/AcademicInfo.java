@@ -20,7 +20,8 @@ public class AcademicInfo {
     private LocalDateTime endDate;
     @Column(name = "title")
     private String title;
-    @Column(name = "institution_id")
+    @ManyToOne(cascade = CascadeType.ALL)
+    @JoinColumn(name = "institution_id", nullable = false)
     private Institution institution;
     @ManyToOne(cascade = {CascadeType.PERSIST, CascadeType.MERGE})
     @JoinColumn(name = "user_id", nullable = false)
