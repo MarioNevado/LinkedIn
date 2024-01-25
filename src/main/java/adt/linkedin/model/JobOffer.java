@@ -27,7 +27,8 @@ public class JobOffer {
     private String location;
     @Column(name = "details")
     private String details;
-    @Column(name = "company_id")
+    @ManyToOne(cascade = CascadeType.ALL)
+    @JoinColumn(name = "companies_id", nullable = false)
     private Company company;
 
     @ManyToMany(cascade = CascadeType.ALL)
