@@ -2,6 +2,7 @@ package adt.linkedin.model;
 
 import jakarta.persistence.*;
 
+import java.util.ArrayList;
 import java.util.List;
 
 @Entity
@@ -16,5 +17,7 @@ public class Company {
     private String description;
     @OneToMany(cascade = {CascadeType.ALL}, mappedBy = "company")
     private List<JobOffer> offers;
+    @OneToMany(cascade = {CascadeType.ALL}, mappedBy = "company")
+    private List<WorkExperience> experiences = new ArrayList<>();
 }
 

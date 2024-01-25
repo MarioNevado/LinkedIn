@@ -18,7 +18,8 @@ public class WorkExperience {
     private String jobTitle;
     @Column(name = "location")
     private String location;
-    @Column(name = "company_id")
+    @ManyToOne(cascade = CascadeType.ALL)
+    @JoinColumn(name = "companies_id", nullable = false)
     private Company company;
     @ManyToOne(cascade = {CascadeType.ALL, CascadeType.MERGE})
     @JoinColumn(name="user_id", nullable = false)
