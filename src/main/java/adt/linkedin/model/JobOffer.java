@@ -19,7 +19,7 @@ public class JobOffer {
     private boolean open;
     @Column(name = "required_candidates")
     private int requiredCandidates;
-    @Column(name = "work_day_type")
+    @Column(name = "workday_type")
     private String workDayType;
     @Column(name = "title")
     private String title;
@@ -30,9 +30,11 @@ public class JobOffer {
     @ManyToOne(cascade = CascadeType.ALL)
     @JoinColumn(name = "companies_id", nullable = false)
     private Company company;
-
     @ManyToMany(cascade = CascadeType.ALL)
     @JoinTable(name = "offers_skills", joinColumns = @JoinColumn(name = "job_offer_id"), inverseJoinColumns = @JoinColumn(name = "skill_id"))
     private List<Skill> skills = new ArrayList<>();
+    @ManyToOne(cascade = CascadeType.ALL)
+    @JoinColumn(name = "companies_id", nullable = false)
+    private Candidature candidature;
 
 }
