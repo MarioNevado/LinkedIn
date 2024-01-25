@@ -16,6 +16,10 @@ public class Skill {
     @ManyToMany(cascade = {CascadeType.PERSIST, CascadeType.MERGE})
     @JoinTable(name = "users_skills", joinColumns = @JoinColumn(name = "skill_id"), inverseJoinColumns = @JoinColumn(name = "user_id")) //primero yo mismo y luego a la que apunta
     private List<User> users;
+    @ManyToMany(cascade = {CascadeType.ALL})
+    @JoinTable(name = "offers_skills", joinColumns = @JoinColumn(name = "skill_id"), inverseJoinColumns = @JoinColumn(name = "job_offer_id")) //primero yo mismo y luego a la que apunta
+    private List<JobOffer> offers;
+
 
 
 }

@@ -2,6 +2,9 @@ package adt.linkedin.model;
 
 import jakarta.persistence.*;
 
+import java.util.ArrayList;
+import java.util.List;
+
 @Entity
 @Table(name = "job_offer")
 public class JobOffer {
@@ -27,5 +30,8 @@ public class JobOffer {
     @Column(name = "company_id")
     private Company company;
 
+    @ManyToMany(cascade = CascadeType.ALL)
+    @JoinTable(name = "offers_skills", joinColumns = @JoinColumn(name = "job_offer_id"), inverseJoinColumns = @JoinColumn(name = "skill_id"))
+    private List<Skill> skills = new ArrayList<>();
 
 }
