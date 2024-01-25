@@ -20,7 +20,8 @@ public class User {
     private List<Skill> skills;
 
     @ManyToMany(cascade = {CascadeType.MERGE, CascadeType.REMOVE})
-    @JoinTable(name = "users_")
+    @JoinTable(name = "users_candidatures", joinColumns = @JoinColumn(name = "user_id"), inverseJoinColumns = @JoinColumn(name = "candidature_id"))
+    private List<Candidature> candidatures;
 
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "user")
     private List<WorkExperience> experiences = new ArrayList<>();
