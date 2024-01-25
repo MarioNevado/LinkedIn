@@ -1,5 +1,6 @@
 package adt.linkedin.model;
 
+import adt.linkedin.enumerations.Status;
 import jakarta.persistence.*;
 import org.checkerframework.checker.units.qual.C;
 
@@ -13,7 +14,7 @@ public class Candidature {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int id;
     @Column(name = "status")
-    private String status;
+    private Status status;
     @Column(name = "cv_path")
     private String cvPath;
     @Column(name = "cover_letter_path")

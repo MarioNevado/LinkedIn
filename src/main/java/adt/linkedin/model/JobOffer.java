@@ -1,5 +1,6 @@
 package adt.linkedin.model;
 
+import adt.linkedin.enumerations.WorkDayType;
 import jakarta.persistence.*;
 
 import java.util.ArrayList;
@@ -20,7 +21,7 @@ public class JobOffer {
     @Column(name = "required_candidates")
     private int requiredCandidates;
     @Column(name = "workday_type")
-    private String workDayType;
+    private WorkDayType workDayType;
     @Column(name = "title")
     private String title;
     @Column(name = "location")
