@@ -20,8 +20,7 @@ public class WorkExperience {
     private String location;
     @Column(name = "company_id")
     private Company company;
-    @Column(name = "user_id")
-    @ManyToOne(cascade = CascadeType.ALL)
+    @ManyToOne(cascade = {CascadeType.ALL, CascadeType.MERGE})
     @JoinColumn(name="user_id", nullable = false)
     private User user;
 
