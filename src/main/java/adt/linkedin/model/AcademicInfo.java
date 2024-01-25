@@ -14,7 +14,7 @@ public class AcademicInfo {
     @Column(name = "current")
     private boolean current;
     @Column(name = "mean_score")
-    private double meanScore;
+    private float meanScore;
     @Column(name = "init_date")
     private Calendar initDate;
     @Column(name = "end_date")
