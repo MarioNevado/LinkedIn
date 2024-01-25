@@ -14,7 +14,7 @@ public class Skill {
     private String name;
 
     @ManyToMany(cascade = {CascadeType.PERSIST, CascadeType.MERGE})
-    @JoinTable(name = "user_skills", joinColumns = @JoinColumn(name = "skill_id"), inverseJoinColumns = @JoinColumn(name = "user_id")) //primero yo mismo y luego a la que apunta
+    @JoinTable(name = "users_skills", joinColumns = @JoinColumn(name = "skill_id"), inverseJoinColumns = @JoinColumn(name = "user_id")) //primero yo mismo y luego a la que apunta
     private List<User> users;
 
 
