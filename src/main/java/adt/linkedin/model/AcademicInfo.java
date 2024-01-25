@@ -22,7 +22,8 @@ public class AcademicInfo {
     private String title;
     @Column(name = "institution_id")
     private Institution institution;
-    @Column(name = "user_id")
+    @ManyToOne(cascade = {CascadeType.PERSIST, CascadeType.MERGE})
+    @JoinColumn(name = "user_id", nullable = false)
     private User user;
 
 }
