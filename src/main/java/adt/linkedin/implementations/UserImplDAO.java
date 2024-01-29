@@ -2,6 +2,11 @@ package adt.linkedin.implementations;
 
 import adt.linkedin.dao.UserDAO;
 import adt.linkedin.model.*;
+import adt.linkedin.utils.HibernateUtil;
+import org.hibernate.HibernateException;
+import org.hibernate.Session;
+import org.hibernate.Transaction;
+import org.hibernate.query.Query;
 
 import java.util.List;
 
@@ -43,7 +48,16 @@ public class UserImplDAO implements UserDAO {
 
     @Override
     public void createUser(User user) {
-
+        Transaction tx = null;
+        try(Session session = HibernateUtil.getSessionFactory().openSession()){
+            if (user != null){
+                tx = session.beginTransaction();
+                session.persist(user);
+                tx.commit();
+            }else throw new HibernateException("El producto está vacío");
+        }catch(Exception e){
+            e.printStackTrace();
+        }
     }
 
     @Override
