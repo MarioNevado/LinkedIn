@@ -19,8 +19,7 @@ public class User {
     @JoinTable(name = "users_skills", joinColumns = @JoinColumn(name = "user_id"), inverseJoinColumns = @JoinColumn(name = "skill_id"))
     private List<Skill> skills;
 
-    @ManyToMany(cascade = {CascadeType.MERGE, CascadeType.REMOVE})
-    @JoinTable(name = "users_candidatures", joinColumns = @JoinColumn(name = "user_id"), inverseJoinColumns = @JoinColumn(name = "candidature_id"))
+    @OneToMany(cascade = {CascadeType.MERGE, CascadeType.REMOVE}, mappedBy = "user")
     private List<Candidature> candidatures;
 
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "user")
@@ -81,17 +80,5 @@ public class User {
 
     public void setAcademics(List<AcademicInfo> academics) {
         this.academics = academics;
-    }
-
-    @Override
-    public String toString() {
-        return "User{" +
-                "id=" + id +
-                ", name='" + name + '\'' +
-                ", skills=" + skills +
-                ", candidatures=" + candidatures +
-                ", experiences=" + experiences +
-                ", academics=" + academics +
-                '}';
     }
 }

@@ -19,9 +19,9 @@ public class Candidature {
     private String cvPath;
     @Column(name = "cover_letter_path")
     private String coverLetterPath;
-    @ManyToMany(cascade = {CascadeType.PERSIST, CascadeType.MERGE})
-    @JoinTable(name = "users_candidatures", joinColumns = @JoinColumn(name = "candidature_id"), inverseJoinColumns = @JoinColumn(name = "user_id"))
-    private List<User> user;
+    @ManyToOne(cascade = {CascadeType.PERSIST, CascadeType.MERGE})
+    @JoinColumn(name = "user_id", nullable = false)
+    private User user;
 
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "candidature")
     private List<JobOffer> offers = new ArrayList<>();
