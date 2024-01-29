@@ -3,6 +3,9 @@ package adt.linkedin.implementations;
 import adt.linkedin.dao.UserDAO;
 import adt.linkedin.model.*;
 import adt.linkedin.utils.HibernateUtil;
+import jakarta.persistence.criteria.CriteriaBuilder;
+import jakarta.persistence.criteria.CriteriaQuery;
+import jakarta.persistence.criteria.Root;
 import org.hibernate.HibernateException;
 import org.hibernate.Session;
 import org.hibernate.Transaction;
@@ -35,6 +38,16 @@ public class UserImplDAO implements UserDAO {
 
     @Override
     public User getUser(long id) {
+        try(Session session = HibernateUtil.getSessionFactory().openSession()){
+            CriteriaBuilder cb = session.getCriteriaBuilder();
+            CriteriaQuery<User> cQuery = cb.createQuery(User.class);
+            Root<User> root = cQuery.from(User.class);
+            cQuery.select(root).where(cb.equal(root.get("id"), id));
+            Query<User> query = session.createQuery(cQuery);
+            return query.getSingleResult();
+        }catch(Exception e){
+            e.printStackTrace();
+        }
         return null;
     }
 
