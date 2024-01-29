@@ -43,7 +43,17 @@ public class UserImplDAO implements UserDAO {
 
     @Override
     public void updateUser(User user) {
-
+        Transaction transaction = null;
+        try (Session session = HibernateUtil.getSessionFactory().openSession()) {
+            transaction = session.beginTransaction();
+            session.merge(user);
+            transaction.commit();
+        } catch (HibernateException h) {
+            if (transaction != null) {
+                transaction.rollback();
+            }
+            throw new HibernateException("Error actualizando");
+        }
     }
 
     @Override

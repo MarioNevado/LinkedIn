@@ -34,4 +34,64 @@ public class User {
     public User(String name) {
         this.name = name;
     }
+
+    public int getId() {
+        return id;
+    }
+
+    public void setId(int id) {
+        this.id = id;
+    }
+
+    public String getName() {
+        return name;
+    }
+
+    public void setName(String name) {
+        this.name = name;
+    }
+
+    public List<Skill> getSkills() {
+        return skills;
+    }
+
+    public void setSkills(List<Skill> skills) {
+        this.skills = skills;
+    }
+
+    public List<Candidature> getCandidatures() {
+        return candidatures;
+    }
+
+    public void setCandidatures(List<Candidature> candidatures) {
+        this.candidatures = candidatures;
+    }
+
+    public List<WorkExperience> getExperiences() {
+        return experiences;
+    }
+
+    public void setExperiences(List<WorkExperience> experiences) {
+        this.experiences = experiences;
+    }
+
+    public List<AcademicInfo> getAcademics() {
+        return academics;
+    }
+
+    public void setAcademics(List<AcademicInfo> academics) {
+        this.academics = academics;
+    }
+
+    @Override
+    public String toString() {
+        return "User{" +
+                "id=" + id +
+                ", name='" + name + '\'' +
+                ", skills=" + skills +
+                ", candidatures=" + candidatures +
+                ", experiences=" + experiences +
+                ", academics=" + academics +
+                '}';
+    }
 }
