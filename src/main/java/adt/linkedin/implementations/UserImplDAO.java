@@ -18,7 +18,19 @@ public class UserImplDAO implements UserDAO {
 
     @Override
     public void removeUser(User user) {
-
+        Transaction tx = null;
+        try(Session session  = HibernateUtil.getSessionFactory().openSession()){
+            if (user != null){
+                tx = session.beginTransaction();
+                session.remove(user);
+                tx.commit();
+            }
+        }catch (Exception e){
+            if(tx != null){
+                tx.rollback();
+            }
+            e.printStackTrace();
+        }
     }
 
     @Override
@@ -66,6 +78,9 @@ public class UserImplDAO implements UserDAO {
                 tx.commit();
             }else throw new HibernateException("El producto está vacío");
         }catch(Exception e){
+            if(tx != null){
+                tx.rollback();
+            }
             e.printStackTrace();
         }
     }
