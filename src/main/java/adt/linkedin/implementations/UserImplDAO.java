@@ -78,6 +78,16 @@ public class UserImplDAO implements UserDAO {
 
     @Override
     public List<Candidature> getUserCandidatures(User user) {
+        try (Session session = HibernateUtil.getSessionFactory().openSession()) {
+            CriteriaBuilder cb = session.getCriteriaBuilder();
+            CriteriaQuery<Candidature> cQuery = cb.createQuery(Candidature.class);
+            Root<User> root = cQuery.from(User.class);
+            cQuery.select(root.get("candidatures")).where(cb.equal(root.get("id"), user.getId()));
+            Query<Candidature> query = session.createQuery(cQuery);
+            return query.list();
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
         return null;
     }
 
