@@ -1,7 +1,9 @@
 package adt.linkedin.gui;
 
+import adt.linkedin.utils.HibernateUtil;
+
 public class Main {
     public static void main(String[] args) {
-        System.out.println("Hello world!");
+        HibernateUtil.getSessionFactory().openSession();
     }
 }

@@ -15,6 +15,6 @@ public class Institution {
     @Column(name = "name")
     private String name;
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "institution")
-    private List<Institution> institutions = new ArrayList<>();
+    private List<AcademicInfo> academicInfos = new ArrayList<>();
 }
 

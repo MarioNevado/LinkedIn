@@ -21,7 +21,7 @@ public class Candidature {
     private String coverLetterPath;
     @ManyToMany(cascade = {CascadeType.PERSIST, CascadeType.MERGE})
     @JoinTable(name = "users_candidatures", joinColumns = @JoinColumn(name = "candidature_id"), inverseJoinColumns = @JoinColumn(name = "user_id"))
-    private User user;
+    private List<User> user;
 
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "candidature")
     private List<JobOffer> offers = new ArrayList<>();

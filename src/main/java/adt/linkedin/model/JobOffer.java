@@ -35,7 +35,7 @@ public class JobOffer {
     @JoinTable(name = "offers_skills", joinColumns = @JoinColumn(name = "job_offer_id"), inverseJoinColumns = @JoinColumn(name = "skill_id"))
     private List<Skill> skills = new ArrayList<>();
     @ManyToOne(cascade = CascadeType.ALL)
-    @JoinColumn(name = "companies_id", nullable = false)
+    @JoinColumn(name = "candidature_id", nullable = false)
     private Candidature candidature;
 
 }
