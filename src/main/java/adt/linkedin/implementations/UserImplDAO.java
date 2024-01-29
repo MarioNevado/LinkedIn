@@ -16,20 +16,30 @@ import java.util.List;
 public class UserImplDAO implements UserDAO {
     @Override
     public List<AcademicInfo> getUserAcademicInfo(User user) {
+        try (Session session = HibernateUtil.getSessionFactory().openSession()) {
+            CriteriaBuilder cb = session.getCriteriaBuilder();
+            CriteriaQuery<AcademicInfo> cQuery = cb.createQuery(AcademicInfo.class);
+            Root<User> root = cQuery.from(User.class);
+            cQuery.select(root.get("academics")).where(cb.equal(root.get("id"), user.getId()));
+            Query<AcademicInfo> query = session.createQuery(cQuery);
+            return query.list();
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
         return null;
     }
 
     @Override
     public void removeUser(User user) {
         Transaction tx = null;
-        try(Session session  = HibernateUtil.getSessionFactory().openSession()){
-            if (user != null){
+        try (Session session = HibernateUtil.getSessionFactory().openSession()) {
+            if (user != null) {
                 tx = session.beginTransaction();
                 session.remove(user);
                 tx.commit();
             }
-        }catch (Exception e){
-            if(tx != null){
+        } catch (Exception e) {
+            if (tx != null) {
                 tx.rollback();
             }
             e.printStackTrace();
@@ -38,14 +48,14 @@ public class UserImplDAO implements UserDAO {
 
     @Override
     public User getUser(long id) {
-        try(Session session = HibernateUtil.getSessionFactory().openSession()){
+        try (Session session = HibernateUtil.getSessionFactory().openSession()) {
             CriteriaBuilder cb = session.getCriteriaBuilder();
             CriteriaQuery<User> cQuery = cb.createQuery(User.class);
             Root<User> root = cQuery.from(User.class);
             cQuery.select(root).where(cb.equal(root.get("id"), id));
             Query<User> query = session.createQuery(cQuery);
             return query.getSingleResult();
-        }catch(Exception e){
+        } catch (Exception e) {
             e.printStackTrace();
         }
         return null;
@@ -84,14 +94,14 @@ public class UserImplDAO implements UserDAO {
     @Override
     public void createUser(User user) {
         Transaction tx = null;
-        try(Session session = HibernateUtil.getSessionFactory().openSession()){
-            if (user != null){
+        try (Session session = HibernateUtil.getSessionFactory().openSession()) {
+            if (user != null) {
                 tx = session.beginTransaction();
                 session.persist(user);
                 tx.commit();
-            }else throw new HibernateException("El producto está vacío");
-        }catch(Exception e){
-            if(tx != null){
+            } else throw new HibernateException("El producto está vacío");
+        } catch (Exception e) {
+            if (tx != null) {
                 tx.rollback();
             }
             e.printStackTrace();
