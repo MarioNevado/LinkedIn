@@ -14,7 +14,12 @@ public class User {
 
     @Column(name = "name", nullable = false)
     private String name;
-
+    @Column(name = "mail")
+    private String mail;
+    @Column(name = "phone")
+    private int phone;
+    @Column(name = "description")
+    private String description;
     @ManyToMany(cascade = {CascadeType.PERSIST, CascadeType.MERGE})
     @JoinTable(name = "users_skills", joinColumns = @JoinColumn(name = "user_id"), inverseJoinColumns = @JoinColumn(name = "skill_id"))
     private List<Skill> skills;
