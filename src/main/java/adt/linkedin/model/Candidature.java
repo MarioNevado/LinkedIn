@@ -25,5 +25,4 @@ public class Candidature {
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "candidature")
     private List<JobOffer> offers = new ArrayList<>();
 
-
 }
