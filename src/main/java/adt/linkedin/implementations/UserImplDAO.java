@@ -5,6 +5,7 @@ import adt.linkedin.model.*;
 import adt.linkedin.utils.HibernateUtil;
 import jakarta.persistence.criteria.CriteriaBuilder;
 import jakarta.persistence.criteria.CriteriaQuery;
+import jakarta.persistence.criteria.Join;
 import jakarta.persistence.criteria.Root;
 import org.hibernate.HibernateException;
 import org.hibernate.Session;
@@ -14,13 +15,19 @@ import org.hibernate.query.Query;
 import java.util.List;
 
 public class UserImplDAO implements UserDAO {
+    /*
+    SELECT * from academic_info ai
+join users u
+on ai.user_id = u.id ;
+     */
     @Override
     public List<AcademicInfo> getUserAcademicInfo(User user) {
         try (Session session = HibernateUtil.getSessionFactory().openSession()) {
             CriteriaBuilder cb = session.getCriteriaBuilder();
             CriteriaQuery<AcademicInfo> cQuery = cb.createQuery(AcademicInfo.class);
             Root<User> root = cQuery.from(User.class);
-            cQuery.select(root.get("academics")).where(cb.equal(root.get("id"), user.getId()));
+            Join<User, AcademicInfo> join = root.join("academics");
+            cQuery.where(cb.equal(root, user));
             Query<AcademicInfo> query = session.createQuery(cQuery);
             return query.list();
         } catch (Exception e) {
@@ -28,7 +35,6 @@ public class UserImplDAO implements UserDAO {
         }
         return null;
     }
-
     @Override
     public void removeUser(User user) {
         Transaction tx = null;
@@ -45,7 +51,6 @@ public class UserImplDAO implements UserDAO {
             e.printStackTrace();
         }
     }
-
     @Override
     public User getUser(long id) {
         try (Session session = HibernateUtil.getSessionFactory().openSession()) {
@@ -60,14 +65,14 @@ public class UserImplDAO implements UserDAO {
         }
         return null;
     }
-
     @Override
     public List<Skill> getUserSkills(User user) {
         try (Session session = HibernateUtil.getSessionFactory().openSession()) {
             CriteriaBuilder cb = session.getCriteriaBuilder();
             CriteriaQuery<Skill> cQuery = cb.createQuery(Skill.class);
             Root<User> root = cQuery.from(User.class);
-            cQuery.select(root.get("skills")).where(cb.equal(root.get("id"), user.getId()));
+            Join<User, Skill> join = root.join("skills"); //aunque no se use se indica
+            cQuery.where(cb.equal(root, user));
             Query<Skill> query = session.createQuery(cQuery);
             return query.list();
         } catch (Exception e) {
@@ -82,7 +87,8 @@ public class UserImplDAO implements UserDAO {
             CriteriaBuilder cb = session.getCriteriaBuilder();
             CriteriaQuery<Candidature> cQuery = cb.createQuery(Candidature.class);
             Root<User> root = cQuery.from(User.class);
-            cQuery.select(root.get("candidatures")).where(cb.equal(root.get("id"), user.getId()));
+            Join<User, Candidature> join = root.join("candidatures");
+            cQuery.where(cb.equal(root, user));
             Query<Candidature> query = session.createQuery(cQuery);
             return query.list();
         } catch (Exception e) {
@@ -140,6 +146,17 @@ public class UserImplDAO implements UserDAO {
 
     @Override
     public List<WorkExperience> getUserLaboralExperience(User user) {
+        try(Session session = HibernateUtil.getSessionFactory().openSession()){
+            CriteriaBuilder cb = session.getCriteriaBuilder();
+            CriteriaQuery<WorkExperience> cQuery = cb.createQuery(WorkExperience.class);
+            Root<User> root = cQuery.from(User.class);
+            Join <User, WorkExperience> join = root.join("experiences"); // string con el nombre del atributo en la clase user
+            cQuery.where(cb.equal(root, user));
+            Query<WorkExperience> query = session.createQuery(cQuery);
+            return query.list();
+        }catch (Exception e){
+            e.printStackTrace();
+        }
         return null;
     }
 

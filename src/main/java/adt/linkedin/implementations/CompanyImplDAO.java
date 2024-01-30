@@ -16,7 +16,7 @@ import java.util.List;
 
 public class CompanyImplDAO implements CompanyDAO {
     @Override
-    public Company getCompanyByName(String name) { //UNIQUE en nombre?
+    public Company getCompanyByName(String name) { //UNIQUE en nombre SI
         try(Session session = HibernateUtil.getSessionFactory().openSession()){
             CriteriaBuilder cb = session.getCriteriaBuilder();
             CriteriaQuery<Company> cQuery = cb.createQuery(Company.class);

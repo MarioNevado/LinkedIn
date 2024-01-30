@@ -2,11 +2,13 @@ package adt.linkedin.model;
 
 
 import jakarta.persistence.*;
+import org.checkerframework.common.aliasing.qual.Unique;
+
 import java.util.ArrayList;
 import java.util.List;
 
 @Entity
-@Table(name = "users")
+@Table(name = "users", uniqueConstraints = {@UniqueConstraint(columnNames = "name")})
 public class User {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
