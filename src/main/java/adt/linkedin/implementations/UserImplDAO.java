@@ -103,7 +103,7 @@ on ai.user_id = u.id ;
             CriteriaBuilder cb = session.getCriteriaBuilder();
             CriteriaQuery<User> cQuery = cb.createQuery(User.class);
             Root<User> root = cQuery.from(User.class);
-            cQuery.select(root.get("academics")).where(cb.equal(root.get("name"), name));
+            cQuery.select(root.get("academics")).where(cb.like(root.get("name"), "%" +  name + "%"));
             Query<User> query = session.createQuery(cQuery);
             return query.list();
         } catch (Exception e) {
@@ -162,6 +162,16 @@ on ai.user_id = u.id ;
 
     @Override
     public User getUserByName(String name) {
+        try(Session session = HibernateUtil.getSessionFactory().openSession()){
+            CriteriaBuilder cb = session.getCriteriaBuilder();
+            CriteriaQuery<User> cQuery = cb.createQuery(User.class);
+            Root<User> root = cQuery.from(User.class);
+            cQuery.where(cb.equal(root.get("name"), name));
+            Query<User> query = session.createQuery(cQuery);
+            return query.getSingleResult();
+        }catch(Exception e){
+            e.printStackTrace();
+        }
         return null;
     }
 }
