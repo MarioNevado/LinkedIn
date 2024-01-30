@@ -36,17 +36,17 @@ public class UserService {
         controller.updateUser(user);
 
     }
-    void addAcademicInfo(User user, AcademicInfo academicInfo, Institution institution){ //?
+    void addAcademicInfo(User user, AcademicInfo academicInfo, Institution institution){ //join?
 
     }
     void addCandidature(User user, Candidature candidature){
         user.getCandidatures().add(candidature);
         controller.updateUser(user);
     }
-    void addCandidature(User user, JobOffer offer, String name, String coverLetterPath){ //?
+    void addCandidature(User user, JobOffer offer, String name, String coverLetterPath){ //join?
 
     }
-    void addCandidature(User user, JobOffer offer){ //?
+    void addCandidature(User user, JobOffer offer){ //joboffer por que?
 
     }
     void addSkill(User user, Skill skill){
