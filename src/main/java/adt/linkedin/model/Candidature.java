@@ -22,7 +22,6 @@ public class Candidature {
     @ManyToOne(cascade = {CascadeType.PERSIST, CascadeType.MERGE})
     @JoinColumn(name = "user_id", nullable = false)
     private User user;
-
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "candidature")
     private List<JobOffer> offers = new ArrayList<>();
 

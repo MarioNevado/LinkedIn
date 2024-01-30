@@ -35,8 +35,11 @@ public class User {
     public User() {
     }
 
-    public User(String name) {
+    public User(String name, String mail, int phone, String description) {
         this.name = name;
+        this.mail = mail;
+        this.phone = phone;
+        this.description = description;
     }
 
     public int getId() {
