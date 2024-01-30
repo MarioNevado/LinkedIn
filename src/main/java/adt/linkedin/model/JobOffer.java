@@ -11,7 +11,7 @@ import java.util.List;
 public class JobOffer {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private int id;
+    private long id;
     @Column(name = "min_salary")
     private int minSalary;
     @Column(name = "max_salary")

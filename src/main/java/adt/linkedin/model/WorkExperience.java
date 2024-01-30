@@ -7,7 +7,7 @@ import java.time.LocalDateTime;
 public class WorkExperience {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private int id;
+    private long id;
     @Column(name = "current")
     private boolean current;
     @Column(name = "init_date")

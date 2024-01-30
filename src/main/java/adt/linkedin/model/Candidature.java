@@ -12,7 +12,7 @@ import java.util.List;
 public class Candidature {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private int id;
+    private long id;
     @Column(name = "status")
     private Status status;
     @Column(name = "cv_path")
