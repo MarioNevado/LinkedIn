@@ -37,5 +37,123 @@ public class JobOffer {
     @ManyToOne(cascade = CascadeType.ALL)
     @JoinColumn(name = "candidature_id", nullable = false)
     private Candidature candidature;
+    public JobOffer() {
+    }
+    public JobOffer(String title, String location) {
+        this.title = title;
+        this.location = location;
+    }
+    public long getId() {
+        return id;
+    }
 
+    public void setId(long id) {
+        this.id = id;
+    }
+
+    public int getMinSalary() {
+        return minSalary;
+    }
+
+    public void setMinSalary(int minSalary) {
+        this.minSalary = minSalary;
+    }
+
+    public int getMaxSalary() {
+        return maxSalary;
+    }
+
+    public void setMaxSalary(int maxSalary) {
+        this.maxSalary = maxSalary;
+    }
+
+    public boolean isOpen() {
+        return open;
+    }
+
+    public void setOpen(boolean open) {
+        this.open = open;
+    }
+
+    public int getRequiredCandidates() {
+        return requiredCandidates;
+    }
+
+    public void setRequiredCandidates(int requiredCandidates) {
+        this.requiredCandidates = requiredCandidates;
+    }
+
+    public WorkDayType getWorkDayType() {
+        return workDayType;
+    }
+
+    public void setWorkDayType(WorkDayType workDayType) {
+        this.workDayType = workDayType;
+    }
+
+    public String getTitle() {
+        return title;
+    }
+
+    public void setTitle(String title) {
+        this.title = title;
+    }
+
+    public String getLocation() {
+        return location;
+    }
+
+    public void setLocation(String location) {
+        this.location = location;
+    }
+
+    public String getDetails() {
+        return details;
+    }
+
+    public void setDetails(String details) {
+        this.details = details;
+    }
+
+    public Company getCompany() {
+        return company;
+    }
+
+    public void setCompany(Company company) {
+        this.company = company;
+    }
+
+    public List<Skill> getSkills() {
+        return skills;
+    }
+
+    public void setSkills(List<Skill> skills) {
+        this.skills = skills;
+    }
+
+    public Candidature getCandidature() {
+        return candidature;
+    }
+
+    public void setCandidature(Candidature candidature) {
+        this.candidature = candidature;
+    }
+
+    @Override
+    public String toString() {
+        return "JobOffer{" +
+                "id=" + id +
+                ", minSalary=" + minSalary +
+                ", maxSalary=" + maxSalary +
+                ", open=" + open +
+                ", requiredCandidates=" + requiredCandidates +
+                ", workDayType=" + workDayType +
+                ", title='" + title + '\'' +
+                ", location='" + location + '\'' +
+                ", details='" + details + '\'' +
+                ", company=" + company +
+                ", skills=" + skills +
+                ", candidature=" + candidature +
+                '}';
+    }
 }

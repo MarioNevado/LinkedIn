@@ -25,4 +25,66 @@ public class Candidature {
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "candidature")
     private List<JobOffer> offers = new ArrayList<>();
 
+    public Candidature(String cvPath, String coverLetterPath) {
+        this.cvPath = cvPath;
+        this.coverLetterPath = coverLetterPath;
+    }
+    public long getId() {
+        return id;
+    }
+
+    public void setId(long id) {
+        this.id = id;
+    }
+
+    public Status getStatus() {
+        return status;
+    }
+
+    public void setStatus(Status status) {
+        this.status = status;
+    }
+
+    public String getCvPath() {
+        return cvPath;
+    }
+
+    public void setCvPath(String cvPath) {
+        this.cvPath = cvPath;
+    }
+
+    public String getCoverLetterPath() {
+        return coverLetterPath;
+    }
+
+    public void setCoverLetterPath(String coverLetterPath) {
+        this.coverLetterPath = coverLetterPath;
+    }
+
+    public User getUser() {
+        return user;
+    }
+
+    public void setUser(User user) {
+        this.user = user;
+    }
+
+    public List<JobOffer> getOffers() {
+        return offers;
+    }
+    public void setOffers(List<JobOffer> offers) {
+        this.offers = offers;
+    }
+
+    @Override
+    public String toString() {
+        return "Candidature{" +
+                "id=" + id +
+                ", status=" + status +
+                ", cvPath='" + cvPath + '\'' +
+                ", coverLetterPath='" + coverLetterPath + '\'' +
+                ", user=" + user +
+                ", offers=" + offers +
+                '}';
+    }
 }

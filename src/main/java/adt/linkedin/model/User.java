@@ -13,11 +13,25 @@ public class User {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private long id;
-
     @Column(name = "name", nullable = false)
     private String name;
     @Column(name = "mail")
     private String mail;
+    @Column(name = "password", nullable = false)
+    private String password;
+
+    @Override
+    public String toString() {
+        return "User{" +
+                "id=" + id +
+                ", name='" + name + '\'' +
+                ", mail='" + mail + '\'' +
+                ", password='" + password + '\'' +
+                ", phone=" + phone +
+                ", description='" + description + '\'' +
+                '}';
+    }
+
     @Column(name = "phone")
     private int phone;
     @Column(name = "description")
@@ -32,13 +46,14 @@ public class User {
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "user")
     private List<WorkExperience> experiences = new ArrayList<>();
 
-    @OneToMany(cascade = {CascadeType.PERSIST, CascadeType.MERGE}, mappedBy = "user")
+    @OneToMany(cascade = {CascadeType.PERSIST, CascadeType.MERGE}, fetch = FetchType.EAGER, mappedBy = "user")
     private List<AcademicInfo> academics;
     public User() {
     }
 
-    public User(String name, String mail, int phone, String description) {
+    public User(String name, String password, String mail, int phone, String description) {
         this.name = name;
+        this.password = password;
         this.mail = mail;
         this.phone = phone;
         this.description = description;

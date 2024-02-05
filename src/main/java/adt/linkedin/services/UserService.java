@@ -4,66 +4,73 @@ import adt.linkedin.implementations.UserImplDAO;
 import adt.linkedin.model.*;
 
 public class UserService {
-    private UserImplDAO controller;
+    private UserImplDAO userController = new UserImplDAO();
 
-    void addJobExperience(User user, WorkExperience experience, Company company){
+    public void addJobExperience(User user, WorkExperience experience, Company company){
+        user.getExperiences().add(experience);
+        company.getExperiences().add(experience);
+        userController.updateUser(user);
     }
-    void addSkill(User user, String skill){
+    public void addSkill(User user, String skill){
         user.getSkills().add(new Skill(skill));
-        controller.updateUser(user);
+        userController.updateUser(user);
     }
-    void printUserInfo(User user){
-        System.out.println("Usuario: " + controller.getUser(user.getId()));
+    public void printUserInfo(User user){
+        System.out.println("Usuario: " + userController.getUser(user.getId()));
         System.out.println("Información Académica: ");
-        for (AcademicInfo info : controller.getUserAcademicInfo(user)){
+        for (AcademicInfo info : userController.getUserAcademicInfo(user)){
             System.out.println(info);
         }
         System.out.println("Candidaturas: ");
-        for (Candidature candidature : controller.getUserCandidatures(user)){
+        for (Candidature candidature : userController.getUserCandidatures(user)){
             System.out.println(candidature);
         }
         System.out.println("Habilidades: ");
-        for (Skill skill : controller.getUserSkills(user)){
+        for (Skill skill : userController.getUserSkills(user)){
             System.out.println(skill);
         }
         System.out.println("Experiencia Laboral: ");
-        for (WorkExperience experience : controller.getUserLaboralExperience(user)){
+        for (WorkExperience experience : userController.getUserLaboralExperience(user)){
             System.out.println(experience);
         }
     }
-    void addAcademicInfo(User user, AcademicInfo academicInfo){
+    public void addAcademicInfo(User user, AcademicInfo academicInfo){
         user.getAcademics().add(academicInfo);
-        controller.updateUser(user);
+        userController.updateUser(user);
 
     }
-    void addAcademicInfo(User user, AcademicInfo academicInfo, Institution institution){ //para hacerlo dentro en vez de el main
-        
+    public void addAcademicInfo(User user, AcademicInfo academicInfo, Institution institution){ //para hacerlo dentro en vez de el main
+        user.getAcademics().add(academicInfo);
+        institution.getAcademicInfos().add(academicInfo);
+        userController.updateUser(user);
     }
-    void addCandidature(User user, Candidature candidature){
+    public void addCandidature(User user, Candidature candidature){
         user.getCandidatures().add(candidature);
-        controller.updateUser(user);
+        userController.updateUser(user);
     }
-    void addCandidature(User user, JobOffer offer, String name, String coverLetterPath){ //igual
-
+    public void addCandidature(User user, JobOffer offer, String cvPath, String coverLetterPath){ //igual
+        user.getCandidatures().add(new Candidature(cvPath, coverLetterPath));
+        offer.setCandidature(new Candidature(cvPath, coverLetterPath));
+        userController.updateUser(user);
     }
-    void addCandidature(User user, JobOffer offer){ //esta relacionado
-
+    public void addCandidature(User user, JobOffer offer){ //?
     }
-    void addSkill(User user, Skill skill){
+    public void addSkill(User user, Skill skill){
         user.getSkills().add(skill);
-        controller.updateUser(user);
+        userController.updateUser(user);
     }
-    void addJobExperience(User user, WorkExperience experience){
+    public void addJobExperience(User user, WorkExperience experience){
         user.getExperiences().add(experience);
+        userController.updateUser(user);
     }
-    void removeUser(User user){
-        controller.removeUser(user);
+    public void removeUser(User user){
+        userController.removeUser(user);
     }
-    void createUser(User user){
-        controller.createUser(user);
+    public void createUser(User user){
+        userController.createUser(user);
     }
-    void createUser(String name, String mail, int phone, String description){
-        controller.createUser(new User(name, mail, phone, description));
+    public void createUser(String name, String password, String mail, int phone, String description){
+        userController.createUser(new User(name, password, mail, phone, description));
     }
 
 }

@@ -28,7 +28,7 @@ on ai.user_id = u.id ;
             Root<User> root = cQuery.from(User.class);
             Join<User, AcademicInfo> join = root.join("academics");
             cQuery.where(cb.equal(root, user));
-            Query<AcademicInfo> query = session.createQuery(cQuery);
+            Query<AcademicInfo> query = session.createQuery(cQuery.select(join)); //?
             return query.list();
         } catch (Exception e) {
             e.printStackTrace();
@@ -73,7 +73,7 @@ on ai.user_id = u.id ;
             Root<User> root = cQuery.from(User.class);
             Join<User, Skill> join = root.join("skills"); //aunque no se use se indica
             cQuery.where(cb.equal(root, user));
-            Query<Skill> query = session.createQuery(cQuery);
+            Query<Skill> query = session.createQuery(cQuery.select(join));
             return query.list();
         } catch (Exception e) {
             e.printStackTrace();
@@ -89,7 +89,7 @@ on ai.user_id = u.id ;
             Root<User> root = cQuery.from(User.class);
             Join<User, Candidature> join = root.join("candidatures");
             cQuery.where(cb.equal(root, user));
-            Query<Candidature> query = session.createQuery(cQuery);
+            Query<Candidature> query = session.createQuery(cQuery.select(join));
             return query.list();
         } catch (Exception e) {
             e.printStackTrace();
@@ -111,7 +111,6 @@ on ai.user_id = u.id ;
         }
         return null;
     }
-
     @Override
     public void updateUser(User user) {
         Transaction transaction = null;
@@ -126,7 +125,6 @@ on ai.user_id = u.id ;
             throw new HibernateException("Error actualizando");
         }
     }
-
     @Override
     public void createUser(User user) {
         Transaction tx = null;
@@ -143,16 +141,15 @@ on ai.user_id = u.id ;
             e.printStackTrace();
         }
     }
-
     @Override
     public List<WorkExperience> getUserLaboralExperience(User user) {
         try(Session session = HibernateUtil.getSessionFactory().openSession()){
             CriteriaBuilder cb = session.getCriteriaBuilder();
             CriteriaQuery<WorkExperience> cQuery = cb.createQuery(WorkExperience.class);
             Root<User> root = cQuery.from(User.class);
-            Join <User, WorkExperience> join = root.join("experiences"); // string con el nombre del atributo en la clase user
+            Join <User, WorkExperience> join = root.join("experiences");
             cQuery.where(cb.equal(root, user));
-            Query<WorkExperience> query = session.createQuery(cQuery);
+            Query<WorkExperience> query = session.createQuery(cQuery.select(join));
             return query.list();
         }catch (Exception e){
             e.printStackTrace();
