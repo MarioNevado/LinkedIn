@@ -37,7 +37,7 @@ public class UserService {
 
     }
     void addAcademicInfo(User user, AcademicInfo academicInfo, Institution institution){ //para hacerlo dentro en vez de el main
-
+        
     }
     void addCandidature(User user, Candidature candidature){
         user.getCandidatures().add(candidature);

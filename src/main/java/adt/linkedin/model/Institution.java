@@ -16,5 +16,8 @@ public class Institution {
     private String name;
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "institution")
     private List<AcademicInfo> academicInfos = new ArrayList<>();
+
+    public Institution() {
+    }
 }
 
