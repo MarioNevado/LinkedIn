@@ -13,8 +13,7 @@ public class Main {
         User user = new User("Mario", "1234", "m.nevadomerino@gmail.com", 622001844, "");
         service.createUser(user);
         user = implDAO.getUserByName("Mario");
-        System.out.println(user);
-        //service.addSkill(user, new Skill("skill"));
+        service.addSkill(user, new Skill("skill"));
         service.printUserInfo(user);
     }
 }
