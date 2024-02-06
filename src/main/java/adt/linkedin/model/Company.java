@@ -16,7 +16,7 @@ public class Company {
     @Column(name = "description")
     private String description;
     @OneToMany(cascade = {CascadeType.ALL}, mappedBy = "company")
-    private List<JobOffer> offers;
+    private List<JobOffer> offers = new ArrayList<>();
     @OneToMany(cascade = {CascadeType.ALL}, mappedBy = "company")
     private List<WorkExperience> experiences = new ArrayList<>();
 

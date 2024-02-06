@@ -35,11 +35,14 @@ public class UserService {
         }
     }
     public void addAcademicInfo(User user, AcademicInfo academicInfo){
+        academicInfo.setUser(user);
         user.getAcademics().add(academicInfo);
         userController.updateUser(user);
 
     }
     public void addAcademicInfo(User user, AcademicInfo academicInfo, Institution institution){ //para hacerlo dentro en vez de el main
+        academicInfo.setUser(user);
+        academicInfo.setInstitution(institution);
         user.getAcademics().add(academicInfo);
         institution.getAcademicInfos().add(academicInfo);
         userController.updateUser(user);

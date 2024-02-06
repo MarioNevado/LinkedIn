@@ -38,16 +38,16 @@ public class User {
     private String description;
     @ManyToMany(cascade = {CascadeType.PERSIST, CascadeType.MERGE}, fetch = FetchType.EAGER)
     @JoinTable(name = "users_skills", joinColumns = @JoinColumn(name = "user_id"), inverseJoinColumns = @JoinColumn(name = "skill_id"))
-    private List<Skill> skills;
+    private List<Skill> skills = new ArrayList<>();
 
     @OneToMany(cascade = {CascadeType.MERGE, CascadeType.REMOVE}, mappedBy = "user")
-    private List<Candidature> candidatures;
+    private List<Candidature> candidatures= new ArrayList<>();
 
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "user")
     private List<WorkExperience> experiences = new ArrayList<>();
 
-    @OneToMany(cascade = {CascadeType.PERSIST, CascadeType.MERGE}, fetch = FetchType.EAGER, mappedBy = "user")
-    private List<AcademicInfo> academics;
+    @OneToMany(cascade = {CascadeType.ALL}, fetch = FetchType.EAGER, mappedBy = "user")
+    private List<AcademicInfo> academics = new ArrayList<>();
     public User() {
     }
 

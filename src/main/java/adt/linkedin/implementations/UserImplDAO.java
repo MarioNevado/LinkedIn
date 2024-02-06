@@ -11,6 +11,7 @@ import org.hibernate.HibernateException;
 import org.hibernate.Session;
 import org.hibernate.Transaction;
 import org.hibernate.query.Query;
+import org.hibernate.resource.transaction.spi.TransactionStatus;
 
 import java.util.List;
 
@@ -115,13 +116,14 @@ on ai.user_id = u.id ;
     public void updateUser(User user) {
         Transaction transaction = null;
         try (Session session = HibernateUtil.getSessionFactory().openSession()) {
-            transaction = session.beginTransaction();
-            session.merge(user);
-            transaction.commit();
+            if (user != null) {
+                transaction = session.beginTransaction();
+                session.merge(user);
+                transaction.commit();
+            }else System.out.println("Usuario Nulo");
         } catch (HibernateException h) {
-            if (transaction != null) {
-                transaction.rollback();
-            }
+            h.printStackTrace();
+            if (transaction != null) transaction.rollback();
             throw new HibernateException("Error actualizando");
         }
     }

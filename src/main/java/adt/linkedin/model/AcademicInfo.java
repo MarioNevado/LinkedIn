@@ -2,6 +2,7 @@ package adt.linkedin.model;
 
 import jakarta.persistence.*;
 
+import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.Calendar;
 
@@ -16,15 +17,15 @@ public class AcademicInfo {
     @Column(name = "mean_score")
     private float meanScore;
     @Column(name = "init_date")
-    private Calendar initDate;
+    private LocalDate initDate;
     @Column(name = "end_date")
-    private Calendar endDate;
+    private LocalDate endDate;
     @Column(name = "title")
     private String title;
     @ManyToOne(cascade = CascadeType.ALL)
     @JoinColumn(name = "institution_id", nullable = false)
     private Institution institution;
-    @ManyToOne(cascade = {CascadeType.PERSIST, CascadeType.MERGE})
+    @ManyToOne(cascade = {CascadeType.ALL})
     @JoinColumn(name = "user_id", nullable = false)
     private User user;
 
@@ -32,8 +33,14 @@ public class AcademicInfo {
     public AcademicInfo() {
     }
 
-    public AcademicInfo(boolean current, float meanScore, Calendar initDate, Calendar endDate, String title, Institution institution) {
+    public AcademicInfo(boolean current, float meanScore, LocalDate initDate, String title, Institution institution) {
         this.current = current;
+        this.meanScore = meanScore;
+        this.initDate = initDate;
+        this.title = title;
+        this.institution = institution;
+    }
+    public AcademicInfo(float meanScore, LocalDate initDate, LocalDate endDate, String title, Institution institution) {
         this.meanScore = meanScore;
         this.initDate = initDate;
         this.endDate = endDate;
@@ -65,19 +72,19 @@ public class AcademicInfo {
         this.meanScore = meanScore;
     }
 
-    public Calendar getInitDate() {
+    public LocalDate getInitDate() {
         return initDate;
     }
 
-    public void setInitDate(Calendar initDate) {
+    public void setInitDate(LocalDate initDate) {
         this.initDate = initDate;
     }
 
-    public Calendar getEndDate() {
+    public LocalDate getEndDate() {
         return endDate;
     }
 
-    public void setEndDate(Calendar endDate) {
+    public void setEndDate(LocalDate endDate) {
         this.endDate = endDate;
     }
 
