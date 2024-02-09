@@ -29,12 +29,12 @@ public class JobOffer {
     @Column(name = "details")
     private String details;
     @ManyToOne(cascade = CascadeType.ALL)
-    @JoinColumn(name = "companies_id", nullable = false)
+    @JoinColumn(name = "companies_id")
     private Company company;
     @ManyToMany(cascade = CascadeType.ALL)
     @JoinTable(name = "offers_skills", joinColumns = @JoinColumn(name = "job_offer_id"), inverseJoinColumns = @JoinColumn(name = "skill_id"))
     private List<Skill> skills = new ArrayList<>();
-    @ManyToOne(cascade = CascadeType.ALL)
+    @ManyToOne(cascade = CascadeType.ALL, fetch = FetchType.EAGER)
     @JoinColumn(name = "candidature_id", nullable = false)
     private Candidature candidature;
     public JobOffer() {

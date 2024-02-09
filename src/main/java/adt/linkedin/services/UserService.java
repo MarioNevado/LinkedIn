@@ -9,6 +9,8 @@ public class UserService {
     public void addJobExperience(User user, WorkExperience experience, Company company){
         user.getExperiences().add(experience);
         company.getExperiences().add(experience);
+        experience.setCompany(company);
+        experience.setUser(user);
         userController.updateUser(user);
     }
     public void addSkill(User user, String skill){
@@ -49,11 +51,15 @@ public class UserService {
     }
     public void addCandidature(User user, Candidature candidature){
         user.getCandidatures().add(candidature);
+        candidature.setUser(user);
         userController.updateUser(user);
     }
     public void addCandidature(User user, JobOffer offer, String cvPath, String coverLetterPath){ //igual
-        user.getCandidatures().add(new Candidature(cvPath, coverLetterPath));
-        offer.setCandidature(new Candidature(cvPath, coverLetterPath));
+        Candidature candidature = new Candidature(cvPath, coverLetterPath);
+        candidature.setUser(user);
+        candidature.getOffers().add(offer);
+        user.getCandidatures().add(candidature);
+        offer.setCandidature(candidature);
         userController.updateUser(user);
     }
     public void addCandidature(User user, JobOffer offer){ //?
@@ -64,6 +70,7 @@ public class UserService {
     }
     public void addJobExperience(User user, WorkExperience experience){
         user.getExperiences().add(experience);
+        experience.setUser(user);
         userController.updateUser(user);
     }
     public void removeUser(User user){

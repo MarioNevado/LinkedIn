@@ -114,6 +114,7 @@ on ai.user_id = u.id ;
     }
     @Override
     public void updateUser(User user) {
+        System.out.println("USUARIO" +user);
         Transaction transaction = null;
         try (Session session = HibernateUtil.getSessionFactory().openSession()) {
             if (user != null) {

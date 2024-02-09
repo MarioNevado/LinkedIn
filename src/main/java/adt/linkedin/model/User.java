@@ -19,19 +19,6 @@ public class User {
     private String mail;
     @Column(name = "password", nullable = false)
     private String password;
-
-    @Override
-    public String toString() {
-        return "User{" +
-                "id=" + id +
-                ", name='" + name + '\'' +
-                ", mail='" + mail + '\'' +
-                ", password='" + password + '\'' +
-                ", phone=" + phone +
-                ", description='" + description + '\'' +
-                '}';
-    }
-
     @Column(name = "phone")
     private int phone;
     @Column(name = "description")
@@ -40,10 +27,10 @@ public class User {
     @JoinTable(name = "users_skills", joinColumns = @JoinColumn(name = "user_id"), inverseJoinColumns = @JoinColumn(name = "skill_id"))
     private List<Skill> skills = new ArrayList<>();
 
-    @OneToMany(cascade = {CascadeType.MERGE, CascadeType.REMOVE}, mappedBy = "user")
+    @OneToMany(cascade = {CascadeType.MERGE, CascadeType.REMOVE}, fetch = FetchType.EAGER, mappedBy = "user")
     private List<Candidature> candidatures= new ArrayList<>();
 
-    @OneToMany(cascade = CascadeType.ALL, mappedBy = "user")
+    @OneToMany(cascade = CascadeType.ALL, mappedBy = "user", fetch = FetchType.EAGER)
     private List<WorkExperience> experiences = new ArrayList<>();
 
     @OneToMany(cascade = {CascadeType.ALL}, fetch = FetchType.EAGER, mappedBy = "user")
@@ -105,5 +92,17 @@ public class User {
 
     public void setAcademics(List<AcademicInfo> academics) {
         this.academics = academics;
+    }
+
+    @Override
+    public String toString() {
+        return "User{" +
+                "id=" + id +
+                ", name='" + name + '\'' +
+                ", mail='" + mail + '\'' +
+                ", password='" + password + '\'' +
+                ", phone=" + phone +
+                ", description='" + description + '\'' +
+                '}';
     }
 }

@@ -20,6 +20,9 @@ public class Company {
     @OneToMany(cascade = {CascadeType.ALL}, mappedBy = "company")
     private List<WorkExperience> experiences = new ArrayList<>();
 
+    public Company() {
+    }
+
     public Company(String name, String description) {
         this.name = name;
         this.description = description;

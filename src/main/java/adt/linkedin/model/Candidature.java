@@ -22,8 +22,11 @@ public class Candidature {
     @ManyToOne(cascade = {CascadeType.PERSIST, CascadeType.MERGE})
     @JoinColumn(name = "user_id", nullable = false)
     private User user;
-    @OneToMany(cascade = CascadeType.ALL, mappedBy = "candidature")
+    @OneToMany(cascade = CascadeType.ALL, fetch = FetchType.EAGER, mappedBy = "candidature")
     private List<JobOffer> offers = new ArrayList<>();
+
+    public Candidature() {
+    }
 
     public Candidature(String cvPath, String coverLetterPath) {
         this.cvPath = cvPath;
