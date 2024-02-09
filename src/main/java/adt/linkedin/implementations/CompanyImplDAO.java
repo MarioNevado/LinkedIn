@@ -32,6 +32,8 @@ public class CompanyImplDAO implements CompanyDAO {
 
     @Override
     public List<Candidature> getCandidaturesByJobOffer(Company company, JobOffer offer) { // join?
+
+
         return null;
     }
 

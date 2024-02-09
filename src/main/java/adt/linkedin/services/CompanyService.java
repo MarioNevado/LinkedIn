@@ -8,23 +8,27 @@ import org.checkerframework.checker.units.qual.C;
 public class CompanyService {
     CompanyImplDAO controller = new CompanyImplDAO();
 
-    void createCompany(Company company){
+    public void createCompany(Company company){
         controller.createCompany(company);
     }
-    void removeCompany(Company company){
+    public void removeCompany(Company company){
         controller.removeCompany(company);
     }
-    Company createCompany(String name){//por que devuelve company -> para trabajar con ella mas adelante
-        return null;
+    public Company createCompany(String name){//por que devuelve company -> para trabajar con ella mas adelante
+        Company c = new Company(name, null);
+        controller.createCompany(c);
+        return controller.getCompany(c.getId());
     }
-    void printCompanyInfo(Company company){
-
+    public void printCompanyInfo(Company company){
+        System.out.println(controller.getCompanyByName(company.getName()));
     }
-    Company createCompany(String name, String description){
-        return null;
+    public Company createCompany(String name, String description){
+        controller.createCompany(new Company(name, description));
+        return controller.getCompanyByName(name);
     }
-    void addJobOffer(Company company, JobOffer offer){
+    public void addJobOffer(Company company, JobOffer offer){
         company.getOffers().add(offer);
+        offer.setCompany(company);
         controller.updateCompany(company);
     }
 }
