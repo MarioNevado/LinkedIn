@@ -12,6 +12,7 @@ public class Main {
         //service.createUser(new User("Mario", "1234", "m.nevadomerino@gmail.com", 622001844, ""));
         // service.createUser("Lidia", "abcd", "lidims02@gmail.com", 123456789, "");
         User user = implDAO.getUserByName("Mario");
+
         Institution institution = new Institution("IES Antares");
         //service.addAcademicInfo(user, new AcademicInfo(true, (float) 9.5, LocalDate.of(2022, 9, 8), "DAM", new Institution("IES Europa")));
         // service.addAcademicInfo(user, new AcademicInfo((float) 9.5, LocalDate.of(2019, 9, 8), LocalDate.of(2021, 6, 21), "Bach", institution), institution);
