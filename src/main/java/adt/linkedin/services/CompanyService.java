@@ -1,9 +1,9 @@
 package adt.linkedin.services;
 
 import adt.linkedin.implementations.CompanyImplDAO;
-import adt.linkedin.model.Company;
-import adt.linkedin.model.JobOffer;
-import org.checkerframework.checker.units.qual.C;
+import adt.linkedin.model.*;
+
+import java.awt.event.ComponentAdapter;
 
 public class CompanyService {
     CompanyImplDAO controller = new CompanyImplDAO();
@@ -20,7 +20,14 @@ public class CompanyService {
         return controller.getCompany(c.getId());
     }
     public void printCompanyInfo(Company company){
-        System.out.println(controller.getCompany(company.getId()));
+        company = controller.getCompany(company.getId());
+        System.out.println("Compañía: " + company);
+        for (WorkExperience experience: company.getExperiences()){
+            System.out.println(experience);
+        }
+        for (JobOffer offer : company.getOffers()){
+            System.out.println(offer);
+        }
     }
     public Company createCompany(String name, String description){
         controller.createCompany(new Company(name, description));

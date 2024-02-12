@@ -15,9 +15,9 @@ public class Company {
     private String name;
     @Column(name = "description")
     private String description;
-    @OneToMany(cascade = {CascadeType.ALL}, mappedBy = "company")
+    @OneToMany(cascade = {CascadeType.ALL}, fetch = FetchType.EAGER, mappedBy = "company")
     private List<JobOffer> offers = new ArrayList<>();
-    @OneToMany(cascade = {CascadeType.ALL}, mappedBy = "company")
+    @OneToMany(cascade = {CascadeType.ALL}, fetch = FetchType.EAGER, mappedBy = "company")
     private List<WorkExperience> experiences = new ArrayList<>();
 
     public Company() {
@@ -73,10 +73,7 @@ public class Company {
         return "Company{" +
                 "id=" + id +
                 ", name='" + name + '\'' +
-                ", description='" + description + '\'' +
-                ", offers=" + offers +
-                ", experiences=" + experiences +
-                '}';
+                ", description='" + description + '\'';
     }
 }
 

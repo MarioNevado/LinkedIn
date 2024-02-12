@@ -30,17 +30,19 @@ public class WorkExperience {
     public WorkExperience() {
     }
 
-    public WorkExperience(boolean current, LocalDate initDate, String jobTitle, String location) {
+    public WorkExperience(boolean current, LocalDate initDate, String jobTitle, String location, Company company) {
         this.current = current;
         this.initDate = initDate;
         this.jobTitle = jobTitle;
         this.location = location;
+        this.company = company;
     }
-    public WorkExperience(LocalDate initDate, LocalDate endDate, String jobTitle, String location) {
+    public WorkExperience(LocalDate initDate, LocalDate endDate, String jobTitle, String location, Company company) {
         this.initDate = initDate;
         this.endDate = endDate;
         this.jobTitle = jobTitle;
         this.location = location;
+        this.company = company;
     }
 
     public long getId() {

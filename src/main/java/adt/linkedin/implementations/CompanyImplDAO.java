@@ -7,6 +7,7 @@ import adt.linkedin.model.JobOffer;
 import adt.linkedin.utils.HibernateUtil;
 import jakarta.persistence.criteria.CriteriaBuilder;
 import jakarta.persistence.criteria.CriteriaQuery;
+import jakarta.persistence.criteria.Join;
 import jakarta.persistence.criteria.Root;
 import org.hibernate.Session;
 import org.hibernate.Transaction;
@@ -32,7 +33,18 @@ public class CompanyImplDAO implements CompanyDAO {
 
     @Override
     public List<Candidature> getCandidaturesByJobOffer(Company company, JobOffer offer) { // join?
-
+        try(Session session = HibernateUtil.getSessionFactory().openSession()){
+            CriteriaBuilder cb = session.getCriteriaBuilder();
+            CriteriaQuery<Candidature> cQuery = cb.createQuery(Candidature.class);
+            Root<Candidature> root = cQuery.from(Candidature.class);
+            Join<Candidature, JobOffer> join1 = root.join("offers");
+            Join<JobOffer, Company> join2 = join1.join("company");
+            cQuery.where(cb.equal(join2, root));
+            Query<Candidature> query = session.createQuery(cQuery);
+            return query.list();
+        }catch(Exception e){
+            e.printStackTrace();
+        }
 
         return null;
     }
@@ -47,7 +59,9 @@ public class CompanyImplDAO implements CompanyDAO {
                 tx.commit();
             }
         }catch(Exception e){
-            if (tx != null) tx.rollback();
+            if (tx != null){
+                tx.rollback();
+            }
             e.printStackTrace();
         }
     }
