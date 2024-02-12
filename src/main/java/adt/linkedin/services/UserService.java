@@ -62,7 +62,13 @@ public class UserService {
         offer.setCandidature(candidature);
         userController.updateUser(user);
     }
-    public void addCandidature(User user, JobOffer offer){ //?
+    public void addCandidature(User user, JobOffer offer){
+        Candidature c = new Candidature();
+        user.getCandidatures().add(c);
+        c.setUser(user);
+        offer.setCandidature(c);
+        c.getOffers().add(offer);
+        userController.updateUser(user);
     }
     public void addSkill(User user, Skill skill){
         user.getSkills().add(skill);

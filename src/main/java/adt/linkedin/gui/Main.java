@@ -20,7 +20,7 @@ public class Main {
         //userService.addSkill(user, "Trabajo en equipo");
         //userService.addCandidature(user, new JobOffer("Desarrollador de Aplicaciones", "Madrid"), "/bin/bash", "hola");
         //userService.addCandidature(user, new Candidature("/home/dev", "cogedme de practicas"));
-        //?userService.addCandidature(user, new JobOffer("Gestor de Bases de Datos", "Madrid"));
+        //userService.addCandidature(user, new JobOffer("Gestor de Bases de Datos", "Madrid"));
         //?userService.printUserInfo(user);
         //?userService.addJobExperience(user, new WorkExperience(true, LocalDate.of(2023, 9, 14), "Marketing", "Madrid")); COMPANY NULL
         //userService.addJobExperience(user, new WorkExperience( LocalDate.of(2021, 11, 28), LocalDate.of(2022, 8, 14), "Operario de Vuelo", "Madrid"), new Company("Swiftair S.A", "una mierda"));
@@ -30,7 +30,7 @@ public class Main {
         //companyService.createCompany("hidrovinisa");
         //companyService.createCompany(new Company("amazon", "esta en su amazonas"));
         //companyService.createCompany("nude project", "marca pa pijos que quieren ir de aesthetic");
-        //?companyService.printCompanyInfo(companyService.createCompany("dhl"));
+        companyService.printCompanyInfo(companyService.createCompany("dhl"));
 
 
 

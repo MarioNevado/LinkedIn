@@ -20,7 +20,7 @@ public class CompanyService {
         return controller.getCompany(c.getId());
     }
     public void printCompanyInfo(Company company){
-        System.out.println(controller.getCompanyByName(company.getName()));
+        System.out.println(controller.getCompany(company.getId()));
     }
     public Company createCompany(String name, String description){
         controller.createCompany(new Company(name, description));
