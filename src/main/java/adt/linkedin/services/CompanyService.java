@@ -35,7 +35,7 @@ public class CompanyService {
     }
     public void addJobOffer(Company company, JobOffer offer){
         company.getOffers().add(offer);
-        offer.setCompany(company);
+        offer.setCompany(company); //MAÑANA
         controller.updateCompany(company);
     }
 }

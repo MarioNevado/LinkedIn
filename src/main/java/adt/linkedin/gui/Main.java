@@ -25,20 +25,17 @@ public class Main {
         //?userService.printUserInfo(user);
         //userService.addJobExperience(user, new WorkExperience(true, LocalDate.of(2023, 9, 14), "Marketing", "Madrid", new Company("Kapra", "hola"))); //COMPANY NULL
         //userService.addJobExperience(user, new WorkExperience( LocalDate.of(2021, 11, 28), LocalDate.of(2022, 8, 14), "Operario de Vuelo", "Madrid"), new Company("Swiftair S.A", "una mierda"));
-        userService.addSkill(user, new Skill("proactivo"));
-        Company c = new Company("Pollasgordas SL", "");
-        companyService.addJobOffer(c, new JobOffer("Felador", "Madrid"));
-        companyService.
         //userService.addSkill(user, "eficaz");
         //userService.removeUser(user);
         //companyService.createCompany("hidrovinisa");
         //companyService.createCompany(new Company("amazon", "esta en su amazonas"));
         //companyService.createCompany("nude project", "marca pa pijos que quieren ir de aesthetic");
         //companyService.printCompanyInfo(companyService.createCompany("dhl"));
-        //Company c = companyService.createCompany("Iberia");
-       // JobOffer j = new JobOffer("Azafata", "Madrid");
-        //companyService.addJobOffer(c, j);
-        //new CompanyImplDAO().getCandidaturesByJobOffer(c, j);
+        Company c = companyService.createCompany("Iberia");
+        System.out.println(c);
+       JobOffer j = new JobOffer("Azafata", "Madrid");
+        companyService.addJobOffer(c, j);
+        new CompanyImplDAO().getCandidaturesByJobOffer(c, j);
 
 
 
