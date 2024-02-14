@@ -45,6 +45,18 @@ public class User {
         this.phone = phone;
         this.description = description;
     }
+    public User(String name, String password, int phone, String description) {
+        this.name = name;
+        this.password = password;
+        this.phone = phone;
+        this.description = description;
+    }
+    public User(String name, String password, String mail, String description) {
+        this.name = name;
+        this.password = password;
+        this.mail = mail;
+        this.description = description;
+    }
 
     public long getId() {
         return id;

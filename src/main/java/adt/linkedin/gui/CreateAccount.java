@@ -4,18 +4,26 @@
  */
 package adt.linkedin.gui;
 
+import adt.linkedin.model.User;
 import adt.linkedin.services.UserService;
+import java.awt.Color;
+import java.awt.Font;
+import javax.swing.JFrame;
+import javax.swing.JOptionPane;
 
 /**
  *
  * @author dev
  */
 public class CreateAccount extends javax.swing.JFrame {
+
     UserService service = new UserService();
+
     /**
      * Creates new form CreateAccount
      */
     public CreateAccount() {
+        setExtendedState(JFrame.MAXIMIZED_BOTH);
         initComponents();
     }
 
@@ -30,11 +38,12 @@ public class CreateAccount extends javax.swing.JFrame {
 
         jPanel1 = new javax.swing.JPanel();
         jLabel1 = new javax.swing.JLabel();
-        jTextField1 = new javax.swing.JTextField();
+        jTextFieldUserEmail = new javax.swing.JTextField();
         jPasswordField1 = new javax.swing.JPasswordField();
-        jTextField2 = new javax.swing.JTextField();
+        jTextFieldUserName = new javax.swing.JTextField();
         jLabelImg = new javax.swing.JLabel();
         jButton1 = new javax.swing.JButton();
+        jPasswordFieldRepeat = new javax.swing.JPasswordField();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
@@ -44,10 +53,10 @@ public class CreateAccount extends javax.swing.JFrame {
         jLabel1.setForeground(new java.awt.Color(153, 51, 255));
         jLabel1.setText("Saca el máximo partido a tu vida profesional ");
 
-        jTextField1.setBorder(javax.swing.BorderFactory.createCompoundBorder(javax.swing.BorderFactory.createTitledBorder(null, "Email", javax.swing.border.TitledBorder.DEFAULT_JUSTIFICATION, javax.swing.border.TitledBorder.DEFAULT_POSITION, new java.awt.Font("Liberation Sans", 1, 15)), null)); // NOI18N
-        jTextField1.addActionListener(new java.awt.event.ActionListener() {
+        jTextFieldUserEmail.setBorder(javax.swing.BorderFactory.createCompoundBorder(javax.swing.BorderFactory.createTitledBorder(null, "Email/Teléfono", javax.swing.border.TitledBorder.DEFAULT_JUSTIFICATION, javax.swing.border.TitledBorder.DEFAULT_POSITION, new java.awt.Font("Liberation Sans", 1, 15)), null)); // NOI18N
+        jTextFieldUserEmail.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jTextField1ActionPerformed(evt);
+                jTextFieldUserEmailActionPerformed(evt);
             }
         });
 
@@ -59,11 +68,34 @@ public class CreateAccount extends javax.swing.JFrame {
             }
         });
 
-        jTextField2.setBorder(javax.swing.BorderFactory.createCompoundBorder(javax.swing.BorderFactory.createTitledBorder(null, "Nombre de Usuario", javax.swing.border.TitledBorder.DEFAULT_JUSTIFICATION, javax.swing.border.TitledBorder.DEFAULT_POSITION, new java.awt.Font("Liberation Sans", 1, 15)), null)); // NOI18N
+        jTextFieldUserName.setFont(new java.awt.Font("Liberation Sans", 2, 15)); // NOI18N
+        jTextFieldUserName.setForeground(new java.awt.Color(204, 204, 204));
+        jTextFieldUserName.setText("Introduzca caracteres alfabéticos en minúscula");
+        jTextFieldUserName.setBorder(javax.swing.BorderFactory.createCompoundBorder(javax.swing.BorderFactory.createTitledBorder(null, "Nombre de Usuario", javax.swing.border.TitledBorder.DEFAULT_JUSTIFICATION, javax.swing.border.TitledBorder.DEFAULT_POSITION, new java.awt.Font("Liberation Sans", 1, 15)), null)); // NOI18N
+        jTextFieldUserName.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                jTextFieldUserNameMouseClicked(evt);
+            }
+        });
 
         jLabelImg.setIcon(new javax.swing.ImageIcon(getClass().getResource("/img/Link_up.png"))); // NOI18N
 
+        jButton1.setBackground(new java.awt.Color(153, 51, 255));
+        jButton1.setForeground(new java.awt.Color(255, 255, 255));
         jButton1.setText("Únete");
+        jButton1.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButton1ActionPerformed(evt);
+            }
+        });
+
+        jPasswordFieldRepeat.setText("jPasswordField2");
+        jPasswordFieldRepeat.setBorder(javax.swing.BorderFactory.createCompoundBorder(javax.swing.BorderFactory.createTitledBorder(null, "Repita su contraseña", javax.swing.border.TitledBorder.DEFAULT_JUSTIFICATION, javax.swing.border.TitledBorder.DEFAULT_POSITION, new java.awt.Font("Liberation Sans", 1, 15)), null)); // NOI18N
+        jPasswordFieldRepeat.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                jPasswordFieldRepeatMouseClicked(evt);
+            }
+        });
 
         javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
         jPanel1.setLayout(jPanel1Layout);
@@ -74,10 +106,11 @@ public class CreateAccount extends javax.swing.JFrame {
                 .addComponent(jLabelImg, javax.swing.GroupLayout.PREFERRED_SIZE, 450, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(18, 18, 18)
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                    .addComponent(jTextField1)
-                    .addComponent(jTextField2)
+                    .addComponent(jTextFieldUserEmail)
+                    .addComponent(jTextFieldUserName)
                     .addComponent(jPasswordField1, javax.swing.GroupLayout.DEFAULT_SIZE, 458, Short.MAX_VALUE)
-                    .addComponent(jButton1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                    .addComponent(jButton1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addComponent(jPasswordFieldRepeat))
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel1Layout.createSequentialGroup()
                 .addContainerGap(340, Short.MAX_VALUE)
@@ -89,15 +122,17 @@ public class CreateAccount extends javax.swing.JFrame {
             .addGroup(jPanel1Layout.createSequentialGroup()
                 .addContainerGap()
                 .addComponent(jLabel1, javax.swing.GroupLayout.PREFERRED_SIZE, 44, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
                     .addGroup(jPanel1Layout.createSequentialGroup()
                         .addGap(29, 29, 29)
-                        .addComponent(jTextField2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addComponent(jTextFieldUserName, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                        .addComponent(jTextField1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addGap(27, 27, 27)
+                        .addComponent(jTextFieldUserEmail, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                         .addComponent(jPasswordField1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addGap(41, 41, 41)
+                        .addGap(26, 26, 26)
+                        .addComponent(jPasswordFieldRepeat, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                         .addComponent(jButton1, javax.swing.GroupLayout.PREFERRED_SIZE, 36, javax.swing.GroupLayout.PREFERRED_SIZE))
                     .addGroup(jPanel1Layout.createSequentialGroup()
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
@@ -119,14 +154,71 @@ public class CreateAccount extends javax.swing.JFrame {
         pack();
     }// </editor-fold>//GEN-END:initComponents
 
-    private void jTextField1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jTextField1ActionPerformed
+    private void jTextFieldUserEmailActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jTextFieldUserEmailActionPerformed
         // TODO add your handling code here:
-    }//GEN-LAST:event_jTextField1ActionPerformed
+    }//GEN-LAST:event_jTextFieldUserEmailActionPerformed
 
     private void jPasswordField1MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jPasswordField1MouseClicked
         // TODO add your handling code here:
         this.jPasswordField1.setText("");
     }//GEN-LAST:event_jPasswordField1MouseClicked
+
+    private User verifyLogIn() {
+        String password = new String(this.jPasswordField1.getPassword());
+        String repeat = new String(this.jPasswordFieldRepeat.getPassword());
+        String username = this.jTextFieldUserName.getText();
+        String email = null;
+        int phone = 0;
+        User user = service.getUserByName(username);
+        if (username.matches("^[a-z]+$") && user == null) {
+            if (this.jTextFieldUserEmail.getText().matches("^[A-Za-z0-9.]+@[a-z.]+[a-z]{2,}$") || this.jTextFieldUserEmail.getText().matches("^[6-9][0-9]{8}$")) {
+                if (this.jTextFieldUserEmail.getText().matches("^[A-Za-z0-9.]+@[a-z.]+[a-z]{2,}$")) {
+                    email = this.jTextFieldUserEmail.getText();
+                } else if (this.jTextFieldUserEmail.getText().matches("^[6-9][0-9]{8}$")) {
+                    phone = Integer.parseInt(this.jTextFieldUserEmail.getText());
+                }
+                if (password.matches("^[a-zA-Z\\d]{8,}$") && password.equals(repeat)) {
+                    if (email != null) {
+                        return new User(username, password, email, null);
+                    } else {
+                        return new User(username, password, phone, null);
+                    }
+                } else if (!password.equals(repeat)) {
+                    JOptionPane.showMessageDialog(null, "Las contraseñas no coinciden", "ERROR", JOptionPane.ERROR_MESSAGE);
+                } else {
+                    JOptionPane.showMessageDialog(null, "La contraseña debe tener al menos 8 caracteres, y solo debe contener caracteres alfabeticos o numéricos", "Contraseña incorrecta", JOptionPane.ERROR_MESSAGE);
+                }
+            } else {
+                JOptionPane.showMessageDialog(null, "Correo electrónico incorrecto", "ERROR", JOptionPane.ERROR_MESSAGE);
+            }
+        } else if (user != null) {
+            JOptionPane.showMessageDialog(null, "El nombre de usuario ya está cogido, seleccione otro", "Nombre de usuario no disponible", JOptionPane.ERROR_MESSAGE);
+        } else {
+            JOptionPane.showMessageDialog(null, "El nombre de usuario debe estar en minúsculas", "Nombre de usuario incorrecto", JOptionPane.ERROR_MESSAGE);
+        }
+        return null;
+    }
+
+    private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
+        // TODO add your handling code here:
+        User user = verifyLogIn();
+        if (user != null) {
+            service.createUser(user);
+            JOptionPane.showMessageDialog(null, "", "Bienvenido al sistema", JOptionPane.INFORMATION_MESSAGE);
+        }
+    }//GEN-LAST:event_jButton1ActionPerformed
+
+    private void jTextFieldUserNameMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jTextFieldUserNameMouseClicked
+        // TODO add your handling code here:
+        this.jTextFieldUserName.setText("");
+        this.jTextFieldUserName.setFont(new Font("Liberation Sans", 0, 15));
+        this.jTextFieldUserName.setForeground(Color.BLACK);
+    }//GEN-LAST:event_jTextFieldUserNameMouseClicked
+
+    private void jPasswordFieldRepeatMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jPasswordFieldRepeatMouseClicked
+        // TODO add your handling code here:
+        this.jPasswordFieldRepeat.setText("");
+    }//GEN-LAST:event_jPasswordFieldRepeatMouseClicked
 
     /**
      * @param args the command line arguments
@@ -169,7 +261,8 @@ public class CreateAccount extends javax.swing.JFrame {
     private javax.swing.JLabel jLabelImg;
     private javax.swing.JPanel jPanel1;
     private javax.swing.JPasswordField jPasswordField1;
-    private javax.swing.JTextField jTextField1;
-    private javax.swing.JTextField jTextField2;
+    private javax.swing.JPasswordField jPasswordFieldRepeat;
+    private javax.swing.JTextField jTextFieldUserEmail;
+    private javax.swing.JTextField jTextFieldUserName;
     // End of variables declaration//GEN-END:variables
 }

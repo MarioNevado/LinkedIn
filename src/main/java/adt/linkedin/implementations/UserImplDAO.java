@@ -170,9 +170,8 @@ on ai.user_id = u.id ;
             Query<User> query = session.createQuery(cQuery);
             return query.getSingleResult();
         }catch(Exception e){
-            e.printStackTrace();
+            return null;
         }
-        return null;
     }
 
     @Override

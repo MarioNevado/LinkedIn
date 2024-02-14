@@ -7,10 +7,13 @@ public class UserService {
     private UserImplDAO userController = new UserImplDAO();
     
     public User getUserByPhone(int phone, String password){
-        return null;
+        return userController.getUserByPhone(phone, password);
     }
     public User getUserByEmail(String email, String password){
-        return null;
+        return userController.getUserByEmail(email, password);
+    }
+    public User getUserByName(String name){
+        return userController.getUserByName(name);
     }
 
     public void addJobExperience(User user, WorkExperience experience, Company company){
