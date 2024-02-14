@@ -2,7 +2,7 @@ package adt.linkedin.implementations;
 
 import adt.linkedin.dao.UserDAO;
 import adt.linkedin.model.*;
-import adt.linkedin.utils.HibernateUtil;
+import adt.linkedin.tools.HibernateUtil;
 import jakarta.persistence.criteria.CriteriaBuilder;
 import jakarta.persistence.criteria.CriteriaQuery;
 import jakarta.persistence.criteria.Join;
@@ -173,5 +173,33 @@ on ai.user_id = u.id ;
             e.printStackTrace();
         }
         return null;
+    }
+
+    @Override
+    public User getUserByPhone(int phone, String password) {
+        try(Session session = HibernateUtil.getSessionFactory().openSession()){
+            CriteriaBuilder cb = session.getCriteriaBuilder();
+            CriteriaQuery<User> cQuery = cb.createQuery(User.class);
+            Root <User> root = cQuery.from(User.class);
+            cQuery.where(cb.and(cb.equal(root.get("phone"), phone)), cb.equal(root.get("password"), password));
+            Query <User> query = session.createQuery(cQuery);
+            return query.getSingleResult();
+        }catch(Exception e){
+            return null;
+        }
+    }
+
+    @Override
+    public User getUserByEmail(String email, String password) {
+        try(Session session = HibernateUtil.getSessionFactory().openSession()){
+            CriteriaBuilder cb = session.getCriteriaBuilder();
+            CriteriaQuery<User> cQuery = cb.createQuery(User.class);
+            Root <User> root = cQuery.from(User.class);
+            cQuery.where(cb.and(cb.equal(root.get("email"), email)), cb.equal(root.get("password"), password));
+            Query <User> query = session.createQuery(cQuery);
+            return query.getSingleResult();
+        }catch(Exception e){
+            return null;
+        }
     }
 }

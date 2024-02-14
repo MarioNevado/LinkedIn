@@ -5,6 +5,13 @@ import adt.linkedin.model.*;
 
 public class UserService {
     private UserImplDAO userController = new UserImplDAO();
+    
+    public User getUserByPhone(int phone, String password){
+        return null;
+    }
+    public User getUserByEmail(String email, String password){
+        return null;
+    }
 
     public void addJobExperience(User user, WorkExperience experience, Company company){
         user.getExperiences().add(experience);

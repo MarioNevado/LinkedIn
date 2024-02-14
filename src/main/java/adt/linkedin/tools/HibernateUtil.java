@@ -1,4 +1,4 @@
-package adt.linkedin.utils;
+package adt.linkedin.tools;
 
 import org.hibernate.*;
 import org.hibernate.cfg.Configuration;

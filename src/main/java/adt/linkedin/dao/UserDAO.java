@@ -15,5 +15,7 @@ public interface UserDAO {
     void createUser(User user);
     List<WorkExperience> getUserLaboralExperience(User user);
     User getUserByName(String name);
+    User getUserByPhone(int phone, String password);
+    User getUserByEmail(String email, String password);
 
 }

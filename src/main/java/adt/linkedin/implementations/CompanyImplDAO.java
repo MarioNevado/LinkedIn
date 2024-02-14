@@ -4,7 +4,7 @@ import adt.linkedin.dao.CompanyDAO;
 import adt.linkedin.model.Candidature;
 import adt.linkedin.model.Company;
 import adt.linkedin.model.JobOffer;
-import adt.linkedin.utils.HibernateUtil;
+import adt.linkedin.tools.HibernateUtil;
 import jakarta.persistence.criteria.CriteriaBuilder;
 import jakarta.persistence.criteria.CriteriaQuery;
 import jakarta.persistence.criteria.Join;
