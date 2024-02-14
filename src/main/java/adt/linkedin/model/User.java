@@ -105,7 +105,37 @@ public class User {
     public void setAcademics(List<AcademicInfo> academics) {
         this.academics = academics;
     }
+    public String getMail() {
+        return mail;
+    }
 
+    public void setMail(String mail) {
+        this.mail = mail;
+    }
+
+    public String getPassword() {
+        return password;
+    }
+
+    public void setPassword(String password) {
+        this.password = password;
+    }
+
+    public int getPhone() {
+        return phone;
+    }
+
+    public void setPhone(int phone) {
+        this.phone = phone;
+    }
+
+    public String getDescription() {
+        return description;
+    }
+
+    public void setDescription(String description) {
+        this.description = description;
+    }
     @Override
     public String toString() {
         return "User{" +

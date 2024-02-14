@@ -82,7 +82,7 @@ public class UserService {
     }
     public void addSkill(User user, Skill skill){
         user.getSkills().add(skill);
-
+        skill.getUsers().add(user);
         userController.updateUser(user);
     }
     public void addJobExperience(User user, WorkExperience experience){
