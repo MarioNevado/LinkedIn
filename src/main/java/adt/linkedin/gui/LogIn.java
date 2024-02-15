@@ -19,6 +19,7 @@ import javax.swing.SwingConstants;
 public class LogIn extends javax.swing.JFrame {
 
     UserService userService;
+    User user;
     /**
      * Creates new form LogIn
      */
@@ -193,7 +194,6 @@ public class LogIn extends javax.swing.JFrame {
         // TODO add your handling code here:
         String email, password;
         int phone;
-        User user;
         password = new String(this.jPasswordField1.getPassword());
         if (Utils.isNumeric(this.jTextFieldEmail.getText())) {
             phone = Integer.parseInt(this.jTextFieldEmail.getText());
@@ -204,6 +204,8 @@ public class LogIn extends javax.swing.JFrame {
         }
         if (user != null) {
             //TODO entrar en portal
+            this.setVisible(false);
+            new Feed(user).setVisible(true);
         }else{
             JOptionPane.showMessageDialog(null, "Email/Teléfono o contraseña incorrectos", "ERROR", JOptionPane.ERROR_MESSAGE);
         }
