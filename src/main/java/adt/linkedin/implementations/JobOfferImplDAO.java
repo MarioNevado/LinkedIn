@@ -1,4 +1,8 @@
 package adt.linkedin.implementations;
 
-public class JobOfferImplDAO {
+import adt.linkedin.dao.JobOfferDAO;
+
+
+public class JobOfferImplDAO implements JobOfferDAO{
+
 }

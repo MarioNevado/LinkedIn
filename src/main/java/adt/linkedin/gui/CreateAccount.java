@@ -6,6 +6,8 @@ package adt.linkedin.gui;
 
 import adt.linkedin.model.User;
 import adt.linkedin.services.UserService;
+import adt.linkedin.tools.MyriadPro;
+import adt.linkedin.tools.Utils;
 import java.awt.Color;
 import java.awt.Font;
 import javax.swing.JFrame;
@@ -25,6 +27,8 @@ public class CreateAccount extends javax.swing.JFrame {
     public CreateAccount() {
         setExtendedState(JFrame.MAXIMIZED_BOTH);
         initComponents();
+        MyriadPro myriad = new MyriadPro();
+        this.jLabel1.setFont(myriad.getFont(myriad.BPR, 0, 15));
     }
 
     /**
@@ -44,6 +48,7 @@ public class CreateAccount extends javax.swing.JFrame {
         jLabelImg = new javax.swing.JLabel();
         jButton1 = new javax.swing.JButton();
         jPasswordFieldRepeat = new javax.swing.JPasswordField();
+        jLabel2 = new javax.swing.JLabel();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
@@ -97,6 +102,19 @@ public class CreateAccount extends javax.swing.JFrame {
             }
         });
 
+        jLabel2.setText("Volver a Inicio");
+        jLabel2.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                jLabel2MouseClicked(evt);
+            }
+            public void mouseEntered(java.awt.event.MouseEvent evt) {
+                jLabel2MouseEntered(evt);
+            }
+            public void mouseExited(java.awt.event.MouseEvent evt) {
+                jLabel2MouseExited(evt);
+            }
+        });
+
         javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
         jPanel1.setLayout(jPanel1Layout);
         jPanel1Layout.setHorizontalGroup(
@@ -111,9 +129,11 @@ public class CreateAccount extends javax.swing.JFrame {
                     .addComponent(jPasswordField1, javax.swing.GroupLayout.DEFAULT_SIZE, 458, Short.MAX_VALUE)
                     .addComponent(jButton1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                     .addComponent(jPasswordFieldRepeat))
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                .addContainerGap(115, Short.MAX_VALUE))
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel1Layout.createSequentialGroup()
-                .addContainerGap(340, Short.MAX_VALUE)
+                .addGap(17, 17, 17)
+                .addComponent(jLabel2, javax.swing.GroupLayout.PREFERRED_SIZE, 106, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                 .addComponent(jLabel1)
                 .addGap(227, 227, 227))
         );
@@ -121,7 +141,9 @@ public class CreateAccount extends javax.swing.JFrame {
             jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel1Layout.createSequentialGroup()
                 .addContainerGap()
-                .addComponent(jLabel1, javax.swing.GroupLayout.PREFERRED_SIZE, 44, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(jLabel1, javax.swing.GroupLayout.PREFERRED_SIZE, 44, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(jLabel2, javax.swing.GroupLayout.PREFERRED_SIZE, 44, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
                     .addGroup(jPanel1Layout.createSequentialGroup()
                         .addGap(29, 29, 29)
@@ -137,7 +159,7 @@ public class CreateAccount extends javax.swing.JFrame {
                     .addGroup(jPanel1Layout.createSequentialGroup()
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addComponent(jLabelImg, javax.swing.GroupLayout.PREFERRED_SIZE, 312, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                .addContainerGap(137, Short.MAX_VALUE))
+                .addContainerGap(134, Short.MAX_VALUE))
         );
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
@@ -205,6 +227,8 @@ public class CreateAccount extends javax.swing.JFrame {
         if (user != null) {
             service.createUser(user);
             JOptionPane.showMessageDialog(null, "", "Bienvenido al sistema", JOptionPane.INFORMATION_MESSAGE);
+            this.setVisible(false);
+            new Feed(user).setVisible(true);
         }
     }//GEN-LAST:event_jButton1ActionPerformed
 
@@ -219,6 +243,24 @@ public class CreateAccount extends javax.swing.JFrame {
         // TODO add your handling code here:
         this.jPasswordFieldRepeat.setText("");
     }//GEN-LAST:event_jPasswordFieldRepeatMouseClicked
+
+    private void jLabel2MouseEntered(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jLabel2MouseEntered
+        // TODO add your handling code here:
+        this.jLabel2.setFont(new Font(Utils.FONT, 1, 15));
+        this.jLabel2.setForeground(Utils.PURPLE);
+    }//GEN-LAST:event_jLabel2MouseEntered
+
+    private void jLabel2MouseExited(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jLabel2MouseExited
+        // TODO add your handling code here:
+        this.jLabel2.setFont(new Font(Utils.FONT, 0, 15));
+        this.jLabel2.setForeground(Color.BLACK);
+    }//GEN-LAST:event_jLabel2MouseExited
+
+    private void jLabel2MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jLabel2MouseClicked
+        // TODO add your handling code here:
+        this.setVisible(false);
+        new LogIn().setVisible(true);
+    }//GEN-LAST:event_jLabel2MouseClicked
 
     /**
      * @param args the command line arguments
@@ -258,6 +300,7 @@ public class CreateAccount extends javax.swing.JFrame {
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton jButton1;
     private javax.swing.JLabel jLabel1;
+    private javax.swing.JLabel jLabel2;
     private javax.swing.JLabel jLabelImg;
     private javax.swing.JPanel jPanel1;
     private javax.swing.JPasswordField jPasswordField1;

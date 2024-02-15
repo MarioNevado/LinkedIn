@@ -19,7 +19,7 @@ public class Candidature {
     private String cvPath;
     @Column(name = "cover_letter_path")
     private String coverLetterPath;
-    @ManyToOne(cascade = {CascadeType.PERSIST, CascadeType.MERGE})
+    @ManyToOne(cascade = {CascadeType.PERSIST, CascadeType.MERGE, CascadeType.REMOVE})
     @JoinColumn(name = "user_id", nullable = false)
     private User user;
     @OneToMany(cascade = CascadeType.ALL, fetch = FetchType.EAGER, mappedBy = "candidature")
