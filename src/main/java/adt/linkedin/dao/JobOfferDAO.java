@@ -5,4 +5,5 @@ import adt.linkedin.model.JobOffer;
 import java.util.List;
 
 public interface JobOfferDAO {
+    
 }
