@@ -205,7 +205,7 @@ public class Feed extends javax.swing.JFrame {
         // TODO add your handling code here:
         this.jTextField1.setText("");
         this.jTextField1.setForeground(Color.BLACK);
-        this.jTextField1.setFont(new Font("Liberation Sans", 0, 15));
+        this.jTextField1.setFont(new Font(Utils.FONT, 0, 15));
     }//GEN-LAST:event_jTextField1MouseClicked
 
     private void jTextField1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jTextField1ActionPerformed

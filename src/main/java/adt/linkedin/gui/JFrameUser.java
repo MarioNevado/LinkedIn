@@ -6,6 +6,7 @@ package adt.linkedin.gui;
 
 import adt.linkedin.model.*;
 import adt.linkedin.services.UserService;
+import adt.linkedin.tools.Utils;
 import java.awt.Font;
 import javax.swing.*;
 import javax.swing.table.DefaultTableModel;
@@ -33,6 +34,7 @@ public class JFrameUser extends javax.swing.JFrame {
         fillTable(jTableAcademicInfo, 1);
         fillTable(jTableSkills, 2);
         fillTable(jTableExperience, 3);
+        this.jButton1.setBackground(Utils.PURPLE);
     }
 
     /**
@@ -195,8 +197,20 @@ public class JFrameUser extends javax.swing.JFrame {
         jPanelUser.add(jLabelConfiguration, new org.netbeans.lib.awtextra.AbsoluteConstraints(40, 388, 110, 40));
 
         jLabelCandidatures.setText("My Candidatures");
+        jLabelCandidatures.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                jLabelCandidaturesMouseClicked(evt);
+            }
+            public void mouseEntered(java.awt.event.MouseEvent evt) {
+                jLabelCandidaturesMouseEntered(evt);
+            }
+            public void mouseExited(java.awt.event.MouseEvent evt) {
+                jLabelCandidaturesMouseExited(evt);
+            }
+        });
         jPanelUser.add(jLabelCandidatures, new org.netbeans.lib.awtextra.AbsoluteConstraints(40, 440, -1, 50));
 
+        jButton1.setBackground(new java.awt.Color(153, 102, 255));
         jButton1.setText("Home");
         jButton1.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -260,17 +274,33 @@ public class JFrameUser extends javax.swing.JFrame {
 
     private void jLabelConfigurationMouseEntered(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jLabelConfigurationMouseEntered
         // TODO add your handling code here:
-        this.jLabelConfiguration.setFont(new Font("Liberation Sans", 1, 15));
+        this.jLabelConfiguration.setFont(new Font(Utils.FONT, 1, 15));
     }//GEN-LAST:event_jLabelConfigurationMouseEntered
 
     private void jLabelConfigurationMouseExited(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jLabelConfigurationMouseExited
         // TODO add your handling code here:
-        this.jLabelConfiguration.setFont(new Font("Liberation Sans", 0, 15));
+        this.jLabelConfiguration.setFont(new Font(Utils.FONT, 0, 15));
     }//GEN-LAST:event_jLabelConfigurationMouseExited
 
     private void jLabelConfigurationMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jLabelConfigurationMouseClicked
         // TODO add your handling code here:
     }//GEN-LAST:event_jLabelConfigurationMouseClicked
+
+    private void jLabelCandidaturesMouseEntered(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jLabelCandidaturesMouseEntered
+        // TODO add your handling code here:
+        this.jLabelCandidatures.setFont(new Font(Utils.FONT, 1, 15));
+    }//GEN-LAST:event_jLabelCandidaturesMouseEntered
+
+    private void jLabelCandidaturesMouseExited(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jLabelCandidaturesMouseExited
+        // TODO add your handling code here:
+        this.jLabelCandidatures.setFont(new Font(Utils.FONT, 0, 15));
+    }//GEN-LAST:event_jLabelCandidaturesMouseExited
+
+    private void jLabelCandidaturesMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jLabelCandidaturesMouseClicked
+        // TODO add your handling code here:
+        new JFrameCandidatures(user).setVisible(true);
+        this.setVisible(false);
+    }//GEN-LAST:event_jLabelCandidaturesMouseClicked
 
     /**
      * @param args the command line arguments
