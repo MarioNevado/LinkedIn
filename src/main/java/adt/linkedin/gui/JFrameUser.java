@@ -4,8 +4,11 @@
  */
 package adt.linkedin.gui;
 
-import adt.linkedin.model.User;
-import javax.swing.JFrame;
+import adt.linkedin.model.*;
+import adt.linkedin.services.UserService;
+import java.awt.Font;
+import javax.swing.*;
+import javax.swing.table.DefaultTableModel;
 
 /**
  *
@@ -14,14 +17,22 @@ import javax.swing.JFrame;
 public class JFrameUser extends javax.swing.JFrame {
 
     final User user;
+    final UserService controller;
+
     /**
      * Creates new form User
+     *
      * @param user
      */
     public JFrameUser(User user) {
         this.user = user;
+        controller = new UserService();
         this.setExtendedState(JFrame.MAXIMIZED_BOTH);
         initComponents();
+        this.jPanel1.setBounds(2, 2, JFrame.MAXIMIZED_HORIZ, JFrame.MAXIMIZED_VERT);
+        fillTable(jTableAcademicInfo, 1);
+        fillTable(jTableSkills, 2);
+        fillTable(jTableExperience, 3);
     }
 
     /**
@@ -34,154 +45,232 @@ public class JFrameUser extends javax.swing.JFrame {
     private void initComponents() {
 
         jPanel1 = new javax.swing.JPanel();
-        jPanel2 = new javax.swing.JPanel();
-        jLabel1 = new javax.swing.JLabel();
+        jPanelUser = new javax.swing.JPanel();
         jLabelUserPic = new javax.swing.JLabel();
+        jLabelHeader = new javax.swing.JLabel();
         jLabelUserName = new javax.swing.JLabel();
         jLabelDescription = new javax.swing.JLabel();
-        jPanelEducation = new javax.swing.JPanel();
-        jPanelCertification = new javax.swing.JPanel();
-        jPanelSkills = new javax.swing.JPanel();
+        jScrollPane3 = new javax.swing.JScrollPane();
+        jTableSkills = new javax.swing.JTable();
+        jScrollPane1 = new javax.swing.JScrollPane();
+        jTableAcademicInfo = new javax.swing.JTable();
+        jScrollPane2 = new javax.swing.JScrollPane();
+        jTableExperience = new javax.swing.JTable();
+        jLabelConfiguration = new javax.swing.JLabel();
+        jLabelCandidatures = new javax.swing.JLabel();
+        jButton1 = new javax.swing.JButton();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
+        getContentPane().setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
 
-        jPanel1.setBackground(new java.awt.Color(255, 255, 255));
+        jPanel1.setBackground(java.awt.Color.lightGray);
+        jPanel1.setPreferredSize(this.getPreferredSize());
 
-        jPanel2.setBorder(javax.swing.BorderFactory.createBevelBorder(javax.swing.border.BevelBorder.RAISED, java.awt.Color.black, java.awt.Color.black));
-
-        jLabel1.setIcon(new javax.swing.ImageIcon(getClass().getResource("/img/Header.png"))); // NOI18N
+        jPanelUser.setBackground(new java.awt.Color(255, 255, 255));
+        jPanelUser.setBorder(javax.swing.BorderFactory.createBevelBorder(javax.swing.border.BevelBorder.RAISED, java.awt.Color.black, java.awt.Color.black));
+        jPanelUser.setPreferredSize(this.jPanel1.getPreferredSize());
+        jPanelUser.setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
 
         jLabelUserPic.setIcon(new javax.swing.ImageIcon(getClass().getResource("/img/defaultpic.png"))); // NOI18N
         jLabelUserPic.setText("jLabel2");
+        jLabelUserPic.setBorder(javax.swing.BorderFactory.createEtchedBorder(null, new java.awt.Color(153, 102, 255)));
+        jPanelUser.add(jLabelUserPic, new org.netbeans.lib.awtextra.AbsoluteConstraints(60, 60, 91, 91));
+
+        jLabelHeader.setIcon(new javax.swing.ImageIcon(getClass().getResource("/img/image.png"))); // NOI18N
+        jPanelUser.add(jLabelHeader, new org.netbeans.lib.awtextra.AbsoluteConstraints(2, 2, 960, 90));
 
         jLabelUserName.setFont(new java.awt.Font("Liberation Sans", 1, 18)); // NOI18N
         jLabelUserName.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
         jLabelUserName.setText("User");
+        jPanelUser.add(jLabelUserName, new org.netbeans.lib.awtextra.AbsoluteConstraints(80, 160, 52, -1));
 
         jLabelDescription.setFont(new java.awt.Font("Liberation Sans", 0, 15)); // NOI18N
         jLabelDescription.setForeground(new java.awt.Color(153, 153, 153));
         jLabelDescription.setText("Description");
+        jPanelUser.add(jLabelDescription, new org.netbeans.lib.awtextra.AbsoluteConstraints(60, 180, 167, 57));
 
-        jPanelEducation.setBackground(new java.awt.Color(255, 255, 255));
+        jScrollPane3.setBorder(javax.swing.BorderFactory.createEtchedBorder(new java.awt.Color(153, 102, 255), null));
 
-        javax.swing.GroupLayout jPanelEducationLayout = new javax.swing.GroupLayout(jPanelEducation);
-        jPanelEducation.setLayout(jPanelEducationLayout);
-        jPanelEducationLayout.setHorizontalGroup(
-            jPanelEducationLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 0, Short.MAX_VALUE)
-        );
-        jPanelEducationLayout.setVerticalGroup(
-            jPanelEducationLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 160, Short.MAX_VALUE)
-        );
+        jTableSkills.setModel(new javax.swing.table.DefaultTableModel(
+            new Object [][] {
+                {null},
+                {null},
+                {null},
+                {null}
+            },
+            new String [] {
+                "Skills"
+            }
+        ) {
+            boolean[] canEdit = new boolean [] {
+                false
+            };
 
-        jPanelCertification.setBackground(new java.awt.Color(255, 255, 255));
+            public boolean isCellEditable(int rowIndex, int columnIndex) {
+                return canEdit [columnIndex];
+            }
+        });
+        jTableSkills.getTableHeader().setReorderingAllowed(false);
+        jScrollPane3.setViewportView(jTableSkills);
+        if (jTableSkills.getColumnModel().getColumnCount() > 0) {
+            jTableSkills.getColumnModel().getColumn(0).setResizable(false);
+        }
 
-        javax.swing.GroupLayout jPanelCertificationLayout = new javax.swing.GroupLayout(jPanelCertification);
-        jPanelCertification.setLayout(jPanelCertificationLayout);
-        jPanelCertificationLayout.setHorizontalGroup(
-            jPanelCertificationLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 432, Short.MAX_VALUE)
-        );
-        jPanelCertificationLayout.setVerticalGroup(
-            jPanelCertificationLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 196, Short.MAX_VALUE)
-        );
+        jPanelUser.add(jScrollPane3, new org.netbeans.lib.awtextra.AbsoluteConstraints(330, 320, 420, 196));
 
-        jPanelSkills.setBackground(new java.awt.Color(255, 255, 255));
+        jScrollPane1.setBorder(javax.swing.BorderFactory.createEtchedBorder(new java.awt.Color(153, 102, 255), null));
 
-        javax.swing.GroupLayout jPanelSkillsLayout = new javax.swing.GroupLayout(jPanelSkills);
-        jPanelSkills.setLayout(jPanelSkillsLayout);
-        jPanelSkillsLayout.setHorizontalGroup(
-            jPanelSkillsLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 432, Short.MAX_VALUE)
-        );
-        jPanelSkillsLayout.setVerticalGroup(
-            jPanelSkillsLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 175, Short.MAX_VALUE)
-        );
+        jTableAcademicInfo.setModel(new javax.swing.table.DefaultTableModel(
+            new Object [][] {
+                {null},
+                {null},
+                {null},
+                {null}
+            },
+            new String [] {
+                "AcademicInfo"
+            }
+        ) {
+            boolean[] canEdit = new boolean [] {
+                false
+            };
 
-        javax.swing.GroupLayout jPanel2Layout = new javax.swing.GroupLayout(jPanel2);
-        jPanel2.setLayout(jPanel2Layout);
-        jPanel2Layout.setHorizontalGroup(
-            jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(jPanel2Layout.createSequentialGroup()
-                .addComponent(jLabel1)
-                .addGap(0, 0, Short.MAX_VALUE))
-            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel2Layout.createSequentialGroup()
-                .addGap(82, 82, 82)
-                .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addGroup(jPanel2Layout.createSequentialGroup()
-                        .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(jLabelUserName, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                            .addGroup(jPanel2Layout.createSequentialGroup()
-                                .addGap(12, 12, 12)
-                                .addComponent(jLabelUserPic, javax.swing.GroupLayout.PREFERRED_SIZE, 91, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                .addGap(0, 0, Short.MAX_VALUE)))
-                        .addGap(127, 127, 127))
-                    .addGroup(jPanel2Layout.createSequentialGroup()
-                        .addGap(6, 6, 6)
-                        .addComponent(jLabelDescription, javax.swing.GroupLayout.PREFERRED_SIZE, 167, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)))
-                .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                    .addComponent(jPanelSkills, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                    .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
-                        .addComponent(jPanelCertification, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                        .addComponent(jPanelEducation, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)))
-                .addGap(106, 106, 106))
-        );
-        jPanel2Layout.setVerticalGroup(
-            jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(jPanel2Layout.createSequentialGroup()
-                .addComponent(jLabel1, javax.swing.GroupLayout.PREFERRED_SIZE, 88, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addGroup(jPanel2Layout.createSequentialGroup()
-                        .addComponent(jLabelUserPic, javax.swing.GroupLayout.PREFERRED_SIZE, 91, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                        .addComponent(jLabelUserName, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(jLabelDescription, javax.swing.GroupLayout.PREFERRED_SIZE, 57, javax.swing.GroupLayout.PREFERRED_SIZE))
-                    .addGroup(jPanel2Layout.createSequentialGroup()
-                        .addGap(31, 31, 31)
-                        .addComponent(jPanelEducation, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addGap(0, 24, Short.MAX_VALUE)))
-                .addGap(17, 17, 17)
-                .addComponent(jPanelCertification, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 41, Short.MAX_VALUE)
-                .addComponent(jPanelSkills, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(62, 62, 62))
-        );
+            public boolean isCellEditable(int rowIndex, int columnIndex) {
+                return canEdit [columnIndex];
+            }
+        });
+        jTableAcademicInfo.setAutoscrolls(false);
+        jTableAcademicInfo.setGridColor(new java.awt.Color(255, 255, 255));
+        jTableAcademicInfo.setSelectionBackground(new java.awt.Color(153, 102, 255));
+        jTableAcademicInfo.setSelectionForeground(new java.awt.Color(255, 255, 255));
+        jTableAcademicInfo.getTableHeader().setReorderingAllowed(false);
+        jScrollPane1.setViewportView(jTableAcademicInfo);
+        if (jTableAcademicInfo.getColumnModel().getColumnCount() > 0) {
+            jTableAcademicInfo.getColumnModel().getColumn(0).setResizable(false);
+        }
+
+        jPanelUser.add(jScrollPane1, new org.netbeans.lib.awtextra.AbsoluteConstraints(330, 110, 420, 190));
+
+        jScrollPane2.setBorder(javax.swing.BorderFactory.createEtchedBorder(new java.awt.Color(153, 102, 255), null));
+
+        jTableExperience.setModel(new javax.swing.table.DefaultTableModel(
+            new Object [][] {
+                {null},
+                {null},
+                {null},
+                {null}
+            },
+            new String [] {
+                "Experience"
+            }
+        ) {
+            boolean[] canEdit = new boolean [] {
+                false
+            };
+
+            public boolean isCellEditable(int rowIndex, int columnIndex) {
+                return canEdit [columnIndex];
+            }
+        });
+        jTableExperience.getTableHeader().setReorderingAllowed(false);
+        jScrollPane2.setViewportView(jTableExperience);
+        if (jTableExperience.getColumnModel().getColumnCount() > 0) {
+            jTableExperience.getColumnModel().getColumn(0).setResizable(false);
+        }
+
+        jPanelUser.add(jScrollPane2, new org.netbeans.lib.awtextra.AbsoluteConstraints(330, 560, 420, 220));
+
+        jLabelConfiguration.setText("Configuration");
+        jLabelConfiguration.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                jLabelConfigurationMouseClicked(evt);
+            }
+            public void mouseEntered(java.awt.event.MouseEvent evt) {
+                jLabelConfigurationMouseEntered(evt);
+            }
+            public void mouseExited(java.awt.event.MouseEvent evt) {
+                jLabelConfigurationMouseExited(evt);
+            }
+        });
+        jPanelUser.add(jLabelConfiguration, new org.netbeans.lib.awtextra.AbsoluteConstraints(40, 388, 110, 40));
+
+        jLabelCandidatures.setText("My Candidatures");
+        jPanelUser.add(jLabelCandidatures, new org.netbeans.lib.awtextra.AbsoluteConstraints(40, 440, -1, 50));
+
+        jButton1.setText("Home");
+        jButton1.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButton1ActionPerformed(evt);
+            }
+        });
 
         javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
         jPanel1.setLayout(jPanel1Layout);
         jPanel1Layout.setHorizontalGroup(
             jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel1Layout.createSequentialGroup()
-                .addContainerGap(180, Short.MAX_VALUE)
-                .addComponent(jPanel2, javax.swing.GroupLayout.PREFERRED_SIZE, 798, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(162, 162, 162))
+            .addGroup(jPanel1Layout.createSequentialGroup()
+                .addGap(499, 499, 499)
+                .addComponent(jPanelUser, javax.swing.GroupLayout.PREFERRED_SIZE, 796, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(280, 280, 280)
+                .addComponent(jButton1)
+                .addContainerGap(353, Short.MAX_VALUE))
         );
         jPanel1Layout.setVerticalGroup(
             jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addComponent(jPanel2, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+            .addGroup(jPanel1Layout.createSequentialGroup()
+                .addGap(17, 17, 17)
+                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(jButton1)
+                    .addComponent(jPanelUser, javax.swing.GroupLayout.PREFERRED_SIZE, 868, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addContainerGap(195, Short.MAX_VALUE))
         );
 
-        javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
-        getContentPane().setLayout(layout);
-        layout.setHorizontalGroup(
-            layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(layout.createSequentialGroup()
-                .addComponent(jPanel1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(0, 273, Short.MAX_VALUE))
-        );
-        layout.setVerticalGroup(
-            layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addComponent(jPanel1, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-        );
+        getContentPane().add(jPanel1, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 0, 2000, 1080));
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
+
+    private void fillTable(JTable table, int option) {
+        DefaultTableModel model = (DefaultTableModel) table.getModel();
+        switch (option) {
+            case 1: //AcademicInfo
+                for (AcademicInfo info : controller.getUserAcademicInfo(user)) {
+                    model.addRow(new String[]{info.toString()});
+                }
+                break;
+            case 2: //Skills
+                for (Skill skill : controller.getUserSkills(user)) {
+                    model.addRow(new String[]{skill.toString()});
+                }
+                break;
+            default: //Experience
+                for (WorkExperience experience : controller.getUserLaboralExperience(user)) {
+                    model.addRow(new String[]{experience.toString()});
+                }
+                break;
+        }
+        table.setModel(model);
+    }
+
+    private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
+        // TODO add your handling code here:
+        this.setVisible(false);
+        new Feed(user).setVisible(true);
+    }//GEN-LAST:event_jButton1ActionPerformed
+
+    private void jLabelConfigurationMouseEntered(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jLabelConfigurationMouseEntered
+        // TODO add your handling code here:
+        this.jLabelConfiguration.setFont(new Font("Liberation Sans", 1, 15));
+    }//GEN-LAST:event_jLabelConfigurationMouseEntered
+
+    private void jLabelConfigurationMouseExited(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jLabelConfigurationMouseExited
+        // TODO add your handling code here:
+        this.jLabelConfiguration.setFont(new Font("Liberation Sans", 0, 15));
+    }//GEN-LAST:event_jLabelConfigurationMouseExited
+
+    private void jLabelConfigurationMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jLabelConfigurationMouseClicked
+        // TODO add your handling code here:
+    }//GEN-LAST:event_jLabelConfigurationMouseClicked
 
     /**
      * @param args the command line arguments
@@ -220,14 +309,20 @@ public class JFrameUser extends javax.swing.JFrame {
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
-    private javax.swing.JLabel jLabel1;
+    private javax.swing.JButton jButton1;
+    private javax.swing.JLabel jLabelCandidatures;
+    private javax.swing.JLabel jLabelConfiguration;
     private javax.swing.JLabel jLabelDescription;
+    private javax.swing.JLabel jLabelHeader;
     private javax.swing.JLabel jLabelUserName;
     private javax.swing.JLabel jLabelUserPic;
     private javax.swing.JPanel jPanel1;
-    private javax.swing.JPanel jPanel2;
-    private javax.swing.JPanel jPanelCertification;
-    private javax.swing.JPanel jPanelEducation;
-    private javax.swing.JPanel jPanelSkills;
+    private javax.swing.JPanel jPanelUser;
+    private javax.swing.JScrollPane jScrollPane1;
+    private javax.swing.JScrollPane jScrollPane2;
+    private javax.swing.JScrollPane jScrollPane3;
+    private javax.swing.JTable jTableAcademicInfo;
+    private javax.swing.JTable jTableExperience;
+    private javax.swing.JTable jTableSkills;
     // End of variables declaration//GEN-END:variables
 }
