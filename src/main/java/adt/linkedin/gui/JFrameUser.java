@@ -22,8 +22,8 @@ public class JFrameUser extends javax.swing.JFrame {
     /**
      * Creates new form User
      *
-     * @param user
-     * @param service
+     * @param user gets the instance of the logged user
+     * @param service tool to make all the queries
      */
     public JFrameUser(User user, UserService service) {
         this.user = user;
@@ -215,7 +215,7 @@ public class JFrameUser extends javax.swing.JFrame {
         jLabelDelete.setText("Delete Account");
         jPanelUser.add(jLabelDelete, new org.netbeans.lib.awtextra.AbsoluteConstraints(40, 430, -1, -1));
 
-        jButton1.setBackground(new java.awt.Color(153, 102, 255));
+        jButton1.setBackground(Utils.PURPLE);
         jButton1.setText("Home");
         jButton1.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
