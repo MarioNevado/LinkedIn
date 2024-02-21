@@ -6,10 +6,8 @@ package adt.linkedin.gui;
 
 import adt.linkedin.model.User;
 import adt.linkedin.services.UserService;
-import adt.linkedin.tools.MyriadPro;
 import adt.linkedin.tools.Utils;
 import java.awt.Color;
-import java.awt.Font;
 import javax.swing.JFrame;
 import javax.swing.JOptionPane;
 
@@ -19,12 +17,14 @@ import javax.swing.JOptionPane;
  */
 public class CreateAccount extends javax.swing.JFrame {
 
-    UserService service = new UserService();
+    UserService userController;
 
     /**
      * Creates new form CreateAccount
+     * @param service
      */
-    public CreateAccount() {
+    public CreateAccount(UserService service) {
+        this.userController = service;
         setExtendedState(JFrame.MAXIMIZED_BOTH);
         initComponents();
     }
@@ -189,7 +189,7 @@ public class CreateAccount extends javax.swing.JFrame {
         String username = this.jTextFieldUserName.getText();
         String email = null;
         int phone = 0;
-        User user = service.getUserByName(username);
+        User user = userController.getUserByName(username);
         if (username.matches("^[a-z]+$") && user == null) {
             if (this.jTextFieldUserEmail.getText().matches("^[A-Za-z0-9.]+@[a-z.]+[a-z]{2,}$") || this.jTextFieldUserEmail.getText().matches("^[6-9][0-9]{8}$")) {
                 if (this.jTextFieldUserEmail.getText().matches("^[A-Za-z0-9.]+@[a-z.]+[a-z]{2,}$")) {
@@ -223,10 +223,10 @@ public class CreateAccount extends javax.swing.JFrame {
         // TODO add your handling code here:
         User user = verifyLogIn();
         if (user != null) {
-            service.createUser(user);
+            userController.createUser(user);
             //JOptionPane.showMessageDialog(null, "", "Bienvenido al sistema", JOptionPane.INFORMATION_MESSAGE);
             this.setVisible(false);
-            new Feed(user).setVisible(true);
+            new Feed(user, userController).setVisible(true);
         }
     }//GEN-LAST:event_jButtonSignUpActionPerformed
 
@@ -260,41 +260,7 @@ public class CreateAccount extends javax.swing.JFrame {
         new LogIn().setVisible(true);
     }//GEN-LAST:event_jLabelHomeMouseClicked
 
-    /**
-     * @param args the command line arguments
-     */
-    public static void main(String args[]) {
-        /* Set the Nimbus look and feel */
-        //<editor-fold defaultstate="collapsed" desc=" Look and feel setting code (optional) ">
-        /* If Nimbus (introduced in Java SE 6) is not available, stay with the default look and feel.
-         * For details see http://download.oracle.com/javase/tutorial/uiswing/lookandfeel/plaf.html 
-         */
-        try {
-            for (javax.swing.UIManager.LookAndFeelInfo info : javax.swing.UIManager.getInstalledLookAndFeels()) {
-                if ("Nimbus".equals(info.getName())) {
-                    javax.swing.UIManager.setLookAndFeel(info.getClassName());
-                    break;
-                }
-            }
-        } catch (ClassNotFoundException ex) {
-            java.util.logging.Logger.getLogger(CreateAccount.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-        } catch (InstantiationException ex) {
-            java.util.logging.Logger.getLogger(CreateAccount.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-        } catch (IllegalAccessException ex) {
-            java.util.logging.Logger.getLogger(CreateAccount.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-        } catch (javax.swing.UnsupportedLookAndFeelException ex) {
-            java.util.logging.Logger.getLogger(CreateAccount.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-        }
-        //</editor-fold>
-
-        /* Create and display the form */
-        java.awt.EventQueue.invokeLater(new Runnable() {
-            public void run() {
-                new CreateAccount().setVisible(true);
-            }
-        });
-    }
-
+    
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton jButtonSignUp;
     private javax.swing.JLabel jLabelHome;

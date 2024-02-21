@@ -17,16 +17,17 @@ import javax.swing.table.DefaultTableModel;
 public class JFrameUser extends javax.swing.JFrame {
 
     final User user;
-    final UserService controller;
+    final UserService userController;
 
     /**
      * Creates new form User
      *
      * @param user
+     * @param service
      */
-    public JFrameUser(User user) {
+    public JFrameUser(User user, UserService service) {
         this.user = user;
-        controller = new UserService();
+        this.userController = service;
         this.setExtendedState(JFrame.MAXIMIZED_BOTH);
         initComponents();
         this.jPanel1.setBounds(2, 2, JFrame.MAXIMIZED_HORIZ, JFrame.MAXIMIZED_VERT);
@@ -252,17 +253,17 @@ public class JFrameUser extends javax.swing.JFrame {
         DefaultTableModel model = (DefaultTableModel) table.getModel();
         switch (option) {
             case 1: //AcademicInfo
-                for (AcademicInfo info : controller.getUserAcademicInfo(user)) {
+                for (AcademicInfo info : userController.getUserAcademicInfo(user)) {
                     model.addRow(new String[]{info.toString()});
                 }
                 break;
             case 2: //Skills
-                for (Skill skill : controller.getUserSkills(user)) {
+                for (Skill skill : userController.getUserSkills(user)) {
                     model.addRow(new String[]{skill.toString()});
                 }
                 break;
             default: //Experience
-                for (WorkExperience experience : controller.getUserLaboralExperience(user)) {
+                for (WorkExperience experience : userController.getUserLaboralExperience(user)) {
                     model.addRow(new String[]{experience.toString()});
                 }
                 break;
@@ -273,7 +274,7 @@ public class JFrameUser extends javax.swing.JFrame {
     private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
         // TODO add your handling code here:
         this.setVisible(false);
-        new Feed(user).setVisible(true);
+        new Feed(user, userController).setVisible(true);
     }//GEN-LAST:event_jButton1ActionPerformed
 
     private void jLabelLogOutMouseEntered(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jLabelLogOutMouseEntered
@@ -306,41 +307,6 @@ public class JFrameUser extends javax.swing.JFrame {
         this.setVisible(false);
     }//GEN-LAST:event_jLabelCandidaturesMouseClicked
 
-    /**
-     * @param args the command line arguments
-     */
-    public static void main(String args[]) {
-        /* Set the Nimbus look and feel */
-        //<editor-fold defaultstate="collapsed" desc=" Look and feel setting code (optional) ">
-        /* If Nimbus (introduced in Java SE 6) is not available, stay with the default look and feel.
-         * For details see http://download.oracle.com/javase/tutorial/uiswing/lookandfeel/plaf.html 
-         */
-        try {
-            for (javax.swing.UIManager.LookAndFeelInfo info : javax.swing.UIManager.getInstalledLookAndFeels()) {
-                if ("Nimbus".equals(info.getName())) {
-                    javax.swing.UIManager.setLookAndFeel(info.getClassName());
-                    break;
-                }
-            }
-        } catch (ClassNotFoundException ex) {
-            java.util.logging.Logger.getLogger(JFrameUser.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-        } catch (InstantiationException ex) {
-            java.util.logging.Logger.getLogger(JFrameUser.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-        } catch (IllegalAccessException ex) {
-            java.util.logging.Logger.getLogger(JFrameUser.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-        } catch (javax.swing.UnsupportedLookAndFeelException ex) {
-            java.util.logging.Logger.getLogger(JFrameUser.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-        }
-        //</editor-fold>
-        //</editor-fold>
-
-        /* Create and display the form */
-        java.awt.EventQueue.invokeLater(new Runnable() {
-            public void run() {
-                new JFrameUser(null).setVisible(true);
-            }
-        });
-    }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton jButton1;

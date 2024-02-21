@@ -2,7 +2,6 @@ package adt.linkedin.services;
 
 import adt.linkedin.implementations.UserImplDAO;
 import adt.linkedin.model.*;
-import adt.linkedin.tools.HibernateUtil;
 import jakarta.persistence.criteria.*;
 import java.util.List;
 import org.hibernate.Session;
@@ -10,12 +9,20 @@ import org.hibernate.query.Query;
 
 public class UserService {
     
-    private final UserImplDAO userController = new UserImplDAO();
+    private final UserImplDAO userController;
     
-    
-    
+    private final Session session;
+
+    public UserService(Session session) {
+        this.session = session;
+        userController = new UserImplDAO(session);
+    }
+
+    public Session getSession() {
+        return session;
+    }
     public List<Skill> getUserSkills(User user) {
-        try (Session session = HibernateUtil.getSessionFactory().openSession()) {
+        try {
             CriteriaBuilder cb = session.getCriteriaBuilder();
             CriteriaQuery<Skill> cQuery = cb.createQuery(Skill.class);
             Root<User> root = cQuery.from(User.class);
@@ -25,12 +32,15 @@ public class UserService {
             return query.list();
         } catch (Exception e) {
             e.printStackTrace();
+            if (session.isOpen()) {
+                session.close();
+            }
         }
         return null;
     }
     
     public List<Candidature> getUserCandidatures(User user) {
-        try (Session session = HibernateUtil.getSessionFactory().openSession()) {
+        try {
             CriteriaBuilder cb = session.getCriteriaBuilder();
             CriteriaQuery<Candidature> cQuery = cb.createQuery(Candidature.class);
             Root<User> root = cQuery.from(User.class);
@@ -40,12 +50,15 @@ public class UserService {
             return query.list();
         } catch (Exception e) {
             e.printStackTrace();
+            if (session.isOpen()) {
+                session.close();
+            }
         }
         return null;
     }
     
     public List<WorkExperience> getUserLaboralExperience(User user) {
-        try(Session session = HibernateUtil.getSessionFactory().openSession()){
+        try{
             CriteriaBuilder cb = session.getCriteriaBuilder();
             CriteriaQuery<WorkExperience> cQuery = cb.createQuery(WorkExperience.class);
             Root<User> root = cQuery.from(User.class);
@@ -55,12 +68,15 @@ public class UserService {
             return query.list();
         }catch (Exception e){
             e.printStackTrace();
+            if (session.isOpen()) {
+                session.close();
+            }
         }
         return null;
     }
     
     public List<AcademicInfo> getUserAcademicInfo(User user) {
-        try (Session session = HibernateUtil.getSessionFactory().openSession()) {
+        try {
             CriteriaBuilder cb = session.getCriteriaBuilder();
             CriteriaQuery<AcademicInfo> cQuery = cb.createQuery(AcademicInfo.class);
             Root<User> root = cQuery.from(User.class);
@@ -70,12 +86,15 @@ public class UserService {
             return query.list();
         } catch (Exception e) {
             e.printStackTrace();
+            if (session.isOpen()) {
+                session.close();
+            }
         }
         return null;
     }
     
     public User getUserByPhone(int phone, String password) {
-        try(Session session = HibernateUtil.getSessionFactory().openSession()){
+        try{
             CriteriaBuilder cb = session.getCriteriaBuilder();
             CriteriaQuery<User> cQuery = cb.createQuery(User.class);
             Root <User> root = cQuery.from(User.class);
@@ -83,12 +102,16 @@ public class UserService {
             Query <User> query = session.createQuery(cQuery);
             return query.getSingleResult();
         }catch(Exception e){
+            if (session.isOpen()) {
+                session.close();
+            }
             return null;
+            
         }
     }
     
     public User getUserByEmail(String email, String password) {
-        try(Session session = HibernateUtil.getSessionFactory().openSession()){
+        try{
             CriteriaBuilder cb = session.getCriteriaBuilder();
             CriteriaQuery<User> cQuery = cb.createQuery(User.class);
             Root <User> root = cQuery.from(User.class);
@@ -96,12 +119,15 @@ public class UserService {
             Query <User> query = session.createQuery(cQuery);
             return query.getSingleResult();
         }catch(Exception e){
+            if (session.isOpen()) {
+                session.close();
+            }
             return null;
         }
     }
     
     public User getUserByName(String name) {
-        try(Session session = HibernateUtil.getSessionFactory().openSession()){
+        try{
             CriteriaBuilder cb = session.getCriteriaBuilder();
             CriteriaQuery<User> cQuery = cb.createQuery(User.class);
             Root<User> root = cQuery.from(User.class);
@@ -109,12 +135,15 @@ public class UserService {
             Query<User> query = session.createQuery(cQuery);
             return query.getSingleResult();
         }catch(Exception e){
+            if (session.isOpen()) {
+                session.close();
+            }
             return null;
         }
     }
     
     public List<User> getUsersByName(String name) {
-        try (Session session = HibernateUtil.getSessionFactory().openSession()) {
+        try {
             CriteriaBuilder cb = session.getCriteriaBuilder();
             CriteriaQuery<User> cQuery = cb.createQuery(User.class);
             Root<User> root = cQuery.from(User.class);
@@ -122,13 +151,16 @@ public class UserService {
             Query<User> query = session.createQuery(cQuery);
             return query.list();
         } catch (Exception e) {
+            if (session.isOpen()) {
+                session.close();
+            }
             e.printStackTrace();
         }
         return null;
     }
     
     public User getUserById(long id) {
-        try (Session session = HibernateUtil.getSessionFactory().openSession()) {
+        try {
             CriteriaBuilder cb = session.getCriteriaBuilder();
             CriteriaQuery<User> cQuery = cb.createQuery(User.class);
             Root<User> root = cQuery.from(User.class);
@@ -136,6 +168,9 @@ public class UserService {
             Query<User> query = session.createQuery(cQuery);
             return query.getSingleResult();
         } catch (Exception e) {
+            if (session.isOpen()) {
+                session.close();
+            }
             e.printStackTrace();
         }
         return null;

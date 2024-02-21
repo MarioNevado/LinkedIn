@@ -5,6 +5,7 @@
 package adt.linkedin.gui;
 
 import adt.linkedin.model.User;
+import adt.linkedin.services.UserService;
 import adt.linkedin.tools.Utils;
 import java.awt.Color;
 import java.awt.Font;
@@ -17,12 +18,16 @@ import javax.swing.JFrame;
 public class Feed extends javax.swing.JFrame {
 
     User user;
+    UserService userController;
     /**
      * Creates new form Feed
+     * @param user
+     * @param service
      */
     
-    public Feed(User user) {
+    public Feed(User user, UserService service) {
         this.user = user;
+        this.userController = service;
         setExtendedState(JFrame.MAXIMIZED_BOTH);
         initComponents();
     }
@@ -186,7 +191,7 @@ public class Feed extends javax.swing.JFrame {
 
     private void jLabelUsernameMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jLabelUsernameMouseClicked
         // TODO add your handling code here:
-        new JFrameUser(this.user).setVisible(true);
+        new JFrameUser(this.user, userController).setVisible(true);
     }//GEN-LAST:event_jLabelUsernameMouseClicked
 
     private void jLabelUsernameMouseEntered(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jLabelUsernameMouseEntered
@@ -212,41 +217,7 @@ public class Feed extends javax.swing.JFrame {
         // TODO add query
     }//GEN-LAST:event_jTextField1ActionPerformed
 
-    /**
-     * @param args the command line arguments
-     */
-    public static void main(String args[]) {
-        /* Set the Nimbus look and feel */
-        //<editor-fold defaultstate="collapsed" desc=" Look and feel setting code (optional) ">
-        /* If Nimbus (introduced in Java SE 6) is not available, stay with the default look and feel.
-         * For details see http://download.oracle.com/javase/tutorial/uiswing/lookandfeel/plaf.html 
-         */
-        try {
-            for (javax.swing.UIManager.LookAndFeelInfo info : javax.swing.UIManager.getInstalledLookAndFeels()) {
-                if ("Nimbus".equals(info.getName())) {
-                    javax.swing.UIManager.setLookAndFeel(info.getClassName());
-                    break;
-                }
-            }
-        } catch (ClassNotFoundException ex) {
-            java.util.logging.Logger.getLogger(Feed.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-        } catch (InstantiationException ex) {
-            java.util.logging.Logger.getLogger(Feed.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-        } catch (IllegalAccessException ex) {
-            java.util.logging.Logger.getLogger(Feed.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-        } catch (javax.swing.UnsupportedLookAndFeelException ex) {
-            java.util.logging.Logger.getLogger(Feed.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-        }
-        //</editor-fold>
-
-        /* Create and display the form */
-        java.awt.EventQueue.invokeLater(new Runnable() {
-            public void run() {
-                new Feed(null).setVisible(true);
-            }
-        });
-    }
-
+    
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JLabel jLabelDescription;
     private javax.swing.JLabel jLabelProfilePic;

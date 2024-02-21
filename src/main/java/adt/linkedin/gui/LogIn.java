@@ -6,11 +6,10 @@ package adt.linkedin.gui;
 
 import adt.linkedin.model.User;
 import adt.linkedin.services.UserService;
+import adt.linkedin.tools.HibernateUtil;
 import adt.linkedin.tools.Utils;
-import java.awt.Font;
 import javax.swing.JFrame;
 import javax.swing.JOptionPane;
-import javax.swing.SwingConstants;
 
 /**
  *
@@ -18,13 +17,13 @@ import javax.swing.SwingConstants;
  */
 public class LogIn extends javax.swing.JFrame {
 
-    UserService userService;
+    UserService userController;
     User user;
     /**
      * Creates new form LogIn
      */
     public LogIn() {
-        userService = new UserService();
+        userController = new UserService(HibernateUtil.getSessionFactory().openSession());
         setExtendedState(JFrame.MAXIMIZED_BOTH);
         initComponents();
     }
@@ -171,7 +170,7 @@ public class LogIn extends javax.swing.JFrame {
     private void jPanel1MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jPanel1MouseClicked
         // TODO add your handling code here:
         this.setVisible(false);
-        new CreateAccount().setVisible(true);
+        new CreateAccount(this.userController).setVisible(true);
     }//GEN-LAST:event_jPanel1MouseClicked
 
     private void jLabelCreateAccMouseEntered(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jLabelCreateAccMouseEntered
@@ -197,15 +196,15 @@ public class LogIn extends javax.swing.JFrame {
         password = new String(this.jPasswordField1.getPassword());
         if (Utils.isNumeric(this.jTextFieldEmail.getText())) {
             phone = Integer.parseInt(this.jTextFieldEmail.getText());
-            user = userService.getUserByPhone(phone, password);
+            user = userController.getUserByPhone(phone, password);
         }else{
             email = this.jTextFieldEmail.getText();
-            user = userService.getUserByEmail(email, password);
+            user = userController.getUserByEmail(email, password);
         }
         if (user != null) {
             //TODO entrar en portal
             this.setVisible(false);
-            new Feed(user).setVisible(true);
+            new Feed(user, userController).setVisible(true);
         }else{
             JOptionPane.showMessageDialog(null, "Email/Teléfono o contraseña incorrectos", "ERROR", JOptionPane.ERROR_MESSAGE);
         }
@@ -214,7 +213,7 @@ public class LogIn extends javax.swing.JFrame {
     private void jLabelCreateAccMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jLabelCreateAccMouseClicked
         // TODO add your handling code here:
         this.setVisible(false);
-        new CreateAccount().setVisible(true);
+        new CreateAccount(this.userController).setVisible(true);
     }//GEN-LAST:event_jLabelCreateAccMouseClicked
 
     /**
