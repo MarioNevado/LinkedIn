@@ -21,10 +21,11 @@ public class CreateAccount extends javax.swing.JFrame {
 
     /**
      * Creates new form CreateAccount
-     * @param service
+     * @param controller
      */
-    public CreateAccount(UserService service) {
-        this.userController = service;
+    public CreateAccount(UserService controller) {
+        this.userController = controller;
+        System.out.println(userController.getSession().isOpen());
         setExtendedState(JFrame.MAXIMIZED_BOTH);
         initComponents();
     }
@@ -224,9 +225,8 @@ public class CreateAccount extends javax.swing.JFrame {
         User user = verifyLogIn();
         if (user != null) {
             userController.createUser(user);
-            //JOptionPane.showMessageDialog(null, "", "Bienvenido al sistema", JOptionPane.INFORMATION_MESSAGE);
-            this.setVisible(false);
             new Feed(user, userController).setVisible(true);
+            this.dispose();
         }
     }//GEN-LAST:event_jButtonSignUpActionPerformed
 

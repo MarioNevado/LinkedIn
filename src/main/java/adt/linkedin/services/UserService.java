@@ -2,6 +2,7 @@ package adt.linkedin.services;
 
 import adt.linkedin.implementations.UserImplDAO;
 import adt.linkedin.model.*;
+import jakarta.persistence.NoResultException;
 import jakarta.persistence.criteria.*;
 import java.util.List;
 import org.hibernate.Session;
@@ -48,7 +49,9 @@ public class UserService {
             cQuery.where(cb.equal(root, user));
             Query<Candidature> query = session.createQuery(cQuery.select(join));
             return query.list();
-        } catch (Exception e) {
+        }catch(NoResultException nre){
+            return null;
+        }catch (Exception e) {
             e.printStackTrace();
             if (session.isOpen()) {
                 session.close();
@@ -66,6 +69,8 @@ public class UserService {
             cQuery.where(cb.equal(root, user));
             Query<WorkExperience> query = session.createQuery(cQuery.select(join));
             return query.list();
+        }catch(NoResultException nre){
+            return null;
         }catch (Exception e){
             e.printStackTrace();
             if (session.isOpen()) {
@@ -84,7 +89,9 @@ public class UserService {
             cQuery.where(cb.equal(root, user));
             Query<AcademicInfo> query = session.createQuery(cQuery.select(join)); //?
             return query.list();
-        } catch (Exception e) {
+        }catch(NoResultException nre){
+            return null;
+        }catch (Exception e) {
             e.printStackTrace();
             if (session.isOpen()) {
                 session.close();
@@ -101,6 +108,8 @@ public class UserService {
             cQuery.where(cb.and(cb.equal(root.get("phone"), phone)), cb.equal(root.get("password"), password));
             Query <User> query = session.createQuery(cQuery);
             return query.getSingleResult();
+        }catch(NoResultException nre){
+            return null;
         }catch(Exception e){
             if (session.isOpen()) {
                 session.close();
@@ -118,6 +127,8 @@ public class UserService {
             cQuery.where(cb.and(cb.equal(root.get("email"), email)), cb.equal(root.get("password"), password));
             Query <User> query = session.createQuery(cQuery);
             return query.getSingleResult();
+        }catch(NoResultException nre){
+            return null;
         }catch(Exception e){
             if (session.isOpen()) {
                 session.close();
@@ -134,7 +145,10 @@ public class UserService {
             cQuery.where(cb.equal(root.get("name"), name));
             Query<User> query = session.createQuery(cQuery);
             return query.getSingleResult();
+        }catch(NoResultException nre){
+            return null;
         }catch(Exception e){
+            e.printStackTrace();
             if (session.isOpen()) {
                 session.close();
             }
@@ -150,7 +164,9 @@ public class UserService {
             cQuery.select(root.get("academics")).where(cb.like(root.get("name"), "%" +  name + "%"));
             Query<User> query = session.createQuery(cQuery);
             return query.list();
-        } catch (Exception e) {
+        } catch(NoResultException nre){
+            return null;
+        }catch (Exception e) {
             if (session.isOpen()) {
                 session.close();
             }
@@ -167,7 +183,9 @@ public class UserService {
             cQuery.select(root).where(cb.equal(root.get("id"), id));
             Query<User> query = session.createQuery(cQuery);
             return query.getSingleResult();
-        } catch (Exception e) {
+        } catch(NoResultException nre){
+            return null;
+        }catch (Exception e) {
             if (session.isOpen()) {
                 session.close();
             }
@@ -263,9 +281,11 @@ public class UserService {
     public void removeUser(User user){
         userController.removeUser(user);
     }
+    
     public void createUser(User user){
         userController.createUser(user);
     }
+    
     public void createUser(String name, String password, String mail, int phone, String description){
         userController.createUser(new User(name, password, mail, phone, description));
     }
