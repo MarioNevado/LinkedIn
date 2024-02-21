@@ -5,6 +5,9 @@
 package adt.linkedin.tools;
 
 import java.awt.Color;
+import java.awt.Font;
+import javax.swing.JLabel;
+import javax.swing.JTextField;
 
 /**
  *
@@ -22,6 +25,22 @@ public class Utils {
             }
         }
         return true;
+    }
+    
+    public static void mouseEntered(JLabel label){
+        label.setFont(new Font(Utils.FONT, 1, label.getFont().getSize()));
+    }
+    
+    public static void mouseExited(JLabel label){
+        label.setFont(new Font(Utils.FONT, 0, label.getFont().getSize()));
+    }
+    
+    public static void mouseEntered(JTextField field){
+        field.setFont(new Font(Utils.FONT, 1, field.getFont().getSize()));
+    }
+    
+    public static void mouseExited(JTextField field){
+        field.setFont(new Font(Utils.FONT, 0, field.getFont().getSize()));
     }
     
 }

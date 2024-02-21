@@ -176,12 +176,12 @@ public class LogIn extends javax.swing.JFrame {
 
     private void jLabelCreateAccMouseEntered(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jLabelCreateAccMouseEntered
         // TODO add your handling code here:
-        this.jLabelCreateAcc.setFont(new Font("Liberation Sans", 1, 15));
+        Utils.mouseEntered(jLabelCreateAcc);
     }//GEN-LAST:event_jLabelCreateAccMouseEntered
 
     private void jLabelCreateAccMouseExited(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jLabelCreateAccMouseExited
         // TODO add your handling code here:
-        this.jLabelCreateAcc.setFont(new Font("Liberation Sans", 0, 15));
+        Utils.mouseExited(jLabelCreateAcc);
     }//GEN-LAST:event_jLabelCreateAccMouseExited
 
     private void jPasswordField1MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jPasswordField1MouseClicked

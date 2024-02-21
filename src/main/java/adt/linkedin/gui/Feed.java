@@ -191,13 +191,13 @@ public class Feed extends javax.swing.JFrame {
 
     private void jLabelUsernameMouseEntered(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jLabelUsernameMouseEntered
         // TODO add your handling code here:
-        this.jLabelUsername.setFont(new Font(Utils.FONT, 1, 24));
+        Utils.mouseEntered(jLabelUsername);
         this.jLabelUsername.setForeground(Utils.PURPLE);
     }//GEN-LAST:event_jLabelUsernameMouseEntered
 
     private void jLabelUsernameMouseExited(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jLabelUsernameMouseExited
         // TODO add your handling code here:
-        this.jLabelUsername.setFont(new Font(Utils.FONT, 0, 24));
+        Utils.mouseExited(jLabelUsername);
         this.jLabelUsername.setForeground(Color.BLACK);
     }//GEN-LAST:event_jLabelUsernameMouseExited
 

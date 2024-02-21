@@ -7,7 +7,6 @@ package adt.linkedin.gui;
 import adt.linkedin.model.*;
 import adt.linkedin.services.UserService;
 import adt.linkedin.tools.Utils;
-import java.awt.Font;
 import javax.swing.*;
 import javax.swing.table.DefaultTableModel;
 
@@ -46,6 +45,7 @@ public class JFrameUser extends javax.swing.JFrame {
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
 
+        jPopupMenuConfirmation = new javax.swing.JPopupMenu();
         jPanel1 = new javax.swing.JPanel();
         jPanelUser = new javax.swing.JPanel();
         jLabelUserPic = new javax.swing.JLabel();
@@ -58,8 +58,9 @@ public class JFrameUser extends javax.swing.JFrame {
         jTableAcademicInfo = new javax.swing.JTable();
         jScrollPane2 = new javax.swing.JScrollPane();
         jTableExperience = new javax.swing.JTable();
-        jLabelConfiguration = new javax.swing.JLabel();
+        jLabelLogOut = new javax.swing.JLabel();
         jLabelCandidatures = new javax.swing.JLabel();
+        jLabelDelete = new javax.swing.JLabel();
         jButton1 = new javax.swing.JButton();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
@@ -182,19 +183,19 @@ public class JFrameUser extends javax.swing.JFrame {
 
         jPanelUser.add(jScrollPane2, new org.netbeans.lib.awtextra.AbsoluteConstraints(330, 560, 420, 220));
 
-        jLabelConfiguration.setText("Configuration");
-        jLabelConfiguration.addMouseListener(new java.awt.event.MouseAdapter() {
+        jLabelLogOut.setText("Log Out");
+        jLabelLogOut.addMouseListener(new java.awt.event.MouseAdapter() {
             public void mouseClicked(java.awt.event.MouseEvent evt) {
-                jLabelConfigurationMouseClicked(evt);
+                jLabelLogOutMouseClicked(evt);
             }
             public void mouseEntered(java.awt.event.MouseEvent evt) {
-                jLabelConfigurationMouseEntered(evt);
+                jLabelLogOutMouseEntered(evt);
             }
             public void mouseExited(java.awt.event.MouseEvent evt) {
-                jLabelConfigurationMouseExited(evt);
+                jLabelLogOutMouseExited(evt);
             }
         });
-        jPanelUser.add(jLabelConfiguration, new org.netbeans.lib.awtextra.AbsoluteConstraints(40, 388, 110, 40));
+        jPanelUser.add(jLabelLogOut, new org.netbeans.lib.awtextra.AbsoluteConstraints(40, 450, 110, 40));
 
         jLabelCandidatures.setText("My Candidatures");
         jLabelCandidatures.addMouseListener(new java.awt.event.MouseAdapter() {
@@ -208,7 +209,10 @@ public class JFrameUser extends javax.swing.JFrame {
                 jLabelCandidaturesMouseExited(evt);
             }
         });
-        jPanelUser.add(jLabelCandidatures, new org.netbeans.lib.awtextra.AbsoluteConstraints(40, 440, -1, 50));
+        jPanelUser.add(jLabelCandidatures, new org.netbeans.lib.awtextra.AbsoluteConstraints(40, 490, -1, 50));
+
+        jLabelDelete.setText("Delete Account");
+        jPanelUser.add(jLabelDelete, new org.netbeans.lib.awtextra.AbsoluteConstraints(40, 430, -1, -1));
 
         jButton1.setBackground(new java.awt.Color(153, 102, 255));
         jButton1.setText("Home");
@@ -272,28 +276,28 @@ public class JFrameUser extends javax.swing.JFrame {
         new Feed(user).setVisible(true);
     }//GEN-LAST:event_jButton1ActionPerformed
 
-    private void jLabelConfigurationMouseEntered(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jLabelConfigurationMouseEntered
+    private void jLabelLogOutMouseEntered(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jLabelLogOutMouseEntered
         // TODO add your handling code here:
-        this.jLabelConfiguration.setFont(new Font(Utils.FONT, 1, 15));
-    }//GEN-LAST:event_jLabelConfigurationMouseEntered
+        Utils.mouseEntered(this.jLabelLogOut);
+    }//GEN-LAST:event_jLabelLogOutMouseEntered
 
-    private void jLabelConfigurationMouseExited(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jLabelConfigurationMouseExited
+    private void jLabelLogOutMouseExited(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jLabelLogOutMouseExited
         // TODO add your handling code here:
-        this.jLabelConfiguration.setFont(new Font(Utils.FONT, 0, 15));
-    }//GEN-LAST:event_jLabelConfigurationMouseExited
+        Utils.mouseExited(this.jLabelLogOut);
+    }//GEN-LAST:event_jLabelLogOutMouseExited
 
-    private void jLabelConfigurationMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jLabelConfigurationMouseClicked
+    private void jLabelLogOutMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jLabelLogOutMouseClicked
         // TODO add your handling code here:
-    }//GEN-LAST:event_jLabelConfigurationMouseClicked
+    }//GEN-LAST:event_jLabelLogOutMouseClicked
 
     private void jLabelCandidaturesMouseEntered(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jLabelCandidaturesMouseEntered
         // TODO add your handling code here:
-        this.jLabelCandidatures.setFont(new Font(Utils.FONT, 1, 15));
+        Utils.mouseEntered(this.jLabelCandidatures);
     }//GEN-LAST:event_jLabelCandidaturesMouseEntered
 
     private void jLabelCandidaturesMouseExited(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jLabelCandidaturesMouseExited
         // TODO add your handling code here:
-        this.jLabelCandidatures.setFont(new Font(Utils.FONT, 0, 15));
+        Utils.mouseExited(this.jLabelCandidatures);
     }//GEN-LAST:event_jLabelCandidaturesMouseExited
 
     private void jLabelCandidaturesMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jLabelCandidaturesMouseClicked
@@ -341,13 +345,15 @@ public class JFrameUser extends javax.swing.JFrame {
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton jButton1;
     private javax.swing.JLabel jLabelCandidatures;
-    private javax.swing.JLabel jLabelConfiguration;
+    private javax.swing.JLabel jLabelDelete;
     private javax.swing.JLabel jLabelDescription;
     private javax.swing.JLabel jLabelHeader;
+    private javax.swing.JLabel jLabelLogOut;
     private javax.swing.JLabel jLabelUserName;
     private javax.swing.JLabel jLabelUserPic;
     private javax.swing.JPanel jPanel1;
     private javax.swing.JPanel jPanelUser;
+    private javax.swing.JPopupMenu jPopupMenuConfirmation;
     private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JScrollPane jScrollPane2;
     private javax.swing.JScrollPane jScrollPane3;

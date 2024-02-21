@@ -27,8 +27,6 @@ public class CreateAccount extends javax.swing.JFrame {
     public CreateAccount() {
         setExtendedState(JFrame.MAXIMIZED_BOTH);
         initComponents();
-        MyriadPro myriad = new MyriadPro();
-        this.jLabel1.setFont(myriad.getFont(myriad.BPR, 0, 15));
     }
 
     /**
@@ -41,22 +39,22 @@ public class CreateAccount extends javax.swing.JFrame {
     private void initComponents() {
 
         jPanel1 = new javax.swing.JPanel();
-        jLabel1 = new javax.swing.JLabel();
+        jLabelTitle = new javax.swing.JLabel();
         jTextFieldUserEmail = new javax.swing.JTextField();
         jPasswordField1 = new javax.swing.JPasswordField();
         jTextFieldUserName = new javax.swing.JTextField();
         jLabelImg = new javax.swing.JLabel();
-        jButton1 = new javax.swing.JButton();
+        jButtonSignUp = new javax.swing.JButton();
         jPasswordFieldRepeat = new javax.swing.JPasswordField();
-        jLabel2 = new javax.swing.JLabel();
+        jLabelHome = new javax.swing.JLabel();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
         jPanel1.setBackground(new java.awt.Color(255, 255, 255));
 
-        jLabel1.setFont(new java.awt.Font("Liberation Sans", 0, 24)); // NOI18N
-        jLabel1.setForeground(new java.awt.Color(153, 51, 255));
-        jLabel1.setText("Saca el máximo partido a tu vida profesional ");
+        jLabelTitle.setFont(new java.awt.Font("Liberation Sans", 0, 24)); // NOI18N
+        jLabelTitle.setForeground(new java.awt.Color(153, 51, 255));
+        jLabelTitle.setText("Saca el máximo partido a tu vida profesional ");
 
         jTextFieldUserEmail.setBorder(javax.swing.BorderFactory.createCompoundBorder(javax.swing.BorderFactory.createTitledBorder(null, "Email/Teléfono", javax.swing.border.TitledBorder.DEFAULT_JUSTIFICATION, javax.swing.border.TitledBorder.DEFAULT_POSITION, new java.awt.Font("Liberation Sans", 1, 15)), null)); // NOI18N
         jTextFieldUserEmail.addActionListener(new java.awt.event.ActionListener() {
@@ -85,12 +83,12 @@ public class CreateAccount extends javax.swing.JFrame {
 
         jLabelImg.setIcon(new javax.swing.ImageIcon(getClass().getResource("/img/Link_up.png"))); // NOI18N
 
-        jButton1.setBackground(new java.awt.Color(153, 51, 255));
-        jButton1.setForeground(new java.awt.Color(255, 255, 255));
-        jButton1.setText("Únete");
-        jButton1.addActionListener(new java.awt.event.ActionListener() {
+        jButtonSignUp.setBackground(new java.awt.Color(153, 51, 255));
+        jButtonSignUp.setForeground(new java.awt.Color(255, 255, 255));
+        jButtonSignUp.setText("Únete");
+        jButtonSignUp.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jButton1ActionPerformed(evt);
+                jButtonSignUpActionPerformed(evt);
             }
         });
 
@@ -102,16 +100,16 @@ public class CreateAccount extends javax.swing.JFrame {
             }
         });
 
-        jLabel2.setText("Volver a Inicio");
-        jLabel2.addMouseListener(new java.awt.event.MouseAdapter() {
+        jLabelHome.setText("Volver a Inicio");
+        jLabelHome.addMouseListener(new java.awt.event.MouseAdapter() {
             public void mouseClicked(java.awt.event.MouseEvent evt) {
-                jLabel2MouseClicked(evt);
+                jLabelHomeMouseClicked(evt);
             }
             public void mouseEntered(java.awt.event.MouseEvent evt) {
-                jLabel2MouseEntered(evt);
+                jLabelHomeMouseEntered(evt);
             }
             public void mouseExited(java.awt.event.MouseEvent evt) {
-                jLabel2MouseExited(evt);
+                jLabelHomeMouseExited(evt);
             }
         });
 
@@ -127,14 +125,14 @@ public class CreateAccount extends javax.swing.JFrame {
                     .addComponent(jTextFieldUserEmail)
                     .addComponent(jTextFieldUserName)
                     .addComponent(jPasswordField1, javax.swing.GroupLayout.DEFAULT_SIZE, 458, Short.MAX_VALUE)
-                    .addComponent(jButton1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addComponent(jButtonSignUp, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                     .addComponent(jPasswordFieldRepeat))
                 .addContainerGap(115, Short.MAX_VALUE))
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel1Layout.createSequentialGroup()
                 .addGap(17, 17, 17)
-                .addComponent(jLabel2, javax.swing.GroupLayout.PREFERRED_SIZE, 106, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addComponent(jLabelHome, javax.swing.GroupLayout.PREFERRED_SIZE, 106, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                .addComponent(jLabel1)
+                .addComponent(jLabelTitle)
                 .addGap(227, 227, 227))
         );
         jPanel1Layout.setVerticalGroup(
@@ -142,8 +140,8 @@ public class CreateAccount extends javax.swing.JFrame {
             .addGroup(jPanel1Layout.createSequentialGroup()
                 .addContainerGap()
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(jLabel1, javax.swing.GroupLayout.PREFERRED_SIZE, 44, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(jLabel2, javax.swing.GroupLayout.PREFERRED_SIZE, 44, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addComponent(jLabelTitle, javax.swing.GroupLayout.PREFERRED_SIZE, 44, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(jLabelHome, javax.swing.GroupLayout.PREFERRED_SIZE, 44, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
                     .addGroup(jPanel1Layout.createSequentialGroup()
                         .addGap(29, 29, 29)
@@ -155,7 +153,7 @@ public class CreateAccount extends javax.swing.JFrame {
                         .addGap(26, 26, 26)
                         .addComponent(jPasswordFieldRepeat, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                        .addComponent(jButton1, javax.swing.GroupLayout.PREFERRED_SIZE, 36, javax.swing.GroupLayout.PREFERRED_SIZE))
+                        .addComponent(jButtonSignUp, javax.swing.GroupLayout.PREFERRED_SIZE, 36, javax.swing.GroupLayout.PREFERRED_SIZE))
                     .addGroup(jPanel1Layout.createSequentialGroup()
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addComponent(jLabelImg, javax.swing.GroupLayout.PREFERRED_SIZE, 312, javax.swing.GroupLayout.PREFERRED_SIZE)))
@@ -221,21 +219,21 @@ public class CreateAccount extends javax.swing.JFrame {
         return null;
     }
 
-    private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
+    private void jButtonSignUpActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButtonSignUpActionPerformed
         // TODO add your handling code here:
         User user = verifyLogIn();
         if (user != null) {
             service.createUser(user);
-            JOptionPane.showMessageDialog(null, "", "Bienvenido al sistema", JOptionPane.INFORMATION_MESSAGE);
+            //JOptionPane.showMessageDialog(null, "", "Bienvenido al sistema", JOptionPane.INFORMATION_MESSAGE);
             this.setVisible(false);
             new Feed(user).setVisible(true);
         }
-    }//GEN-LAST:event_jButton1ActionPerformed
+    }//GEN-LAST:event_jButtonSignUpActionPerformed
 
     private void jTextFieldUserNameMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jTextFieldUserNameMouseClicked
         // TODO add your handling code here:
         this.jTextFieldUserName.setText("");
-        this.jTextFieldUserName.setFont(new Font("Liberation Sans", 0, 15));
+        Utils.mouseExited(jTextFieldUserName);
         this.jTextFieldUserName.setForeground(Color.BLACK);
     }//GEN-LAST:event_jTextFieldUserNameMouseClicked
 
@@ -244,23 +242,23 @@ public class CreateAccount extends javax.swing.JFrame {
         this.jPasswordFieldRepeat.setText("");
     }//GEN-LAST:event_jPasswordFieldRepeatMouseClicked
 
-    private void jLabel2MouseEntered(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jLabel2MouseEntered
+    private void jLabelHomeMouseEntered(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jLabelHomeMouseEntered
         // TODO add your handling code here:
-        this.jLabel2.setFont(new Font(Utils.FONT, 1, 15));
-        this.jLabel2.setForeground(Utils.PURPLE);
-    }//GEN-LAST:event_jLabel2MouseEntered
+        Utils.mouseEntered(jLabelHome);
+        this.jLabelHome.setForeground(Utils.PURPLE);
+    }//GEN-LAST:event_jLabelHomeMouseEntered
 
-    private void jLabel2MouseExited(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jLabel2MouseExited
+    private void jLabelHomeMouseExited(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jLabelHomeMouseExited
         // TODO add your handling code here:
-        this.jLabel2.setFont(new Font(Utils.FONT, 0, 15));
-        this.jLabel2.setForeground(Color.BLACK);
-    }//GEN-LAST:event_jLabel2MouseExited
+        Utils.mouseExited(jLabelHome);
+        this.jLabelHome.setForeground(Color.BLACK);
+    }//GEN-LAST:event_jLabelHomeMouseExited
 
-    private void jLabel2MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jLabel2MouseClicked
+    private void jLabelHomeMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jLabelHomeMouseClicked
         // TODO add your handling code here:
         this.setVisible(false);
         new LogIn().setVisible(true);
-    }//GEN-LAST:event_jLabel2MouseClicked
+    }//GEN-LAST:event_jLabelHomeMouseClicked
 
     /**
      * @param args the command line arguments
@@ -298,10 +296,10 @@ public class CreateAccount extends javax.swing.JFrame {
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
-    private javax.swing.JButton jButton1;
-    private javax.swing.JLabel jLabel1;
-    private javax.swing.JLabel jLabel2;
+    private javax.swing.JButton jButtonSignUp;
+    private javax.swing.JLabel jLabelHome;
     private javax.swing.JLabel jLabelImg;
+    private javax.swing.JLabel jLabelTitle;
     private javax.swing.JPanel jPanel1;
     private javax.swing.JPasswordField jPasswordField1;
     private javax.swing.JPasswordField jPasswordFieldRepeat;
