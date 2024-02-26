@@ -7,6 +7,8 @@ package adt.linkedin.gui;
 import adt.linkedin.model.*;
 import adt.linkedin.services.UserService;
 import adt.linkedin.tools.Utils;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 import javax.swing.*;
 import javax.swing.table.DefaultTableModel;
 
@@ -18,6 +20,17 @@ public class JFrameUser extends javax.swing.JFrame {
 
     final User user;
     final UserService userController;
+    private final Timer timer = new Timer(5, new ActionListener() {
+        @Override
+        public void actionPerformed(ActionEvent ae) {
+            jTableAcademicInfo.setModel(new DefaultTableModel());
+            jTableSkills.setModel(new DefaultTableModel());
+            jTableExperience.setModel(new DefaultTableModel());
+            fillTable(jTableAcademicInfo, 1);
+            fillTable(jTableSkills, 2);
+            fillTable(jTableExperience, 3);
+        }
+    });
 
     /**
      * Creates new form User
@@ -34,7 +47,8 @@ public class JFrameUser extends javax.swing.JFrame {
         fillTable(jTableAcademicInfo, 1);
         fillTable(jTableSkills, 2);
         fillTable(jTableExperience, 3);
-        this.jButton1.setBackground(Utils.PURPLE);
+        this.jButtonHome.setBackground(Utils.PURPLE);
+        timer.start();
     }
 
     /**
@@ -47,6 +61,7 @@ public class JFrameUser extends javax.swing.JFrame {
     private void initComponents() {
 
         jPopupMenuConfirmation = new javax.swing.JPopupMenu();
+        jPopupMenu1 = new javax.swing.JPopupMenu();
         jPanel1 = new javax.swing.JPanel();
         jPanelUser = new javax.swing.JPanel();
         jLabelUserPic = new javax.swing.JLabel();
@@ -62,7 +77,10 @@ public class JFrameUser extends javax.swing.JFrame {
         jLabelLogOut = new javax.swing.JLabel();
         jLabelCandidatures = new javax.swing.JLabel();
         jLabelDelete = new javax.swing.JLabel();
-        jButton1 = new javax.swing.JButton();
+        jButtonAddAI = new javax.swing.JButton();
+        jButtonAddSkill = new javax.swing.JButton();
+        jButtonAddExperience = new javax.swing.JButton();
+        jButtonHome = new javax.swing.JButton();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         getContentPane().setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
@@ -213,13 +231,38 @@ public class JFrameUser extends javax.swing.JFrame {
         jPanelUser.add(jLabelCandidatures, new org.netbeans.lib.awtextra.AbsoluteConstraints(40, 490, -1, 50));
 
         jLabelDelete.setText("Delete Account");
-        jPanelUser.add(jLabelDelete, new org.netbeans.lib.awtextra.AbsoluteConstraints(40, 430, -1, -1));
+        jPanelUser.add(jLabelDelete, new org.netbeans.lib.awtextra.AbsoluteConstraints(40, 408, 110, 40));
 
-        jButton1.setBackground(Utils.PURPLE);
-        jButton1.setText("Home");
-        jButton1.addActionListener(new java.awt.event.ActionListener() {
+        jButtonAddAI.setBackground(Utils.PURPLE);
+        jButtonAddAI.setForeground(new java.awt.Color(255, 255, 255));
+        jButtonAddAI.setText("+");
+        jButtonAddAI.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jButton1ActionPerformed(evt);
+                jButtonAddAIActionPerformed(evt);
+            }
+        });
+        jPanelUser.add(jButtonAddAI, new org.netbeans.lib.awtextra.AbsoluteConstraints(750, 110, -1, -1));
+
+        jButtonAddSkill.setBackground(Utils.PURPLE);
+        jButtonAddSkill.setForeground(new java.awt.Color(255, 255, 255));
+        jButtonAddSkill.setText("+");
+        jButtonAddSkill.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButtonAddSkillActionPerformed(evt);
+            }
+        });
+        jPanelUser.add(jButtonAddSkill, new org.netbeans.lib.awtextra.AbsoluteConstraints(750, 320, -1, -1));
+
+        jButtonAddExperience.setBackground(Utils.PURPLE);
+        jButtonAddExperience.setForeground(new java.awt.Color(255, 255, 255));
+        jButtonAddExperience.setText("+");
+        jPanelUser.add(jButtonAddExperience, new org.netbeans.lib.awtextra.AbsoluteConstraints(750, 560, -1, -1));
+
+        jButtonHome.setBackground(Utils.PURPLE);
+        jButtonHome.setText("Home");
+        jButtonHome.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButtonHomeActionPerformed(evt);
             }
         });
 
@@ -231,7 +274,7 @@ public class JFrameUser extends javax.swing.JFrame {
                 .addGap(499, 499, 499)
                 .addComponent(jPanelUser, javax.swing.GroupLayout.PREFERRED_SIZE, 796, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(280, 280, 280)
-                .addComponent(jButton1)
+                .addComponent(jButtonHome)
                 .addContainerGap(353, Short.MAX_VALUE))
         );
         jPanel1Layout.setVerticalGroup(
@@ -239,7 +282,7 @@ public class JFrameUser extends javax.swing.JFrame {
             .addGroup(jPanel1Layout.createSequentialGroup()
                 .addGap(17, 17, 17)
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(jButton1)
+                    .addComponent(jButtonHome)
                     .addComponent(jPanelUser, javax.swing.GroupLayout.PREFERRED_SIZE, 868, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addContainerGap(195, Short.MAX_VALUE))
         );
@@ -249,12 +292,21 @@ public class JFrameUser extends javax.swing.JFrame {
         pack();
     }// </editor-fold>//GEN-END:initComponents
 
+    
+
     private void fillTable(JTable table, int option) {
         DefaultTableModel model = (DefaultTableModel) table.getModel();
+        boolean flag = true; //TODO añadir metodo containsValue
         switch (option) {
             case 1: //AcademicInfo
                 for (AcademicInfo info : userController.getUserAcademicInfo(user)) {
+                    for (int i = 1; i <= table.getRowCount(); i++) {
+                        if ((AcademicInfo)table.getValueAt(ERROR, i) == info) {
+                        
+                    }
                     model.addRow(new String[]{info.toString()});
+                    }
+                    
                 }
                 break;
             case 2: //Skills
@@ -271,11 +323,11 @@ public class JFrameUser extends javax.swing.JFrame {
         table.setModel(model);
     }
 
-    private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
+    private void jButtonHomeActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButtonHomeActionPerformed
         // TODO add your handling code here:
         this.setVisible(false);
         new Feed(user, userController).setVisible(true);
-    }//GEN-LAST:event_jButton1ActionPerformed
+    }//GEN-LAST:event_jButtonHomeActionPerformed
 
     private void jLabelLogOutMouseEntered(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jLabelLogOutMouseEntered
         // TODO add your handling code here:
@@ -307,9 +359,22 @@ public class JFrameUser extends javax.swing.JFrame {
         this.setVisible(false);
     }//GEN-LAST:event_jLabelCandidaturesMouseClicked
 
+    private void jButtonAddAIActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButtonAddAIActionPerformed
+        // TODO add your handling code here:
+        new JDialogAddAcademicInfo(userController, user, this, true).setVisible(true);
+    }//GEN-LAST:event_jButtonAddAIActionPerformed
+
+    private void jButtonAddSkillActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButtonAddSkillActionPerformed
+        // TODO add your handling code here:
+        new JDialogAddSkill(userController, user, this, true).setVisible(true);
+    }//GEN-LAST:event_jButtonAddSkillActionPerformed
+
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
-    private javax.swing.JButton jButton1;
+    private javax.swing.JButton jButtonAddAI;
+    private javax.swing.JButton jButtonAddExperience;
+    private javax.swing.JButton jButtonAddSkill;
+    private javax.swing.JButton jButtonHome;
     private javax.swing.JLabel jLabelCandidatures;
     private javax.swing.JLabel jLabelDelete;
     private javax.swing.JLabel jLabelDescription;
@@ -319,6 +384,7 @@ public class JFrameUser extends javax.swing.JFrame {
     private javax.swing.JLabel jLabelUserPic;
     private javax.swing.JPanel jPanel1;
     private javax.swing.JPanel jPanelUser;
+    private javax.swing.JPopupMenu jPopupMenu1;
     private javax.swing.JPopupMenu jPopupMenuConfirmation;
     private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JScrollPane jScrollPane2;

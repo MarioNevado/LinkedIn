@@ -3,8 +3,6 @@ package adt.linkedin.model;
 import jakarta.persistence.*;
 
 import java.time.LocalDate;
-import java.time.LocalDateTime;
-import java.util.Calendar;
 
 @Entity
 @Table(name = "academic_info")
@@ -20,7 +18,7 @@ public class AcademicInfo {
     private LocalDate initDate;
     @Column(name = "end_date")
     private LocalDate endDate;
-    @Column(name = "title")
+    @Column(name = "title", nullable = false)
     private String title;
     @ManyToOne(cascade = CascadeType.ALL)
     @JoinColumn(name = "institution_id", nullable = false)
