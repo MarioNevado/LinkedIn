@@ -41,7 +41,7 @@ public class JDialogAddAcademicInfo extends javax.swing.JDialog {
 
     private void initComboBox(JComboBox box) {
         DefaultComboBoxModel model = new DefaultComboBoxModel();
-        for (int i = 2024; i >= 1900; i--) {
+        for (Integer i = 2024; i >= 1900; i--) {
             model.addElement(i);
         }
         box.setModel(model);
@@ -198,18 +198,18 @@ public class JDialogAddAcademicInfo extends javax.swing.JDialog {
         // TODO add your handling code here:
         AcademicInfo info;
         float meanScore;
-        int dayI, monthI, yearI, dayF, monthF, yearF;
+        Integer dayI, monthI, yearI, dayF, monthF, yearF;
         try {
             meanScore = Float.parseFloat(this.jTextFieldMeanScore.getText());
-            dayI = (int) this.jComboDayI.getSelectedItem();
-            monthI = (int) this.jComboMonthI.getSelectedItem();
-            yearI = (int) this.jComboYearI.getSelectedItem();
+            dayI = Integer.valueOf(this.jComboDayI.getSelectedItem().toString());
+            monthI = Integer.valueOf(this.jComboMonthI.getSelectedItem().toString());
+            yearI = Integer.valueOf(this.jComboYearI.getSelectedItem().toString());
             if (jCheckBox1.isSelected()) {
-                info = new AcademicInfo(true, meanScore, LocalDate.of(yearI, monthI, dayI), this.jTextFieldTitle.getText(), new Institution(this.jTextFieldInstitution.getText()));
-            }else{
-                dayF = (int)this.jComboDayF.getSelectedItem();
-                monthF = (int)this.jComboMonthF.getSelectedItem();
-                yearF = (int)this.jComboYearF.getSelectedItem();
+                info = new AcademicInfo(meanScore, LocalDate.of(yearI, monthI, dayI), this.jTextFieldTitle.getText(), new Institution(this.jTextFieldInstitution.getText()));
+            } else {
+                dayF = Integer.valueOf(this.jComboDayF.getSelectedItem().toString());
+                monthF = Integer.valueOf(this.jComboMonthF.getSelectedItem().toString());
+                yearF = Integer.valueOf(this.jComboYearF.getSelectedItem().toString());
                 info = new AcademicInfo(meanScore, LocalDate.of(yearI, monthI, dayI), LocalDate.of(yearF, monthF, dayF), this.jTextFieldTitle.getText(), new Institution(this.jTextFieldInstitution.getText()));
             }
             controller.addAcademicInfo(user, info);

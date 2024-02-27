@@ -31,14 +31,15 @@ public class AcademicInfo {
     public AcademicInfo() {
     }
 
-    public AcademicInfo(boolean current, float meanScore, LocalDate initDate, String title, Institution institution) {
-        this.current = current;
+    public AcademicInfo(float meanScore, LocalDate initDate, String title, Institution institution) {
+        this.current = true;
         this.meanScore = meanScore;
         this.initDate = initDate;
         this.title = title;
         this.institution = institution;
     }
     public AcademicInfo(float meanScore, LocalDate initDate, LocalDate endDate, String title, Institution institution) {
+        this.current = false;
         this.meanScore = meanScore;
         this.initDate = initDate;
         this.endDate = endDate;
@@ -109,4 +110,15 @@ public class AcademicInfo {
     public void setUser(User user) {
         this.user = user;
     }
+
+    @Override
+    public String toString() {
+        if (!current) {
+            return title + "  " + institution.getName() + "  " + meanScore + "  " + initDate + "  " + endDate;
+        }else{
+            return title + "  " + institution.getName() + "  " + meanScore + "  " + initDate + "  Actual";
+        }
+    }
+    
+    
 }

@@ -9,6 +9,7 @@ import adt.linkedin.services.UserService;
 import adt.linkedin.tools.Utils;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.util.Arrays;
 import javax.swing.*;
 import javax.swing.table.DefaultTableModel;
 
@@ -20,12 +21,9 @@ public class JFrameUser extends javax.swing.JFrame {
 
     final User user;
     final UserService userController;
-    private final Timer timer = new Timer(5, new ActionListener() {
+    private final Timer timer = new Timer(5000, new ActionListener() {
         @Override
         public void actionPerformed(ActionEvent ae) {
-            jTableAcademicInfo.setModel(new DefaultTableModel());
-            jTableSkills.setModel(new DefaultTableModel());
-            jTableExperience.setModel(new DefaultTableModel());
             fillTable(jTableAcademicInfo, 1);
             fillTable(jTableSkills, 2);
             fillTable(jTableExperience, 3);
@@ -75,7 +73,6 @@ public class JFrameUser extends javax.swing.JFrame {
         jScrollPane2 = new javax.swing.JScrollPane();
         jTableExperience = new javax.swing.JTable();
         jLabelLogOut = new javax.swing.JLabel();
-        jLabelCandidatures = new javax.swing.JLabel();
         jLabelDelete = new javax.swing.JLabel();
         jButtonAddAI = new javax.swing.JButton();
         jButtonAddSkill = new javax.swing.JButton();
@@ -109,7 +106,7 @@ public class JFrameUser extends javax.swing.JFrame {
         jLabelDescription.setFont(new java.awt.Font("Liberation Sans", 0, 15)); // NOI18N
         jLabelDescription.setForeground(new java.awt.Color(153, 153, 153));
         jLabelDescription.setText("Description");
-        jPanelUser.add(jLabelDescription, new org.netbeans.lib.awtextra.AbsoluteConstraints(60, 180, 167, 57));
+        jPanelUser.add(jLabelDescription, new org.netbeans.lib.awtextra.AbsoluteConstraints(60, 180, 167, 90));
 
         jScrollPane3.setBorder(javax.swing.BorderFactory.createEtchedBorder(new java.awt.Color(153, 102, 255), null));
 
@@ -144,32 +141,21 @@ public class JFrameUser extends javax.swing.JFrame {
 
         jTableAcademicInfo.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
-                {null},
-                {null},
-                {null},
-                {null}
+                {},
+                {},
+                {},
+                {}
             },
             new String [] {
-                "AcademicInfo"
-            }
-        ) {
-            boolean[] canEdit = new boolean [] {
-                false
-            };
 
-            public boolean isCellEditable(int rowIndex, int columnIndex) {
-                return canEdit [columnIndex];
             }
-        });
+        ));
         jTableAcademicInfo.setAutoscrolls(false);
         jTableAcademicInfo.setGridColor(new java.awt.Color(255, 255, 255));
         jTableAcademicInfo.setSelectionBackground(new java.awt.Color(153, 102, 255));
         jTableAcademicInfo.setSelectionForeground(new java.awt.Color(255, 255, 255));
         jTableAcademicInfo.getTableHeader().setReorderingAllowed(false);
         jScrollPane1.setViewportView(jTableAcademicInfo);
-        if (jTableAcademicInfo.getColumnModel().getColumnCount() > 0) {
-            jTableAcademicInfo.getColumnModel().getColumn(0).setResizable(false);
-        }
 
         jPanelUser.add(jScrollPane1, new org.netbeans.lib.awtextra.AbsoluteConstraints(330, 110, 420, 190));
 
@@ -214,24 +200,10 @@ public class JFrameUser extends javax.swing.JFrame {
                 jLabelLogOutMouseExited(evt);
             }
         });
-        jPanelUser.add(jLabelLogOut, new org.netbeans.lib.awtextra.AbsoluteConstraints(40, 450, 110, 40));
-
-        jLabelCandidatures.setText("My Candidatures");
-        jLabelCandidatures.addMouseListener(new java.awt.event.MouseAdapter() {
-            public void mouseClicked(java.awt.event.MouseEvent evt) {
-                jLabelCandidaturesMouseClicked(evt);
-            }
-            public void mouseEntered(java.awt.event.MouseEvent evt) {
-                jLabelCandidaturesMouseEntered(evt);
-            }
-            public void mouseExited(java.awt.event.MouseEvent evt) {
-                jLabelCandidaturesMouseExited(evt);
-            }
-        });
-        jPanelUser.add(jLabelCandidatures, new org.netbeans.lib.awtextra.AbsoluteConstraints(40, 490, -1, 50));
+        jPanelUser.add(jLabelLogOut, new org.netbeans.lib.awtextra.AbsoluteConstraints(40, 760, 110, 40));
 
         jLabelDelete.setText("Delete Account");
-        jPanelUser.add(jLabelDelete, new org.netbeans.lib.awtextra.AbsoluteConstraints(40, 408, 110, 40));
+        jPanelUser.add(jLabelDelete, new org.netbeans.lib.awtextra.AbsoluteConstraints(40, 720, 110, 40));
 
         jButtonAddAI.setBackground(Utils.PURPLE);
         jButtonAddAI.setForeground(new java.awt.Color(255, 255, 255));
@@ -292,26 +264,72 @@ public class JFrameUser extends javax.swing.JFrame {
         pack();
     }// </editor-fold>//GEN-END:initComponents
 
-    
+    private boolean containsValue(JTable table, Skill skill) {
+        String value;
+        if (table.getRowCount() > 0) {
+            for (int i = 0; i < table.getRowCount(); i++) {
+                value = (String) table.getValueAt(i, 0);
+                if (value != null && value.equals(skill.getName())) {
+                    return true;
+                }
+            }
+        }
+        return false;
+    }
+
+    private boolean containsValue(JTable table, AcademicInfo info) { //title + "  " + institution.getName() + "  " + meanScore + "  " + initDate + "  " + endDate;
+        String[] value;
+        if (table.getRowCount() > 0 && table.getColumnCount() > 0) {
+            for (int i = 0; i < table.getRowCount(); i++) {
+                if (table.getValueAt(i, 0) != null) {
+                    value = ((String) table.getValueAt(i, 0)).split("  ", 5);
+                    if (value[0].equals(info.getTitle()) && value[1].equals(info.getInstitution().getName()) && value[3].equals(info.getInitDate().toString())) {
+                        return true;
+                    }
+                }
+
+            }
+        }
+        return false;
+    }
+
+    private boolean containsValue(JTable table, WorkExperience experience) {
+        String value;
+        for (int i = 0; i < table.getRowCount(); i++) {
+            value = (String) table.getValueAt(i, 0);
+            if (value != null && value.equals("")) {
+                return true;
+            }
+        }
+        return false;
+    }
 
     private void fillTable(JTable table, int option) {
         DefaultTableModel model = (DefaultTableModel) table.getModel();
-        boolean flag = true; //TODO añadir metodo containsValue
+        boolean header = false;
         switch (option) {
             case 1: //AcademicInfo
                 for (AcademicInfo info : userController.getUserAcademicInfo(user)) {
-                    for (int i = 1; i <= table.getRowCount(); i++) {
-                        if ((AcademicInfo)table.getValueAt(ERROR, i) == info) {
-                        
+                    if (!containsValue(table, info)) {
+                        if (!header) {
+                            model.addColumn(info.getTitle());
+                            model.addColumn(info.getInstitution().getName());
+                            model.addColumn(info.getMeanScore());
+                            model.addColumn(info.getInitDate());
+                            model.addColumn(info.getEndDate());
+                            header = true;
+                        } else {
+                            model.addRow(new Object[]{info.getTitle(),info.getInstitution().getName(), info.getMeanScore(), info.getInitDate(), info.getEndDate()});
+
+                        }
                     }
-                    model.addRow(new String[]{info.toString()});
-                    }
-                    
                 }
                 break;
             case 2: //Skills
                 for (Skill skill : userController.getUserSkills(user)) {
-                    model.addRow(new String[]{skill.toString()});
+                    if (!containsValue(table, skill)) {
+                        model.addRow(new String[]{skill.toString()});
+                    }
                 }
                 break;
             default: //Experience
@@ -343,22 +361,6 @@ public class JFrameUser extends javax.swing.JFrame {
         // TODO add your handling code here:
     }//GEN-LAST:event_jLabelLogOutMouseClicked
 
-    private void jLabelCandidaturesMouseEntered(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jLabelCandidaturesMouseEntered
-        // TODO add your handling code here:
-        Utils.mouseEntered(this.jLabelCandidatures);
-    }//GEN-LAST:event_jLabelCandidaturesMouseEntered
-
-    private void jLabelCandidaturesMouseExited(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jLabelCandidaturesMouseExited
-        // TODO add your handling code here:
-        Utils.mouseExited(this.jLabelCandidatures);
-    }//GEN-LAST:event_jLabelCandidaturesMouseExited
-
-    private void jLabelCandidaturesMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jLabelCandidaturesMouseClicked
-        // TODO add your handling code here:
-        new JFrameCandidatures(user).setVisible(true);
-        this.setVisible(false);
-    }//GEN-LAST:event_jLabelCandidaturesMouseClicked
-
     private void jButtonAddAIActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButtonAddAIActionPerformed
         // TODO add your handling code here:
         new JDialogAddAcademicInfo(userController, user, this, true).setVisible(true);
@@ -375,7 +377,6 @@ public class JFrameUser extends javax.swing.JFrame {
     private javax.swing.JButton jButtonAddExperience;
     private javax.swing.JButton jButtonAddSkill;
     private javax.swing.JButton jButtonHome;
-    private javax.swing.JLabel jLabelCandidatures;
     private javax.swing.JLabel jLabelDelete;
     private javax.swing.JLabel jLabelDescription;
     private javax.swing.JLabel jLabelHeader;

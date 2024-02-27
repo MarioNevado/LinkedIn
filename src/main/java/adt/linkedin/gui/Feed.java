@@ -192,6 +192,7 @@ public class Feed extends javax.swing.JFrame {
     private void jLabelUsernameMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jLabelUsernameMouseClicked
         // TODO add your handling code here:
         new JFrameUser(this.user, userController).setVisible(true);
+        dispose();
     }//GEN-LAST:event_jLabelUsernameMouseClicked
 
     private void jLabelUsernameMouseEntered(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jLabelUsernameMouseEntered
