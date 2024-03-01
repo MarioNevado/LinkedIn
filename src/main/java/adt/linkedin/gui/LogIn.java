@@ -4,6 +4,8 @@
  */
 package adt.linkedin.gui;
 
+import adt.linkedin.tools.Configurator;
+import adt.linkedin.enumerations.Extension;
 import adt.linkedin.model.User;
 import adt.linkedin.services.UserService;
 import adt.linkedin.tools.HibernateUtil;
@@ -19,13 +21,22 @@ public class LogIn extends javax.swing.JFrame {
 
     UserService userController;
     User user;
+
     /**
      * Creates new form LogIn
      */
     public LogIn() {
-        userController = new UserService(HibernateUtil.getSessionFactory().openSession());
-        setExtendedState(JFrame.MAXIMIZED_BOTH);
-        initComponents();
+        try {
+            Configurator c = new Configurator();
+            
+            c.save("/main/resources/errors", Extension.XML.getExtension(Extension.XML));
+            userController = new UserService(HibernateUtil.getSessionFactory().openSession());
+            setExtendedState(JFrame.MAXIMIZED_BOTH);
+            initComponents();
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+
     }
 
     /**
@@ -169,8 +180,7 @@ public class LogIn extends javax.swing.JFrame {
 
     private void jPanel1MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jPanel1MouseClicked
         // TODO add your handling code here:
-        this.setVisible(false);
-        new CreateAccount(this.userController).setVisible(true);
+
     }//GEN-LAST:event_jPanel1MouseClicked
 
     private void jLabelCreateAccMouseEntered(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jLabelCreateAccMouseEntered
@@ -188,26 +198,29 @@ public class LogIn extends javax.swing.JFrame {
         this.jPasswordField1.setText("");
     }//GEN-LAST:event_jPasswordField1MouseClicked
 
-    
+
     private void jButtonLogInActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButtonLogInActionPerformed
         // TODO add your handling code here:
         String email, password;
         int phone;
         password = new String(this.jPasswordField1.getPassword());
-        if (Utils.isNumeric(this.jTextFieldEmail.getText())) {
-            phone = Integer.parseInt(this.jTextFieldEmail.getText());
-            user = userController.getUserByPhone(phone, password);
-        }else{
-            email = this.jTextFieldEmail.getText();
-            user = userController.getUserByEmail(email, password);
+        if (this.jTextFieldEmail.getText().isEmpty() && this.jPasswordField1.getPassword().length > 0) {
+            if (Utils.isNumeric(this.jTextFieldEmail.getText())) {
+                phone = Integer.parseInt(this.jTextFieldEmail.getText());
+                user = userController.getUserByPhone(phone, password);
+            } else {
+                email = this.jTextFieldEmail.getText();
+                user = userController.getUserByEmail(email, password);
+            }
+            if (user != null) {
+                //TODO entrar en portal
+                this.setVisible(false);
+                new Feed(user, userController).setVisible(true);
+            } else {
+                JOptionPane.showMessageDialog(null, "Email/Teléfono o contraseña incorrectos", "ERROR", JOptionPane.ERROR_MESSAGE);
+            }
         }
-        if (user != null) {
-            //TODO entrar en portal
-            this.setVisible(false);
-            new Feed(user, userController).setVisible(true);
-        }else{
-            JOptionPane.showMessageDialog(null, "Email/Teléfono o contraseña incorrectos", "ERROR", JOptionPane.ERROR_MESSAGE);
-        }
+
     }//GEN-LAST:event_jButtonLogInActionPerformed
 
     private void jLabelCreateAccMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jLabelCreateAccMouseClicked

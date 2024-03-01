@@ -5,7 +5,7 @@ import jakarta.persistence.*;
 import java.time.LocalDate;
 
 @Entity
-@Table(name = "academic_info")
+@Table(name = "academic_info", uniqueConstraints = @UniqueConstraint(columnNames = {"title", "init_date", "end_date"}))
 public class AcademicInfo {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)

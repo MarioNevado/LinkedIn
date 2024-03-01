@@ -191,21 +191,21 @@ public class CreateAccount extends javax.swing.JFrame {
         String email = null;
         int phone = 0;
         User user = userController.getUserByName(username);
-        if (username.matches("^[a-z]+$") && user == null) {
-            if (this.jTextFieldUserEmail.getText().matches("^[A-Za-z0-9.]+@[a-z.]+[a-z]{2,}$") || this.jTextFieldUserEmail.getText().matches("^[6-9][0-9]{8}$")) {
-                if (this.jTextFieldUserEmail.getText().matches("^[A-Za-z0-9.]+@[a-z.]+[a-z]{2,}$")) {
+        if (Utils.matchesUsernameRegex(username)&& user == null) {
+            if (Utils.matchesEmailRegex(this.jTextFieldUserEmail.getText()) || Utils.matchesPhoneRegex(this.jTextFieldUserEmail.getText())) {
+                if (Utils.matchesEmailRegex(this.jTextFieldUserEmail.getText()) ) {
                     email = this.jTextFieldUserEmail.getText();
-                } else if (this.jTextFieldUserEmail.getText().matches("^[6-9][0-9]{8}$")) {
+                } else if (Utils.matchesPhoneRegex(this.jTextFieldUserEmail.getText())) {
                     phone = Integer.parseInt(this.jTextFieldUserEmail.getText());
                 }
-                if (password.matches("^[a-zA-Z\\d]{8,}$") && password.equals(repeat)) {
+                if (Utils.matchesPasswordRegex(password, repeat)) {
                     if (email != null) {
                         return new User(username, password, email, null);
                     } else {
                         return new User(username, password, phone, null);
                     }
                 } else if (!password.equals(repeat)) {
-                    JOptionPane.showMessageDialog(null, "Las contraseñas no coinciden", "ERROR", JOptionPane.ERROR_MESSAGE);
+                    JOptionPane.showMessageDialog(null, "Las contraseñas no coinciden", Utils.ERROR_TITLE, JOptionPane.ERROR_MESSAGE);
                 } else {
                     JOptionPane.showMessageDialog(null, "La contraseña debe tener al menos 8 caracteres, y solo debe contener caracteres alfabeticos o numéricos", "Contraseña incorrecta", JOptionPane.ERROR_MESSAGE);
                 }

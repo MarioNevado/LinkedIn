@@ -21,6 +21,7 @@ public class JFrameUser extends javax.swing.JFrame {
 
     final User user;
     final UserService userController;
+    boolean header = false;
     private final Timer timer = new Timer(5000, new ActionListener() {
         @Override
         public void actionPerformed(ActionEvent ae) {
@@ -278,16 +279,19 @@ public class JFrameUser extends javax.swing.JFrame {
     }
 
     private boolean containsValue(JTable table, AcademicInfo info) { //title + "  " + institution.getName() + "  " + meanScore + "  " + initDate + "  " + endDate;
-        String[] value;
+        Object[] value;
         if (table.getRowCount() > 0 && table.getColumnCount() > 0) {
             for (int i = 0; i < table.getRowCount(); i++) {
+                value = new Object[5];
                 if (table.getValueAt(i, 0) != null) {
-                    value = ((String) table.getValueAt(i, 0)).split("  ", 5);
+                    System.out.println(table.getValueAt(i, 0));
+                    for (int j = 0; j < table.getColumnCount(); j++) {
+                        value[j] = table.getValueAt(i, j);
+                    }
                     if (value[0].equals(info.getTitle()) && value[1].equals(info.getInstitution().getName()) && value[3].equals(info.getInitDate().toString())) {
                         return true;
                     }
                 }
-
             }
         }
         return false;
@@ -306,7 +310,7 @@ public class JFrameUser extends javax.swing.JFrame {
 
     private void fillTable(JTable table, int option) {
         DefaultTableModel model = (DefaultTableModel) table.getModel();
-        boolean header = false;
+
         switch (option) {
             case 1: //AcademicInfo
                 for (AcademicInfo info : userController.getUserAcademicInfo(user)) {
@@ -319,7 +323,7 @@ public class JFrameUser extends javax.swing.JFrame {
                             model.addColumn(info.getEndDate());
                             header = true;
                         } else {
-                            model.addRow(new Object[]{info.getTitle(),info.getInstitution().getName(), info.getMeanScore(), info.getInitDate(), info.getEndDate()});
+                            model.addRow(new Object[]{info.getTitle(), info.getInstitution().getName(), info.getMeanScore(), info.getInitDate(), info.getEndDate()});
 
                         }
                     }
