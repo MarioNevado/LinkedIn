@@ -47,9 +47,10 @@ public class XMLReader extends DataReader{
 
     DocumentBuilderFactory factory;
     private Map<Object, Object> data;
+    private final int ERROR_HEADER = 400;
 
     public XMLReader(File f) throws Exception {
-        data = new HashMap<>();
+        data = new LinkedHashMap<>();
         factory = DocumentBuilderFactory.newInstance();
         DocumentBuilder builder = factory.newDocumentBuilder();
         Document doc = builder.parse(f);
@@ -62,20 +63,23 @@ public class XMLReader extends DataReader{
     public void read(NodeList database) {
         for (int i = 0; i < database.getLength(); i++) {
             if (!data.containsKey(database.item(i))) {
-                if (!database.item(i).getNodeName().equals("#text")) {
-                    data = search(database.item(i), new HashMap<>());
+                if (!database.item(i).getNodeName().equals("#text")&& !database.item(i).getNodeName().equals("#comment")) {
+                    if (!data.containsKey(database.item(i))) {
+                        data.put(ERROR_HEADER + i, search(database.item(i), new LinkedHashMap<>()));
+                    }
+                    
                 }
             }
         }
     }
 
     private Map<Object, Object> search(Node n, Map<Object, Object> childs) {
-        Map<Object, Object> parent = new HashMap<>();
+        Map<Object, Object> parent = new LinkedHashMap<>();
         Node aux;
         if (n.getChildNodes().getLength() != 1) {
             for (int i = 0; i < n.getChildNodes().getLength(); i++) {
                 aux = n.getChildNodes().item(i);
-                if (!aux.getNodeName().equals("#text")) {
+                if (!aux.getNodeName().equals("#text") && !aux.getNodeName().equals("#comment")) {
                     if (aux.getChildNodes().getLength() == 1) {
                         childs.put(aux.getNodeName(), aux.getTextContent().trim());
                     } else {

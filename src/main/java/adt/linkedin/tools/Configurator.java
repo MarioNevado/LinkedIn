@@ -17,14 +17,15 @@ import org.json.simple.*;
 
 public class Configurator { //mirar carpeta conf
 
-    private HashMap<Object, Object> data;
+    private LinkedHashMap<Object, Object> data;
     private JSONReader jReader;
     private XMLReader xReader;
     private PropertiesReader pReader;
+    private final String ROUTE = "src/main/resources/msgs/";
 
     public Configurator() throws NotValidDirectoryException, Exception {//segun su extension llamara a un lector, solo leera .json, .xml o.properties
-        data = new HashMap<>();
-        File directory = new File("conf");
+        data = new LinkedHashMap<>();
+        File directory = new File(ROUTE);
         if (!directory.exists() || !directory.isDirectory()) {
             throw new NotValidDirectoryException(getMsg(directory));
         } else {
@@ -41,7 +42,7 @@ public class Configurator { //mirar carpeta conf
                 if (extension.equals("xml")) {
                     try {
                         xReader = new XMLReader(file);
-                        data.putAll(xReader.getData());
+                        data.put(file.getName().split(".xml")[0], xReader.getData());
                     } catch (Exception exception) {
                         throw exception;
                     }
@@ -65,7 +66,7 @@ public class Configurator { //mirar carpeta conf
     }
 
     public Object get(String route, char splitter) { //por si se separa por otro valor
-        String[] splittedRoute;
+        String[] splittedRoute; //TODO he cambiado el contenido del mapa, ahora es un mapa de mapas
         if (splitter == '.') splittedRoute = route.split("\\" + Character.toString(splitter)); //controlo que el separador sea un punto o no para escaparlo
         else splittedRoute = route.split(Character.toString(splitter));
         for (int i = 0; i < splittedRoute.length; i++) {
@@ -156,13 +157,13 @@ public class Configurator { //mirar carpeta conf
     }
 
     private void toXMLFile(String name, Map<Object, Object> map) throws IOException, XMLStreamException, Exception { //toFile pero en xml
-        XMLOutputFactory xmlOutputFactory = XMLOutputFactory.newFactory();
+        XMLOutputFactory xmlOutputFactory = XMLConfiguration.getOutputFactory();
         XMLStreamWriter xWriter = null;
         try {
-            xWriter = xmlOutputFactory.createXMLStreamWriter(new FileWriter(name + ".xml"));
+            xWriter = XMLConfiguration.getWriter(name);
             xWriter.writeStartDocument();
             xWriter.writeCharacters("\n");
-            xWriter.writeStartElement("FileInfo");
+            xWriter.writeStartElement(name);
             xWriter.writeCharacters("\n");
             writeXMLContent(xmlOutputFactory, xWriter, map);
             xWriter.writeEndElement();
@@ -226,5 +227,10 @@ public class Configurator { //mirar carpeta conf
     public String toString() {
         return data.toString();
     }
+
+    public LinkedHashMap<Object, Object> getData() {
+        return data;
+    }
+    
 
 }

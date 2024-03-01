@@ -21,15 +21,14 @@ public class LogIn extends javax.swing.JFrame {
 
     UserService userController;
     User user;
+    Configurator c;
 
     /**
      * Creates new form LogIn
      */
     public LogIn() {
         try {
-            Configurator c = new Configurator();
-            
-            c.save("/main/resources/errors", Extension.XML.getExtension(Extension.XML));
+            c = new Configurator();
             userController = new UserService(HibernateUtil.getSessionFactory().openSession());
             setExtendedState(JFrame.MAXIMIZED_BOTH);
             initComponents();
@@ -205,10 +204,10 @@ public class LogIn extends javax.swing.JFrame {
         int phone;
         password = new String(this.jPasswordField1.getPassword());
         if (this.jTextFieldEmail.getText().isEmpty() && this.jPasswordField1.getPassword().length > 0) {
-            if (Utils.isNumeric(this.jTextFieldEmail.getText())) {
+            if (Utils.isNumeric(this.jTextFieldEmail.getText()) && !this.jTextFieldEmail.getText().isBlank()) {
                 phone = Integer.parseInt(this.jTextFieldEmail.getText());
                 user = userController.getUserByPhone(phone, password);
-            } else {
+            } else if (!this.jTextFieldEmail.getText().isBlank()) {
                 email = this.jTextFieldEmail.getText();
                 user = userController.getUserByEmail(email, password);
             }
@@ -217,7 +216,7 @@ public class LogIn extends javax.swing.JFrame {
                 this.setVisible(false);
                 new Feed(user, userController).setVisible(true);
             } else {
-                JOptionPane.showMessageDialog(null, "Email/Teléfono o contraseña incorrectos", "ERROR", JOptionPane.ERROR_MESSAGE);
+                JOptionPane.showMessageDialog(null, c.get("error.WrongLogIn"), "ERROR", JOptionPane.ERROR_MESSAGE);
             }
         }
 

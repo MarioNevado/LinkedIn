@@ -205,12 +205,12 @@ public class CreateAccount extends javax.swing.JFrame {
                         return new User(username, password, phone, null);
                     }
                 } else if (!password.equals(repeat)) {
-                    JOptionPane.showMessageDialog(null, "Las contraseñas no coinciden", Utils.ERROR_TITLE, JOptionPane.ERROR_MESSAGE);
+                    JOptionPane.showMessageDialog(null, "Las contraseñas no coinciden", "Error en validación", JOptionPane.ERROR_MESSAGE);
                 } else {
                     JOptionPane.showMessageDialog(null, "La contraseña debe tener al menos 8 caracteres, y solo debe contener caracteres alfabeticos o numéricos", "Contraseña incorrecta", JOptionPane.ERROR_MESSAGE);
                 }
             } else {
-                JOptionPane.showMessageDialog(null, "Correo electrónico incorrecto", "ERROR", JOptionPane.ERROR_MESSAGE);
+                JOptionPane.showMessageDialog(null, "Introduzca un correo electrónico", "Correo electrónico incorrecto", JOptionPane.ERROR_MESSAGE);
             }
         } else if (user != null) {
             JOptionPane.showMessageDialog(null, "El nombre de usuario ya está cogido, seleccione otro", "Nombre de usuario no disponible", JOptionPane.ERROR_MESSAGE);

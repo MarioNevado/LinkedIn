@@ -16,13 +16,13 @@ import javax.xml.stream.XMLStreamWriter;
  * @author mario
  */
 public class XMLConfiguration {
-    private final XMLOutputFactory xmlOutputFactory = XMLOutputFactory.newFactory();
+    private static final XMLOutputFactory xmlOutputFactory = XMLOutputFactory.newFactory();
     
-    public XMLOutputFactory getOutputFactory(){
+    public static XMLOutputFactory getOutputFactory(){
         return xmlOutputFactory;
     }
     
-    public XMLStreamWriter getWriter(String filename) throws IOException, XMLStreamException{
-        return this.xmlOutputFactory.createXMLStreamWriter(new FileWriter(filename + "." + Extension.XML.getExtension(Extension.XML)));
+    public static XMLStreamWriter getWriter(String filename) throws IOException, XMLStreamException{
+        return XMLConfiguration.xmlOutputFactory.createXMLStreamWriter(new FileWriter(filename + "." + Extension.XML.getExtension(Extension.XML)));
     }
 }

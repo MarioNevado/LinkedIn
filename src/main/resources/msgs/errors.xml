@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
+Click nbfs://nbhost/SystemFileSystem/Templates/XML/XMLDocument.xml to edit this template
+-->
+
+
+
+<error>
+    <WrongUserName>El nombre de usuario debe estar en minúsculas</WrongUserName> <!-- 401-->
+    <NotAvailableUserName>El nombre de usuario ya está cogido, seleccione otro</NotAvailableUserName><!-- 403-->
+    
+    <WrongPassword>La contraseña debe tener al menos 8 caracteres, y solo debe contener caracteres alfabeticos o numéricos</WrongPassword>
+    <!-- 405-->
+    <ValidationError>Las contraseñas no coinciden</ValidationError><!-- 407-->
+    
+    <WrongEmail>Introduzca un correo electrónico o número de teléfono</WrongEmail> <!-- 409-->
+    
+    <WrongLogIn>Email/Teléfono o contraseña incorrectos</WrongLogIn><!-- 411-->
+    
+</error>
+

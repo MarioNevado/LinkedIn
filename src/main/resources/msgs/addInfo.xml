@@ -6,19 +6,9 @@ Click nbfs://nbhost/SystemFileSystem/Templates/XML/XMLDocument.xml to edit this 
 
 
 
-<error>
-    <username>
-        
-    </username>
-    <password>
-        
-    </password>
-    <email>
-        
-    </email>
-    <phone>
-        
-    </phone>
-    
-</error>
+<info>
+    <AddSkill>Has añadido una nueva habilidad :)</AddSkill>
+    <AddAcademicInfo>Información añadida :))</AddAcademicInfo>
+    <AddExperience></AddExperience>
+</info>
 
