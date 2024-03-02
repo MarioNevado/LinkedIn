@@ -9,6 +9,7 @@ import adt.linkedin.services.UserService;
 import adt.linkedin.tools.Utils;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.io.IOException;
 import java.time.LocalDate;
 import java.util.Arrays;
 import javax.swing.*;
@@ -111,10 +112,7 @@ public class JFrameUser extends javax.swing.JFrame {
 
         jTableSkills.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
-                {null},
-                {null},
-                {null},
-                {null}
+
             },
             new String [] {
                 "Skills"
@@ -140,10 +138,7 @@ public class JFrameUser extends javax.swing.JFrame {
 
         jTableAcademicInfo.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
-                {null, null, null, null, null},
-                {null, null, null, null, null},
-                {null, null, null, null, null},
-                {null, null, null, null, null}
+
             },
             new String [] {
                 "Título", "Centro", "Nota media", "Inicio", "Fin"
@@ -162,6 +157,11 @@ public class JFrameUser extends javax.swing.JFrame {
         jTableAcademicInfo.setSelectionBackground(new java.awt.Color(153, 102, 255));
         jTableAcademicInfo.setSelectionForeground(new java.awt.Color(255, 255, 255));
         jTableAcademicInfo.getTableHeader().setReorderingAllowed(false);
+        jTableAcademicInfo.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                jTableAcademicInfoMouseClicked(evt);
+            }
+        });
         jScrollPane1.setViewportView(jTableAcademicInfo);
         if (jTableAcademicInfo.getColumnModel().getColumnCount() > 0) {
             jTableAcademicInfo.getColumnModel().getColumn(0).setResizable(false);
@@ -332,7 +332,9 @@ public class JFrameUser extends javax.swing.JFrame {
                     }
                     if (value[4] instanceof LocalDate) {
                         aux = new AcademicInfo((String) value[0], new Institution((String) value[1]), (float) value[2], (LocalDate) value[3], (LocalDate) value[4]);
-                    } else aux = new AcademicInfo((String) value[0], new Institution((String) value[1]), (float) value[2], (LocalDate) value[3]);
+                    } else {
+                        aux = new AcademicInfo((String) value[0], new Institution((String) value[1]), (float) value[2], (LocalDate) value[3]);
+                    }
                     if ((aux.equals(info))) {
                         return true;
                     }
@@ -423,16 +425,17 @@ public class JFrameUser extends javax.swing.JFrame {
     private void jTextAreaDescriptionMouseEntered(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jTextAreaDescriptionMouseEntered
         // TODO add your handling code here:
         this.jTextAreaDescription.setToolTipText("Click para cambiar la descripción");
+
     }//GEN-LAST:event_jTextAreaDescriptionMouseEntered
 
     private void jTextAreaDescriptionMouseExited(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jTextAreaDescriptionMouseExited
         // TODO add your handling code here:
-        
+
     }//GEN-LAST:event_jTextAreaDescriptionMouseExited
 
     private void jLabelDeleteMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jLabelDeleteMouseClicked
         // TODO add your handling code here:
-        
+
     }//GEN-LAST:event_jLabelDeleteMouseClicked
 
     private void jLabelDeleteMouseEntered(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jLabelDeleteMouseEntered
@@ -445,6 +448,35 @@ public class JFrameUser extends javax.swing.JFrame {
         Utils.mouseExited(jLabelDelete);
     }//GEN-LAST:event_jLabelDeleteMouseExited
 
+    private void jTableAcademicInfoMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jTableAcademicInfoMouseClicked
+        // TODO add your handling code here:ç
+
+        if (SwingUtilities.isLeftMouseButton(evt)) {
+            try {
+                JPopupMenu pop = initPopup();
+                pop.show(evt.getComponent(), evt.getX(), evt.getY());
+            } catch (NullPointerException nEx) {
+                JOptionPane.showMessageDialog(null, "Error desconocido", "ERROR", JOptionPane.ERROR_MESSAGE);
+            }
+        }
+
+    }//GEN-LAST:event_jTableAcademicInfoMouseClicked
+
+    private JPopupMenu initPopup() {
+        JPopupMenu pop = new JPopupMenu();
+        JMenuItem download = new JMenuItem("Eliminar Información");
+        download.addActionListener((ActionEvent e) -> {
+            this.user.getAcademics().remove(jTableAcademicInfo.getSelectedRow());
+            this.userController.updateUser(user);
+        });
+        JMenuItem change = new JMenuItem("Ver");
+        change.addActionListener((ActionEvent e) -> {
+            new JDialogSeeInfoDetails(userController, user, this, true, user.getAcademics().get(jTableAcademicInfo.getSelectedRow())).setVisible(true);
+        });
+        pop.add(change);
+        pop.add(download);
+        return pop;
+    }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton jButtonAddAI;
