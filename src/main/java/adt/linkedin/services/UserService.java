@@ -286,6 +286,10 @@ public class UserService {
         userController.createUser(user);
     }
     
+    public void updateUser(User user){
+        userController.updateUser(user);
+    }
+    
     public void createUser(String name, String password, String mail, int phone, String description){
         userController.createUser(new User(name, password, mail, phone, description));
     }

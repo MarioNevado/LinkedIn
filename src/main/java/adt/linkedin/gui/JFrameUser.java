@@ -49,6 +49,9 @@ public class JFrameUser extends javax.swing.JFrame {
         fillTable(jTableExperience, 3);
         this.jButtonHome.setBackground(Utils.PURPLE);
         timer.start();
+        this.jLabelUserName.setText(this.user.getName());
+        this.jTextAreaDescription.setLineWrap(true);
+        this.jTextAreaDescription.setText(this.user.getDescription());
     }
 
     /**
@@ -60,14 +63,11 @@ public class JFrameUser extends javax.swing.JFrame {
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
 
-        jPopupMenuConfirmation = new javax.swing.JPopupMenu();
-        jPopupMenu1 = new javax.swing.JPopupMenu();
         jPanel1 = new javax.swing.JPanel();
         jPanelUser = new javax.swing.JPanel();
         jLabelUserPic = new javax.swing.JLabel();
         jLabelHeader = new javax.swing.JLabel();
         jLabelUserName = new javax.swing.JLabel();
-        jLabelDescription = new javax.swing.JLabel();
         jScrollPane3 = new javax.swing.JScrollPane();
         jTableSkills = new javax.swing.JTable();
         jScrollPane1 = new javax.swing.JScrollPane();
@@ -79,6 +79,8 @@ public class JFrameUser extends javax.swing.JFrame {
         jButtonAddAI = new javax.swing.JButton();
         jButtonAddSkill = new javax.swing.JButton();
         jButtonAddExperience = new javax.swing.JButton();
+        jScrollPane4 = new javax.swing.JScrollPane();
+        jTextAreaDescription = new javax.swing.JTextArea();
         jButtonHome = new javax.swing.JButton();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
@@ -103,12 +105,7 @@ public class JFrameUser extends javax.swing.JFrame {
         jLabelUserName.setFont(new java.awt.Font("Liberation Sans", 1, 18)); // NOI18N
         jLabelUserName.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
         jLabelUserName.setText("User");
-        jPanelUser.add(jLabelUserName, new org.netbeans.lib.awtextra.AbsoluteConstraints(80, 160, 52, -1));
-
-        jLabelDescription.setFont(new java.awt.Font("Liberation Sans", 0, 15)); // NOI18N
-        jLabelDescription.setForeground(new java.awt.Color(153, 153, 153));
-        jLabelDescription.setText("Description");
-        jPanelUser.add(jLabelDescription, new org.netbeans.lib.awtextra.AbsoluteConstraints(60, 180, 167, 90));
+        jPanelUser.add(jLabelUserName, new org.netbeans.lib.awtextra.AbsoluteConstraints(20, 160, 180, -1));
 
         jScrollPane3.setBorder(javax.swing.BorderFactory.createEtchedBorder(new java.awt.Color(153, 102, 255), null));
 
@@ -137,7 +134,7 @@ public class JFrameUser extends javax.swing.JFrame {
             jTableSkills.getColumnModel().getColumn(0).setResizable(false);
         }
 
-        jPanelUser.add(jScrollPane3, new org.netbeans.lib.awtextra.AbsoluteConstraints(330, 320, 420, 196));
+        jPanelUser.add(jScrollPane3, new org.netbeans.lib.awtextra.AbsoluteConstraints(220, 320, 530, 196));
 
         jScrollPane1.setBorder(javax.swing.BorderFactory.createEtchedBorder(new java.awt.Color(153, 102, 255), null));
 
@@ -173,7 +170,7 @@ public class JFrameUser extends javax.swing.JFrame {
             jTableAcademicInfo.getColumnModel().getColumn(4).setResizable(false);
         }
 
-        jPanelUser.add(jScrollPane1, new org.netbeans.lib.awtextra.AbsoluteConstraints(330, 110, 420, 190));
+        jPanelUser.add(jScrollPane1, new org.netbeans.lib.awtextra.AbsoluteConstraints(220, 110, 530, 190));
 
         jScrollPane2.setBorder(javax.swing.BorderFactory.createEtchedBorder(new java.awt.Color(153, 102, 255), null));
 
@@ -202,7 +199,7 @@ public class JFrameUser extends javax.swing.JFrame {
             jTableExperience.getColumnModel().getColumn(0).setResizable(false);
         }
 
-        jPanelUser.add(jScrollPane2, new org.netbeans.lib.awtextra.AbsoluteConstraints(330, 560, 420, 220));
+        jPanelUser.add(jScrollPane2, new org.netbeans.lib.awtextra.AbsoluteConstraints(220, 560, 530, 220));
 
         jLabelLogOut.setText("Log Out");
         jLabelLogOut.addMouseListener(new java.awt.event.MouseAdapter() {
@@ -219,6 +216,17 @@ public class JFrameUser extends javax.swing.JFrame {
         jPanelUser.add(jLabelLogOut, new org.netbeans.lib.awtextra.AbsoluteConstraints(40, 760, 110, 40));
 
         jLabelDelete.setText("Delete Account");
+        jLabelDelete.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                jLabelDeleteMouseClicked(evt);
+            }
+            public void mouseEntered(java.awt.event.MouseEvent evt) {
+                jLabelDeleteMouseEntered(evt);
+            }
+            public void mouseExited(java.awt.event.MouseEvent evt) {
+                jLabelDeleteMouseExited(evt);
+            }
+        });
         jPanelUser.add(jLabelDelete, new org.netbeans.lib.awtextra.AbsoluteConstraints(40, 720, 110, 40));
 
         jButtonAddAI.setBackground(Utils.PURPLE);
@@ -245,6 +253,25 @@ public class JFrameUser extends javax.swing.JFrame {
         jButtonAddExperience.setForeground(new java.awt.Color(255, 255, 255));
         jButtonAddExperience.setText("+");
         jPanelUser.add(jButtonAddExperience, new org.netbeans.lib.awtextra.AbsoluteConstraints(750, 560, -1, -1));
+
+        jTextAreaDescription.setEditable(false);
+        jTextAreaDescription.setColumns(20);
+        jTextAreaDescription.setRows(5);
+        jTextAreaDescription.setBorder(null);
+        jTextAreaDescription.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                jTextAreaDescriptionMouseClicked(evt);
+            }
+            public void mouseEntered(java.awt.event.MouseEvent evt) {
+                jTextAreaDescriptionMouseEntered(evt);
+            }
+            public void mouseExited(java.awt.event.MouseEvent evt) {
+                jTextAreaDescriptionMouseExited(evt);
+            }
+        });
+        jScrollPane4.setViewportView(jTextAreaDescription);
+
+        jPanelUser.add(jScrollPane4, new org.netbeans.lib.awtextra.AbsoluteConstraints(30, 190, 170, 180));
 
         jButtonHome.setBackground(Utils.PURPLE);
         jButtonHome.setText("Home");
@@ -282,7 +309,7 @@ public class JFrameUser extends javax.swing.JFrame {
 
     private boolean containsValue(JTable table, Skill skill) {
         String value;
-        if (table.getRowCount() > 0) {
+        if (table.getRowCount() > 0 && table.getColumnCount() > 0) {
             for (int i = 0; i < table.getRowCount(); i++) {
                 value = (String) table.getValueAt(i, 0);
                 if (value != null && value.equals(skill.getName())) {
@@ -297,16 +324,18 @@ public class JFrameUser extends javax.swing.JFrame {
         Object[] value;
         AcademicInfo aux;
         if (table.getRowCount() > 0 && table.getColumnCount() > 0) {
-            System.out.println("----------------------");
             for (int i = 0; i < table.getRowCount(); i++) {
                 value = new Object[5];
                 if (table.getValueAt(i, 0) != null) {
                     for (int j = 0; j < table.getColumnCount(); j++) {
                         value[j] = table.getValueAt(i, j);
                     }
-                    aux = new AcademicInfo((String) value[0], new Institution((String) value[1]), (float) value[2], (LocalDate) value[3], (LocalDate) value[4]);
-                    if((aux.equals(info))) return true;
-                    //return aux == info;
+                    if (value[4] instanceof LocalDate) {
+                        aux = new AcademicInfo((String) value[0], new Institution((String) value[1]), (float) value[2], (LocalDate) value[3], (LocalDate) value[4]);
+                    } else aux = new AcademicInfo((String) value[0], new Institution((String) value[1]), (float) value[2], (LocalDate) value[3]);
+                    if ((aux.equals(info))) {
+                        return true;
+                    }
                 }
             }
         }
@@ -331,8 +360,12 @@ public class JFrameUser extends javax.swing.JFrame {
             case 1: //AcademicInfo
                 for (AcademicInfo info : userController.getUserAcademicInfo(user)) {
                     if (!containsValue(table, info)) {
+                        if (info.getEndDate() != null) {
+                            model.addRow(new Object[]{info.getTitle(), info.getInstitution().getName(), info.getMeanScore(), info.getInitDate(), info.getEndDate()});
+                        } else {
+                            model.addRow(new Object[]{info.getTitle(), info.getInstitution().getName(), info.getMeanScore(), info.getInitDate(), "Actual"});
+                        }
 
-                        model.addRow(new Object[]{info.getTitle(), info.getInstitution().getName(), info.getMeanScore(), info.getInitDate(), info.getEndDate()});
                     }
                 }
                 break;
@@ -382,6 +415,36 @@ public class JFrameUser extends javax.swing.JFrame {
         new JDialogAddSkill(userController, user, this, true).setVisible(true);
     }//GEN-LAST:event_jButtonAddSkillActionPerformed
 
+    private void jTextAreaDescriptionMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jTextAreaDescriptionMouseClicked
+        // TODO add your handling code here:
+        new JDialogAddDescription(userController, user, this, true, this.jTextAreaDescription).setVisible(true);
+    }//GEN-LAST:event_jTextAreaDescriptionMouseClicked
+
+    private void jTextAreaDescriptionMouseEntered(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jTextAreaDescriptionMouseEntered
+        // TODO add your handling code here:
+        this.jTextAreaDescription.setToolTipText("Click para cambiar la descripción");
+    }//GEN-LAST:event_jTextAreaDescriptionMouseEntered
+
+    private void jTextAreaDescriptionMouseExited(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jTextAreaDescriptionMouseExited
+        // TODO add your handling code here:
+        
+    }//GEN-LAST:event_jTextAreaDescriptionMouseExited
+
+    private void jLabelDeleteMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jLabelDeleteMouseClicked
+        // TODO add your handling code here:
+        
+    }//GEN-LAST:event_jLabelDeleteMouseClicked
+
+    private void jLabelDeleteMouseEntered(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jLabelDeleteMouseEntered
+        // TODO add your handling code here:
+        Utils.mouseEntered(jLabelDelete);
+    }//GEN-LAST:event_jLabelDeleteMouseEntered
+
+    private void jLabelDeleteMouseExited(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jLabelDeleteMouseExited
+        // TODO add your handling code here:
+        Utils.mouseExited(jLabelDelete);
+    }//GEN-LAST:event_jLabelDeleteMouseExited
+
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton jButtonAddAI;
@@ -389,20 +452,19 @@ public class JFrameUser extends javax.swing.JFrame {
     private javax.swing.JButton jButtonAddSkill;
     private javax.swing.JButton jButtonHome;
     private javax.swing.JLabel jLabelDelete;
-    private javax.swing.JLabel jLabelDescription;
     private javax.swing.JLabel jLabelHeader;
     private javax.swing.JLabel jLabelLogOut;
     private javax.swing.JLabel jLabelUserName;
     private javax.swing.JLabel jLabelUserPic;
     private javax.swing.JPanel jPanel1;
     private javax.swing.JPanel jPanelUser;
-    private javax.swing.JPopupMenu jPopupMenu1;
-    private javax.swing.JPopupMenu jPopupMenuConfirmation;
     private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JScrollPane jScrollPane2;
     private javax.swing.JScrollPane jScrollPane3;
+    private javax.swing.JScrollPane jScrollPane4;
     private javax.swing.JTable jTableAcademicInfo;
     private javax.swing.JTable jTableExperience;
     private javax.swing.JTable jTableSkills;
+    private javax.swing.JTextArea jTextAreaDescription;
     // End of variables declaration//GEN-END:variables
 }

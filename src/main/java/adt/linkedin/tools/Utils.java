@@ -20,6 +20,7 @@ public class Utils {
     public static final String PASSWORD_REGEX = "^[a-zA-Z\\d]{8,}$";
     public static final String PHONE_REGEX = "^[6-9][0-9]{8}$";
     public static final String EMAIL_REGEX = "^[A-Za-z0-9.]+@[a-z.]+[a-z]{2,}$";
+    public static final String MEANSCORE_REGEX = "^(?:10|\\d(?:[.,]\\d{1,2})?|0?[.,]\\d[0-9][.,]\\d)$";
     
     
     public static final Color PURPLE = new Color(153,102,255);

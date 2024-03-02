@@ -8,7 +8,9 @@ import adt.linkedin.model.AcademicInfo;
 import adt.linkedin.model.Institution;
 import adt.linkedin.model.User;
 import adt.linkedin.services.UserService;
+import adt.linkedin.tools.Utils;
 import java.time.LocalDate;
+import java.time.Month;
 import javax.swing.DefaultComboBoxModel;
 import javax.swing.JComboBox;
 import javax.swing.JOptionPane;
@@ -126,18 +128,18 @@ public class JDialogAddAcademicInfo extends javax.swing.JDialog {
                         .addComponent(jLabel2)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                         .addComponent(jComboDayI, javax.swing.GroupLayout.PREFERRED_SIZE, 44, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addGap(18, 18, 18)
-                        .addComponent(jComboMonthI, javax.swing.GroupLayout.PREFERRED_SIZE, 44, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(jComboMonthI, javax.swing.GroupLayout.PREFERRED_SIZE, 56, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addComponent(jComboYearI, 0, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
                     .addGroup(layout.createSequentialGroup()
                         .addComponent(jLabel3)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(jComboDayF, javax.swing.GroupLayout.PREFERRED_SIZE, 44, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addGap(18, 18, 18)
-                        .addComponent(jComboMonthF, javax.swing.GroupLayout.PREFERRED_SIZE, 44, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addComponent(jComboDayF, javax.swing.GroupLayout.PREFERRED_SIZE, 50, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(jComboYearF, 0, 105, Short.MAX_VALUE)
+                        .addComponent(jComboMonthF, javax.swing.GroupLayout.PREFERRED_SIZE, 50, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(jComboYearF, 0, 128, Short.MAX_VALUE)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addComponent(jCheckBox1))
                     .addComponent(jButton1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
@@ -173,7 +175,7 @@ public class JDialogAddAcademicInfo extends javax.swing.JDialog {
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jLabel5)
                     .addComponent(jTextFieldInstitution, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 34, Short.MAX_VALUE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 36, Short.MAX_VALUE)
                 .addComponent(jButton1)
                 .addGap(16, 16, 16))
         );
@@ -194,31 +196,60 @@ public class JDialogAddAcademicInfo extends javax.swing.JDialog {
         }
     }//GEN-LAST:event_jCheckBox1ActionPerformed
 
+    private LocalDate getInitDate() {
+        try {
+            Integer dayI, monthI, yearI;
+            dayI = Integer.valueOf(this.jComboDayI.getSelectedItem().toString());
+            monthI = Integer.valueOf(this.jComboMonthI.getSelectedItem().toString());
+            yearI = Integer.valueOf(this.jComboYearI.getSelectedItem().toString());
+            return LocalDate.of(yearI, monthI, dayI);
+        } catch (NumberFormatException ex) {
+            return null;
+        }
+    }
+
+    private LocalDate getEndDate() {
+        Integer dayF, monthF, yearF;
+        dayF = Integer.valueOf(this.jComboDayF.getSelectedItem().toString());
+        monthF = Integer.valueOf(this.jComboMonthF.getSelectedItem().toString());
+        yearF = Integer.valueOf(this.jComboYearF.getSelectedItem().toString());
+        if (LocalDate.of(yearF, monthF, dayF).compareTo(LocalDate.now()) >= 1) {
+            JOptionPane.showMessageDialog(null, "La fecha de finalización no puede ser posterior a la fecha actual", "Error en fechas", JOptionPane.ERROR_MESSAGE);
+            return null;
+        }
+        return LocalDate.of(yearF, monthF, dayF);
+
+    }
     private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
         // TODO add your handling code here:
         AcademicInfo info;
         float meanScore;
-        Integer dayI, monthI, yearI, dayF, monthF, yearF;
-        try {
-            meanScore = Float.parseFloat(this.jTextFieldMeanScore.getText());
-            dayI = Integer.valueOf(this.jComboDayI.getSelectedItem().toString());
-            monthI = Integer.valueOf(this.jComboMonthI.getSelectedItem().toString());
-            yearI = Integer.valueOf(this.jComboYearI.getSelectedItem().toString());
-            if (jCheckBox1.isSelected()) {
-                info = new AcademicInfo(this.jTextFieldTitle.getText(), new Institution(this.jTextFieldInstitution.getText()), meanScore, LocalDate.of(yearI, monthI, dayI));
+        LocalDate init;
+        LocalDate end = null;
+            if (this.jTextFieldMeanScore.getText().matches(Utils.MEANSCORE_REGEX)) {
+                if (this.jTextFieldMeanScore.getText().contains(",")) {
+                    this.jTextFieldMeanScore.setText(this.jTextFieldMeanScore.getText().replace(",", "."));
+                }
+                meanScore = Float.parseFloat(this.jTextFieldMeanScore.getText());
+                init = getInitDate();
+                if (init != null) {
+                    if (jCheckBox1.isSelected()) {
+                        info = new AcademicInfo(this.jTextFieldTitle.getText(), new Institution(this.jTextFieldInstitution.getText()), meanScore, init);
+                    } else {
+                        end = getEndDate();
+                        info = new AcademicInfo(this.jTextFieldTitle.getText(), new Institution(this.jTextFieldInstitution.getText()), meanScore, init, end);
+                    }
+                    if (end != null && init.compareTo(end) >= 1) {
+                        JOptionPane.showMessageDialog(null, "La fecha de inicio no puede ser posterior a la fecha de fin", "Error en fechas", JOptionPane.ERROR_MESSAGE);
+                    } else if (end != null) {
+                        controller.addAcademicInfo(user, info);
+                        JOptionPane.showMessageDialog(null, "Información añadida :))", "ENHORABUENA!!!", JOptionPane.INFORMATION_MESSAGE);
+                        dispose();
+                    }
+                }
             } else {
-                dayF = Integer.valueOf(this.jComboDayF.getSelectedItem().toString());
-                monthF = Integer.valueOf(this.jComboMonthF.getSelectedItem().toString());
-                yearF = Integer.valueOf(this.jComboYearF.getSelectedItem().toString());
-                info = new AcademicInfo(this.jTextFieldTitle.getText(), new Institution(this.jTextFieldInstitution.getText()), meanScore, LocalDate.of(yearI, monthI, dayI), LocalDate.of(yearF, monthF, dayF));
+                JOptionPane.showMessageDialog(null, "Eso no es un número", "ERROR", JOptionPane.ERROR_MESSAGE);
             }
-            controller.addAcademicInfo(user, info);
-            JOptionPane.showMessageDialog(null, "Información añadida :))", "ENHORABUENA!!!", JOptionPane.INFORMATION_MESSAGE);
-            dispose();
-        } catch (NumberFormatException nbe) {
-            JOptionPane.showMessageDialog(null, "Eso no es un número", "ERROR", JOptionPane.ERROR_MESSAGE);
-        }
-
     }//GEN-LAST:event_jButton1ActionPerformed
 
     /**
