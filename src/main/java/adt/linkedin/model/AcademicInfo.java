@@ -3,10 +3,11 @@ package adt.linkedin.model;
 import jakarta.persistence.*;
 
 import java.time.LocalDate;
+import java.util.Objects;
 
 @Entity
 @Table(name = "academic_info", uniqueConstraints = @UniqueConstraint(columnNames = {"title", "init_date", "end_date"}))
-public class AcademicInfo {
+public class AcademicInfo{
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private long id;
@@ -31,14 +32,14 @@ public class AcademicInfo {
     public AcademicInfo() {
     }
 
-    public AcademicInfo(float meanScore, LocalDate initDate, String title, Institution institution) {
+    public AcademicInfo(String title, Institution institution,float meanScore, LocalDate initDate ) {
         this.current = true;
         this.meanScore = meanScore;
         this.initDate = initDate;
         this.title = title;
         this.institution = institution;
     }
-    public AcademicInfo(float meanScore, LocalDate initDate, LocalDate endDate, String title, Institution institution) {
+    public AcademicInfo(String title, Institution institution,float meanScore, LocalDate initDate, LocalDate endDate ) {
         this.current = false;
         this.meanScore = meanScore;
         this.initDate = initDate;
@@ -110,6 +111,47 @@ public class AcademicInfo {
     public void setUser(User user) {
         this.user = user;
     }
+
+
+    
+
+    
+
+    @Override
+    public boolean equals(Object obj) {
+        if (this == obj) {
+            return true;
+        }
+        if (obj == null) {
+            return false;
+        }
+        if (getClass() != obj.getClass()) {
+            return false;
+        }
+        final AcademicInfo other = (AcademicInfo) obj;
+        if (!Objects.equals(this.title, other.title)) {
+            return false;
+        }
+        if (!Objects.equals(this.initDate, other.initDate)) {
+            return false;
+        }
+        if (!Objects.equals(this.endDate, other.endDate)) {
+            return false;
+        }
+        return Objects.equals(this.institution.getName(), other.institution.getName());
+    }
+
+    @Override
+    public int hashCode() {
+        int hash = 5;
+        hash = 59 * hash + Objects.hashCode(this.initDate);
+        hash = 59 * hash + Objects.hashCode(this.endDate);
+        hash = 59 * hash + Objects.hashCode(this.title);
+        hash = 59 * hash + Objects.hashCode(this.institution.getName());
+        return hash;
+    }
+    
+    
 
     @Override
     public String toString() {

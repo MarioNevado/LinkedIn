@@ -205,12 +205,12 @@ public class JDialogAddAcademicInfo extends javax.swing.JDialog {
             monthI = Integer.valueOf(this.jComboMonthI.getSelectedItem().toString());
             yearI = Integer.valueOf(this.jComboYearI.getSelectedItem().toString());
             if (jCheckBox1.isSelected()) {
-                info = new AcademicInfo(meanScore, LocalDate.of(yearI, monthI, dayI), this.jTextFieldTitle.getText(), new Institution(this.jTextFieldInstitution.getText()));
+                info = new AcademicInfo(this.jTextFieldTitle.getText(), new Institution(this.jTextFieldInstitution.getText()), meanScore, LocalDate.of(yearI, monthI, dayI));
             } else {
                 dayF = Integer.valueOf(this.jComboDayF.getSelectedItem().toString());
                 monthF = Integer.valueOf(this.jComboMonthF.getSelectedItem().toString());
                 yearF = Integer.valueOf(this.jComboYearF.getSelectedItem().toString());
-                info = new AcademicInfo(meanScore, LocalDate.of(yearI, monthI, dayI), LocalDate.of(yearF, monthF, dayF), this.jTextFieldTitle.getText(), new Institution(this.jTextFieldInstitution.getText()));
+                info = new AcademicInfo(this.jTextFieldTitle.getText(), new Institution(this.jTextFieldInstitution.getText()), meanScore, LocalDate.of(yearI, monthI, dayI), LocalDate.of(yearF, monthF, dayF));
             }
             controller.addAcademicInfo(user, info);
             JOptionPane.showMessageDialog(null, "Información añadida :))", "ENHORABUENA!!!", JOptionPane.INFORMATION_MESSAGE);

@@ -9,6 +9,7 @@ import adt.linkedin.services.UserService;
 import adt.linkedin.tools.Utils;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.time.LocalDate;
 import java.util.Arrays;
 import javax.swing.*;
 import javax.swing.table.DefaultTableModel;
@@ -22,7 +23,7 @@ public class JFrameUser extends javax.swing.JFrame {
     final User user;
     final UserService userController;
     boolean header = false;
-    private final Timer timer = new Timer(5000, new ActionListener() {
+    private final Timer timer = new Timer(3000, new ActionListener() {
         @Override
         public void actionPerformed(ActionEvent ae) {
             fillTable(jTableAcademicInfo, 1);
@@ -142,21 +143,35 @@ public class JFrameUser extends javax.swing.JFrame {
 
         jTableAcademicInfo.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
-                {},
-                {},
-                {},
-                {}
+                {null, null, null, null, null},
+                {null, null, null, null, null},
+                {null, null, null, null, null},
+                {null, null, null, null, null}
             },
             new String [] {
-
+                "Título", "Centro", "Nota media", "Inicio", "Fin"
             }
-        ));
+        ) {
+            boolean[] canEdit = new boolean [] {
+                false, false, false, false, false
+            };
+
+            public boolean isCellEditable(int rowIndex, int columnIndex) {
+                return canEdit [columnIndex];
+            }
+        });
         jTableAcademicInfo.setAutoscrolls(false);
         jTableAcademicInfo.setGridColor(new java.awt.Color(255, 255, 255));
         jTableAcademicInfo.setSelectionBackground(new java.awt.Color(153, 102, 255));
         jTableAcademicInfo.setSelectionForeground(new java.awt.Color(255, 255, 255));
         jTableAcademicInfo.getTableHeader().setReorderingAllowed(false);
         jScrollPane1.setViewportView(jTableAcademicInfo);
+        if (jTableAcademicInfo.getColumnModel().getColumnCount() > 0) {
+            jTableAcademicInfo.getColumnModel().getColumn(0).setResizable(false);
+            jTableAcademicInfo.getColumnModel().getColumn(1).setResizable(false);
+            jTableAcademicInfo.getColumnModel().getColumn(2).setResizable(false);
+            jTableAcademicInfo.getColumnModel().getColumn(4).setResizable(false);
+        }
 
         jPanelUser.add(jScrollPane1, new org.netbeans.lib.awtextra.AbsoluteConstraints(330, 110, 420, 190));
 
@@ -280,17 +295,18 @@ public class JFrameUser extends javax.swing.JFrame {
 
     private boolean containsValue(JTable table, AcademicInfo info) { //title + "  " + institution.getName() + "  " + meanScore + "  " + initDate + "  " + endDate;
         Object[] value;
+        AcademicInfo aux;
         if (table.getRowCount() > 0 && table.getColumnCount() > 0) {
+            System.out.println("----------------------");
             for (int i = 0; i < table.getRowCount(); i++) {
                 value = new Object[5];
                 if (table.getValueAt(i, 0) != null) {
-                    System.out.println(table.getValueAt(i, 0));
                     for (int j = 0; j < table.getColumnCount(); j++) {
                         value[j] = table.getValueAt(i, j);
                     }
-                    if (value[0].equals(info.getTitle()) && value[1].equals(info.getInstitution().getName()) && value[3].equals(info.getInitDate().toString())) {
-                        return true;
-                    }
+                    aux = new AcademicInfo((String) value[0], new Institution((String) value[1]), (float) value[2], (LocalDate) value[3], (LocalDate) value[4]);
+                    if((aux.equals(info))) return true;
+                    //return aux == info;
                 }
             }
         }
@@ -315,17 +331,8 @@ public class JFrameUser extends javax.swing.JFrame {
             case 1: //AcademicInfo
                 for (AcademicInfo info : userController.getUserAcademicInfo(user)) {
                     if (!containsValue(table, info)) {
-                        if (!header) {
-                            model.addColumn(info.getTitle());
-                            model.addColumn(info.getInstitution().getName());
-                            model.addColumn(info.getMeanScore());
-                            model.addColumn(info.getInitDate());
-                            model.addColumn(info.getEndDate());
-                            header = true;
-                        } else {
-                            model.addRow(new Object[]{info.getTitle(), info.getInstitution().getName(), info.getMeanScore(), info.getInitDate(), info.getEndDate()});
 
-                        }
+                        model.addRow(new Object[]{info.getTitle(), info.getInstitution().getName(), info.getMeanScore(), info.getInitDate(), info.getEndDate()});
                     }
                 }
                 break;

@@ -203,7 +203,7 @@ public class LogIn extends javax.swing.JFrame {
         String email, password;
         int phone;
         password = new String(this.jPasswordField1.getPassword());
-        if (this.jTextFieldEmail.getText().isEmpty() && this.jPasswordField1.getPassword().length > 0) {
+        if (!this.jTextFieldEmail.getText().isEmpty() && this.jPasswordField1.getPassword().length > 0) {
             if (Utils.isNumeric(this.jTextFieldEmail.getText()) && !this.jTextFieldEmail.getText().isBlank()) {
                 phone = Integer.parseInt(this.jTextFieldEmail.getText());
                 user = userController.getUserByPhone(phone, password);
@@ -212,12 +212,13 @@ public class LogIn extends javax.swing.JFrame {
                 user = userController.getUserByEmail(email, password);
             }
             if (user != null) {
-                //TODO entrar en portal
                 this.setVisible(false);
                 new Feed(user, userController).setVisible(true);
             } else {
                 JOptionPane.showMessageDialog(null, c.get("error.WrongLogIn"), "ERROR", JOptionPane.ERROR_MESSAGE);
             }
+        } else {
+            JOptionPane.showMessageDialog(null, "Introduzca datos", "ERROR", JOptionPane.ERROR_MESSAGE);
         }
 
     }//GEN-LAST:event_jButtonLogInActionPerformed
