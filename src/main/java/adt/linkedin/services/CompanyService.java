@@ -2,8 +2,13 @@ package adt.linkedin.services;
 
 import adt.linkedin.implementations.CompanyImplDAO;
 import adt.linkedin.model.*;
+import adt.linkedin.tools.HibernateUtil;
+import jakarta.persistence.NoResultException;
+import jakarta.persistence.criteria.*;
 
 import java.awt.event.ComponentAdapter;
+import org.hibernate.Session;
+import org.hibernate.query.Query;
 
 public class CompanyService {
     CompanyImplDAO controller = new CompanyImplDAO();
@@ -14,11 +19,27 @@ public class CompanyService {
     public void removeCompany(Company company){
         controller.removeCompany(company);
     }
-    public Company createCompany(String name){//por que devuelve company -> para trabajar con ella mas adelante
+    public Company createCompany(String name){
         Company c = new Company(name, null);
         controller.createCompany(c);
         return controller.getCompany(c.getId());
     }
+    public Company getCompany(String name){
+        try(Session session = HibernateUtil.getSessionFactory().openSession()){
+            CriteriaBuilder cb = session.getCriteriaBuilder();
+            CriteriaQuery <Company> cQuery = cb.createQuery(Company.class);
+            Root <Company> root = cQuery.from(Company.class);
+            cQuery.where(cb.equal(root.get("name"), name));
+            Query<Company> query = session.createQuery(cQuery);
+            return query.getSingleResult();
+        }catch(NoResultException nre){
+            return null;
+        }catch(Exception e){
+            e.printStackTrace();
+            return null;
+        }
+    }
+    
     public void printCompanyInfo(Company company){
         company = controller.getCompany(company.getId());
         System.out.println("Compañía: " + company);

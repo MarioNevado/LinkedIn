@@ -24,7 +24,7 @@ public class AcademicInfo{
     @ManyToOne(cascade = CascadeType.ALL)
     @JoinColumn(name = "institution_id", nullable = false)
     private Institution institution;
-    @ManyToOne(cascade = {CascadeType.ALL})
+    @ManyToOne(cascade ={CascadeType.PERSIST, CascadeType.MERGE})
     @JoinColumn(name = "user_id", nullable = false)
     private User user;
 
@@ -111,11 +111,6 @@ public class AcademicInfo{
     public void setUser(User user) {
         this.user = user;
     }
-
-
-    
-
-    
 
     @Override
     public boolean equals(Object obj) {

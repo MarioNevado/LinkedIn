@@ -5,13 +5,15 @@
 package adt.linkedin.gui;
 
 import adt.linkedin.model.*;
+import adt.linkedin.services.CompanyService;
 import adt.linkedin.services.UserService;
 import adt.linkedin.tools.Utils;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.io.IOException;
 import java.time.LocalDate;
-import java.util.Arrays;
+import java.util.ArrayList;
+import java.util.List;
 import javax.swing.*;
 import javax.swing.table.DefaultTableModel;
 
@@ -23,13 +25,17 @@ public class JFrameUser extends javax.swing.JFrame {
 
     final User user;
     final UserService userController;
-    boolean header = false;
+    final CompanyService companyController = new CompanyService();
+    boolean firstDeleted = false;
+    private List<AcademicInfo> deletedInfo = new ArrayList<>();
+    private List<Skill> deletedSkills = new ArrayList<>();
+    private List<WorkExperience> deletedExperiences = new ArrayList<>();
     private final Timer timer = new Timer(3000, new ActionListener() {
         @Override
         public void actionPerformed(ActionEvent ae) {
-            fillTable(jTableAcademicInfo, 1);
-            fillTable(jTableSkills, 2);
-            fillTable(jTableExperience, 3);
+            refreshTable(jTableAcademicInfo, 1);
+            refreshTable(jTableSkills, 2);
+            refreshTable(jTableExperience, 3);
         }
     });
 
@@ -127,6 +133,11 @@ public class JFrameUser extends javax.swing.JFrame {
             }
         });
         jTableSkills.getTableHeader().setReorderingAllowed(false);
+        jTableSkills.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                jTableSkillsMouseClicked(evt);
+            }
+        });
         jScrollPane3.setViewportView(jTableSkills);
         if (jTableSkills.getColumnModel().getColumnCount() > 0) {
             jTableSkills.getColumnModel().getColumn(0).setResizable(false);
@@ -176,17 +187,14 @@ public class JFrameUser extends javax.swing.JFrame {
 
         jTableExperience.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
-                {null},
-                {null},
-                {null},
-                {null}
+
             },
             new String [] {
-                "Experience"
+                "Puesto", "Empresa", "Ciudad", "Inicio", "Fin"
             }
         ) {
             boolean[] canEdit = new boolean [] {
-                false
+                false, true, true, true, true
             };
 
             public boolean isCellEditable(int rowIndex, int columnIndex) {
@@ -194,6 +202,11 @@ public class JFrameUser extends javax.swing.JFrame {
             }
         });
         jTableExperience.getTableHeader().setReorderingAllowed(false);
+        jTableExperience.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                jTableExperienceMouseClicked(evt);
+            }
+        });
         jScrollPane2.setViewportView(jTableExperience);
         if (jTableExperience.getColumnModel().getColumnCount() > 0) {
             jTableExperience.getColumnModel().getColumn(0).setResizable(false);
@@ -252,7 +265,14 @@ public class JFrameUser extends javax.swing.JFrame {
         jButtonAddExperience.setBackground(Utils.PURPLE);
         jButtonAddExperience.setForeground(new java.awt.Color(255, 255, 255));
         jButtonAddExperience.setText("+");
+        jButtonAddExperience.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButtonAddExperienceActionPerformed(evt);
+            }
+        });
         jPanelUser.add(jButtonAddExperience, new org.netbeans.lib.awtextra.AbsoluteConstraints(750, 560, -1, -1));
+
+        jScrollPane4.setBorder(null);
 
         jTextAreaDescription.setEditable(false);
         jTextAreaDescription.setColumns(20);
@@ -309,12 +329,11 @@ public class JFrameUser extends javax.swing.JFrame {
 
     private boolean containsValue(JTable table, Skill skill) {
         String value;
+        if (deletedSkills.contains(skill)) return true;
         if (table.getRowCount() > 0 && table.getColumnCount() > 0) {
             for (int i = 0; i < table.getRowCount(); i++) {
                 value = (String) table.getValueAt(i, 0);
-                if (value != null && value.equals(skill.getName())) {
-                    return true;
-                }
+                if (value != null && value.equals(skill.getName())) return true;
             }
         }
         return false;
@@ -323,6 +342,7 @@ public class JFrameUser extends javax.swing.JFrame {
     private boolean containsValue(JTable table, AcademicInfo info) { //title + "  " + institution.getName() + "  " + meanScore + "  " + initDate + "  " + endDate;
         Object[] value;
         AcademicInfo aux;
+        if (deletedInfo.contains(info)) return true;
         if (table.getRowCount() > 0 && table.getColumnCount() > 0) {
             for (int i = 0; i < table.getRowCount(); i++) {
                 value = new Object[5];
@@ -335,9 +355,7 @@ public class JFrameUser extends javax.swing.JFrame {
                     } else {
                         aux = new AcademicInfo((String) value[0], new Institution((String) value[1]), (float) value[2], (LocalDate) value[3]);
                     }
-                    if ((aux.equals(info))) {
-                        return true;
-                    }
+                    if ((aux.equals(info))) return true;
                 }
             }
         }
@@ -345,43 +363,97 @@ public class JFrameUser extends javax.swing.JFrame {
     }
 
     private boolean containsValue(JTable table, WorkExperience experience) {
-        String value;
-        for (int i = 0; i < table.getRowCount(); i++) {
-            value = (String) table.getValueAt(i, 0);
-            if (value != null && value.equals("")) {
-                return true;
+        Object[] value;
+        WorkExperience aux;
+        if (deletedExperiences.contains(experience))return true;
+        if (table.getRowCount() > 0 && table.getColumnCount() > 0) {
+            for (int i = 0; i < table.getRowCount(); i++) {
+                value = new Object[5];
+                if (table.getValueAt(i, 0) != null) {
+                    for (int j = 0; j < table.getColumnCount(); j++) {
+                        value[j] = table.getValueAt(i, j);
+                    }
+                    if (value[4] instanceof LocalDate) {
+                        aux = new WorkExperience((String) value[0], companyController.getCompany((String) value[1]), (String) value[2], (LocalDate) value[3], (LocalDate) value[4]);
+                    } else {
+                        aux = new WorkExperience((String) value[0], companyController.getCompany((String) value[1]), (String) value[2], (LocalDate) value[3]);
+                    }
+                    if ((aux.equals(experience))) return true;
+                }
             }
         }
         return false;
     }
 
+    private void refreshTable(JTable table, int option) {
+        DefaultTableModel model;
+        model = new DefaultTableModel();
+        switch (option) {
+            case 1:
+                model.addColumn("Título");
+                model.addColumn("Centro");
+                model.addColumn("Nota Media");
+                model.addColumn("Inicio");
+                model.addColumn("Fin");
+                break;
+            case 2:
+                model.addColumn("Habilidad");
+                break;
+            default:
+                model.addColumn("Puesto");
+                model.addColumn("Empresa");
+                model.addColumn("Ciudad");
+                model.addColumn("Inicio");
+                model.addColumn("Fin");
+                break;
+        }
+        table.setModel(model);
+        fillTable(table, option);
+    }
+
+    private void fillAcademicInfo(DefaultTableModel model) {
+        for (AcademicInfo info : userController.getUserAcademicInfo(user)) {
+            if (!containsValue(jTableAcademicInfo, info)) {
+                if (info.getEndDate() != null) {
+                    model.addRow(new Object[]{info.getTitle(), info.getInstitution().getName(), info.getMeanScore(), info.getInitDate(), info.getEndDate()});
+                } else {
+                    model.addRow(new Object[]{info.getTitle(), info.getInstitution().getName(), info.getMeanScore(), info.getInitDate(), "Actual"});
+                }
+            }
+        }
+    }
+
+    private void fillSkills(DefaultTableModel model) {
+        for (Skill skill : userController.getUserSkills(user)) {
+            if (!containsValue(jTableSkills, skill)) {
+                model.addRow(new String[]{skill.toString()});
+            }
+        }
+    }
+
+    private void fillExperience(DefaultTableModel model) {
+        for (WorkExperience experience : userController.getUserLaboralExperience(user)) {
+            if (!containsValue(jTableExperience, experience)) {
+                if (experience.getEndDate() != null) {
+                    model.addRow(new Object[]{experience.getJobTitle(), experience.getCompany().getName(), experience.getLocation(), experience.getInitDate(), experience.getEndDate()});
+                } else {
+                    model.addRow(new Object[]{experience.getJobTitle(), experience.getCompany().getName(), experience.getLocation(), experience.getInitDate(), "Actual"});
+                }
+            }
+        }
+    }
+
     private void fillTable(JTable table, int option) {
         DefaultTableModel model = (DefaultTableModel) table.getModel();
-
         switch (option) {
             case 1: //AcademicInfo
-                for (AcademicInfo info : userController.getUserAcademicInfo(user)) {
-                    if (!containsValue(table, info)) {
-                        if (info.getEndDate() != null) {
-                            model.addRow(new Object[]{info.getTitle(), info.getInstitution().getName(), info.getMeanScore(), info.getInitDate(), info.getEndDate()});
-                        } else {
-                            model.addRow(new Object[]{info.getTitle(), info.getInstitution().getName(), info.getMeanScore(), info.getInitDate(), "Actual"});
-                        }
-
-                    }
-                }
+                fillAcademicInfo(model);
                 break;
             case 2: //Skills
-                for (Skill skill : userController.getUserSkills(user)) {
-                    if (!containsValue(table, skill)) {
-                        model.addRow(new String[]{skill.toString()});
-                    }
-                }
+                fillSkills(model);
                 break;
             default: //Experience
-                for (WorkExperience experience : userController.getUserLaboralExperience(user)) {
-                    model.addRow(new String[]{experience.toString()});
-                }
+                fillExperience(model);
                 break;
         }
         table.setModel(model);
@@ -449,11 +521,10 @@ public class JFrameUser extends javax.swing.JFrame {
     }//GEN-LAST:event_jLabelDeleteMouseExited
 
     private void jTableAcademicInfoMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jTableAcademicInfoMouseClicked
-        // TODO add your handling code here:ç
-
+        int selectedRow = this.jTableAcademicInfo.getSelectedRow();
         if (SwingUtilities.isLeftMouseButton(evt)) {
             try {
-                JPopupMenu pop = initPopup();
+                JPopupMenu pop = initPopup(selectedRow, 1);
                 pop.show(evt.getComponent(), evt.getX(), evt.getY());
             } catch (NullPointerException nEx) {
                 JOptionPane.showMessageDialog(null, "Error desconocido", "ERROR", JOptionPane.ERROR_MESSAGE);
@@ -462,20 +533,100 @@ public class JFrameUser extends javax.swing.JFrame {
 
     }//GEN-LAST:event_jTableAcademicInfoMouseClicked
 
-    private JPopupMenu initPopup() {
+    private void jTableSkillsMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jTableSkillsMouseClicked
+        int selectedRow = jTableSkills.getSelectedRow();
+        if (SwingUtilities.isLeftMouseButton(evt)) {
+            try {
+                JPopupMenu pop = initPopup(selectedRow, 2);
+                pop.show(evt.getComponent(), evt.getX(), evt.getY());
+            } catch (NullPointerException nEx) {
+                JOptionPane.showMessageDialog(null, "Error desconocido", "ERROR", JOptionPane.ERROR_MESSAGE);
+            }
+        }
+    }//GEN-LAST:event_jTableSkillsMouseClicked
+
+    private void jTableExperienceMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jTableExperienceMouseClicked
+        int selectedRow = jTableExperience.getSelectedRow();
+        if (SwingUtilities.isLeftMouseButton(evt)) {
+            try {
+                JPopupMenu pop = initPopup(selectedRow, 3);
+                pop.show(evt.getComponent(), evt.getX(), evt.getY());
+            } catch (NullPointerException nEx) {
+                JOptionPane.showMessageDialog(null, "Error desconocido", "ERROR", JOptionPane.ERROR_MESSAGE);
+            }
+        }
+    }//GEN-LAST:event_jTableExperienceMouseClicked
+
+    private void jButtonAddExperienceActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButtonAddExperienceActionPerformed
+        // TODO add your handling code here:
+        new JDialogAddExperience(userController, user, this, true).setVisible(true);
+    }//GEN-LAST:event_jButtonAddExperienceActionPerformed
+
+    private JPopupMenu initPopup(int selectedRow, int option) {
         JPopupMenu pop = new JPopupMenu();
-        JMenuItem download = new JMenuItem("Eliminar Información");
-        download.addActionListener((ActionEvent e) -> {
-            this.user.getAcademics().remove(jTableAcademicInfo.getSelectedRow());
-            this.userController.updateUser(user);
-        });
+        JMenuItem delete = new JMenuItem("Eliminar Información");
         JMenuItem change = new JMenuItem("Ver");
-        change.addActionListener((ActionEvent e) -> {
-            new JDialogSeeInfoDetails(userController, user, this, true, user.getAcademics().get(jTableAcademicInfo.getSelectedRow())).setVisible(true);
-        });
-        pop.add(change);
-        pop.add(download);
+        getDeleteItem(delete, option, selectedRow);
+        getDetailsItem(change, option, selectedRow);
+        switch (option) {
+            case 1:
+                pop.add(change);
+                pop.add(delete);
+                refreshTable(jTableAcademicInfo, option);
+                break;
+            case 2:
+                pop.add(delete);
+                refreshTable(jTableSkills, option);
+                break;
+            default:
+                pop.add(change);
+                pop.add(delete);
+                refreshTable(jTableExperience, option);
+                break;
+        }
         return pop;
+    }
+
+    private void getDetailsItem(JMenuItem item, int option, int selectedRow) {
+        if (option == 1) {
+            item.addActionListener((ActionEvent e) -> {
+                new JDialogSeeInfoDetails(userController, user, this, true, user.getAcademics().get(selectedRow)).setVisible(true);
+            });
+        } else {
+            item.addActionListener((ActionEvent e) -> {
+                new JDialogSeeInfoDetails(userController, user, this, true, user.getAcademics().get(selectedRow)).setVisible(true);
+            });
+        }
+    }
+
+    private void getDeleteItem(JMenuItem item, int option, int selectedRow) {
+        switch (option) {
+            case 1:
+                item.addActionListener((ActionEvent e) -> { //TODO PREGUNTAR A ISMA PORQUE NO LO BORRA DE LA BBDD
+                    System.out.println("--------------------------------------------------------------");
+                    deletedInfo.add(this.user.getAcademics().get(selectedRow));
+                    System.out.println("antes del borrado: " + this.user.getAcademics());
+                    this.user.getAcademics().remove(selectedRow);
+                    System.out.println("antes del actualizado: " + this.user.getAcademics());
+                    this.userController.updateUser(user);
+                    System.out.println("despues del actualizado: " + this.user.getAcademics());
+                });
+                break;
+            case 2:
+                item.addActionListener((ActionEvent e) -> {
+                    this.deletedSkills.add(this.user.getSkills().get(selectedRow));
+                    this.user.getSkills().remove(selectedRow);
+                    this.userController.updateUser(user);
+                });
+                break;
+            default:
+                item.addActionListener((ActionEvent e) -> {
+                    deletedExperiences.add(this.user.getExperiences().get(selectedRow));
+                    this.user.getExperiences().remove(selectedRow);
+                    this.userController.updateUser(user);
+                });
+                break;
+        }
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables

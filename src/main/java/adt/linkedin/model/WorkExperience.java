@@ -3,7 +3,7 @@ package adt.linkedin.model;
 import jakarta.persistence.*;
 
 import java.time.LocalDate;
-import java.time.LocalDateTime;
+import java.util.Objects;
 @Entity
 @Table(name = "laboral_experience")
 public class WorkExperience {
@@ -23,26 +23,27 @@ public class WorkExperience {
     @ManyToOne(cascade = CascadeType.ALL)
     @JoinColumn(name = "company_id", nullable = false)
     private Company company;
-    @ManyToOne(cascade = {CascadeType.ALL, CascadeType.MERGE})
+    @ManyToOne(cascade = {CascadeType.PERSIST, CascadeType.MERGE})
     @JoinColumn(name="user_id", nullable = false)
     private User user;
 
     public WorkExperience() {
     }
 
-    public WorkExperience(boolean current, LocalDate initDate, String jobTitle, String location, Company company) {
-        this.current = current;
+    public WorkExperience(String jobTitle, Company company, String location,  LocalDate initDate) {
+        this.current = true;
         this.initDate = initDate;
         this.jobTitle = jobTitle;
         this.location = location;
         this.company = company;
     }
-    public WorkExperience(LocalDate initDate, LocalDate endDate, String jobTitle, String location, Company company) {
+    public WorkExperience(String jobTitle,Company company, String location, LocalDate initDate, LocalDate endDate) {
         this.initDate = initDate;
         this.endDate = endDate;
         this.jobTitle = jobTitle;
         this.location = location;
         this.company = company;
+        this.current = false;
     }
 
     public long getId() {
@@ -108,6 +109,43 @@ public class WorkExperience {
     public void setUser(User user) {
         this.user = user;
     }
+
+    @Override
+    public int hashCode() {
+        int hash = 5;
+        hash = 67 * hash + Objects.hashCode(this.initDate);
+        hash = 67 * hash + Objects.hashCode(this.jobTitle);
+        hash = 67 * hash + Objects.hashCode(this.location);
+        hash = 67 * hash + Objects.hashCode(this.company);
+        return hash;
+    }
+
+    @Override
+    public boolean equals(Object obj) {
+        if (this == obj) {
+            return true;
+        }
+        if (obj == null) {
+            return false;
+        }
+        if (getClass() != obj.getClass()) {
+            return false;
+        }
+        final WorkExperience other = (WorkExperience) obj;
+        if (!Objects.equals(this.jobTitle, other.jobTitle)) {
+            return false;
+        }
+        if (!Objects.equals(this.location, other.location)) {
+            return false;
+        }
+        if (!Objects.equals(this.initDate, other.initDate)) {
+            return false;
+        }
+        return Objects.equals(this.company.getName(), other.company.getName());
+    }
+    
+    
+    
 
     @Override
     public String toString() {
