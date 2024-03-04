@@ -254,7 +254,7 @@ public class Feed extends javax.swing.JFrame {
     private void jLabelUsernameMouseExited(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jLabelUsernameMouseExited
         // TODO add your handling code here:
         Utils.mouseExited(jLabelUsername);
-        this.jLabelUsername.setForeground(Color.BLACK);
+        this.jLabelUsername.setForeground(Color.WHITE);
     }//GEN-LAST:event_jLabelUsernameMouseExited
 
     private void jTextField1MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jTextField1MouseClicked

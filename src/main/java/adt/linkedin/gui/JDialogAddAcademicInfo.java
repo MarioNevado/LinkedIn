@@ -9,6 +9,7 @@ import adt.linkedin.model.Institution;
 import adt.linkedin.model.User;
 import adt.linkedin.services.UserService;
 import adt.linkedin.tools.Utils;
+import java.awt.HeadlessException;
 import java.time.LocalDate;
 import java.time.Month;
 import javax.swing.DefaultComboBoxModel;
@@ -209,15 +210,22 @@ public class JDialogAddAcademicInfo extends javax.swing.JDialog {
     }
 
     private LocalDate getEndDate() {
-        Integer dayF, monthF, yearF;
-        dayF = Integer.valueOf(this.jComboDayF.getSelectedItem().toString());
-        monthF = Integer.valueOf(this.jComboMonthF.getSelectedItem().toString());
-        yearF = Integer.valueOf(this.jComboYearF.getSelectedItem().toString());
-        if (LocalDate.of(yearF, monthF, dayF).compareTo(LocalDate.now()) >= 1) {
-            JOptionPane.showMessageDialog(null, "La fecha de finalización no puede ser posterior a la fecha actual", "Error en fechas", JOptionPane.ERROR_MESSAGE);
+        System.out.println("hola");
+        try {
+            Integer dayF, monthF, yearF;
+            dayF = Integer.valueOf(this.jComboDayF.getSelectedItem().toString());
+            monthF = Integer.valueOf(this.jComboMonthF.getSelectedItem().toString());
+            yearF = Integer.valueOf(this.jComboYearF.getSelectedItem().toString());
+            if (LocalDate.of(yearF, monthF, dayF).compareTo(LocalDate.now()) >= 1) {
+
+                JOptionPane.showMessageDialog(null, "La fecha de finalización no puede ser posterior a la fecha actual", "Error en fechas", JOptionPane.ERROR_MESSAGE);
+                return null;
+            }
+            return LocalDate.of(yearF, monthF, dayF);
+        } catch (NumberFormatException e) {
+            e.printStackTrace();
             return null;
         }
-        return LocalDate.of(yearF, monthF, dayF);
 
     }
     private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
@@ -226,19 +234,21 @@ public class JDialogAddAcademicInfo extends javax.swing.JDialog {
         float meanScore;
         LocalDate init;
         LocalDate end = null;
-            if (this.jTextFieldMeanScore.getText().matches(Utils.MEANSCORE_REGEX)) {
-                if (this.jTextFieldMeanScore.getText().contains(",")) {
-                    this.jTextFieldMeanScore.setText(this.jTextFieldMeanScore.getText().replace(",", "."));
-                }
-                meanScore = Float.parseFloat(this.jTextFieldMeanScore.getText());
-                init = getInitDate();
-                if (init != null) {
-                    if (jCheckBox1.isSelected()) {
-                        info = new AcademicInfo(this.jTextFieldTitle.getText(), new Institution(this.jTextFieldInstitution.getText()), meanScore, init);
-                    } else {
-                        end = getEndDate();
-                        info = new AcademicInfo(this.jTextFieldTitle.getText(), new Institution(this.jTextFieldInstitution.getText()), meanScore, init, end);
-                    }
+        if (this.jTextFieldMeanScore.getText().matches(Utils.MEANSCORE_REGEX)) {
+            if (this.jTextFieldMeanScore.getText().contains(",")) {
+                this.jTextFieldMeanScore.setText(this.jTextFieldMeanScore.getText().replace(",", "."));
+            }
+            meanScore = Float.parseFloat(this.jTextFieldMeanScore.getText());
+            init = getInitDate();
+            if (init != null) {
+                if (jCheckBox1.isSelected()) {
+                    info = new AcademicInfo(this.jTextFieldTitle.getText(), new Institution(this.jTextFieldInstitution.getText()), meanScore, init);
+                    controller.addAcademicInfo(user, info);
+                    JOptionPane.showMessageDialog(null, "Información añadida :))", "ENHORABUENA!!!", JOptionPane.INFORMATION_MESSAGE);
+                    dispose();
+                } else {
+                    end = getEndDate();
+                    info = new AcademicInfo(this.jTextFieldTitle.getText(), new Institution(this.jTextFieldInstitution.getText()), meanScore, init, end);
                     if (end != null && init.compareTo(end) >= 1) {
                         JOptionPane.showMessageDialog(null, "La fecha de inicio no puede ser posterior a la fecha de fin", "Error en fechas", JOptionPane.ERROR_MESSAGE);
                     } else if (end != null) {
@@ -247,9 +257,11 @@ public class JDialogAddAcademicInfo extends javax.swing.JDialog {
                         dispose();
                     }
                 }
-            } else {
-                JOptionPane.showMessageDialog(null, "Eso no es un número", "ERROR", JOptionPane.ERROR_MESSAGE);
+
             }
+        } else {
+            JOptionPane.showMessageDialog(null, "Eso no es un número", "ERROR", JOptionPane.ERROR_MESSAGE);
+        }
     }//GEN-LAST:event_jButton1ActionPerformed
 
     /**

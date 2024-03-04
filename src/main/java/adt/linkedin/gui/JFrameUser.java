@@ -8,15 +8,17 @@ import adt.linkedin.model.*;
 import adt.linkedin.services.CompanyService;
 import adt.linkedin.services.UserService;
 import adt.linkedin.tools.Utils;
+import java.awt.Color;
 import java.awt.Component;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.io.IOException;
 import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
 import javax.swing.*;
+import javax.swing.table.DefaultTableCellRenderer;
 import javax.swing.table.DefaultTableModel;
+import javax.swing.table.TableCellRenderer;
 
 /**
  *
@@ -36,6 +38,9 @@ public class JFrameUser extends javax.swing.JFrame {
             refreshTable(jTableAcademicInfo, 1);
             refreshTable(jTableSkills, 2);
             refreshTable(jTableExperience, 3);
+            initTable(jTableSkills);
+            initTable(jTableAcademicInfo);
+            initTable(jTableExperience);
         }
     });
 
@@ -58,6 +63,27 @@ public class JFrameUser extends javax.swing.JFrame {
         timer.start();
         this.jLabelUserName.setText(this.user.getName());
         this.jTextAreaDescription.setText(this.user.getDescription());
+        initTable(jTableSkills);
+        initTable(jTableAcademicInfo);
+        initTable(jTableExperience);
+    }
+
+    private void initTable(JTable table) {
+        DefaultTableCellRenderer header = new DefaultTableCellRenderer();
+        header.setBackground(Utils.PURPLE);
+        header.setForeground(Color.white);
+        for (int i = 0; i < table.getColumnCount(); i++) {
+            table.getColumnModel().getColumn(i).setHeaderRenderer(header);
+        }
+        TableCellRenderer rows = (table2, value, isSelected, hasFocus, row, column) -> {
+            
+            Component c = header.getTableCellRendererComponent(table2, value, isSelected, hasFocus, row, column);
+            if (!isSelected && table2.getRowCount() > 0) {
+                c.setBackground(Color.BLACK);
+            }
+            return c;
+        };
+        table.setDefaultRenderer(Object.class, rows);
     }
 
     /**
@@ -88,11 +114,12 @@ public class JFrameUser extends javax.swing.JFrame {
         jScrollPane4 = new javax.swing.JScrollPane();
         jTextAreaDescription = new javax.swing.JTextArea();
         jButtonHome = new javax.swing.JButton();
+        jLabel1 = new javax.swing.JLabel();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         getContentPane().setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
 
-        jPanel1.setBackground(java.awt.Color.lightGray);
+        jPanel1.setBackground(new java.awt.Color(0, 0, 0));
         jPanel1.setPreferredSize(this.getPreferredSize());
 
         jPanelUser.setBackground(new java.awt.Color(255, 255, 255));
@@ -123,12 +150,14 @@ public class JFrameUser extends javax.swing.JFrame {
 
         jScrollPane3.setBorder(javax.swing.BorderFactory.createEtchedBorder(new java.awt.Color(153, 102, 255), null));
 
+        jTableSkills.setBackground(new java.awt.Color(0, 0, 0));
+        jTableSkills.setForeground(new java.awt.Color(255, 255, 255));
         jTableSkills.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
 
             },
             new String [] {
-                "Skills"
+                "Habilidad"
             }
         ) {
             boolean[] canEdit = new boolean [] {
@@ -154,6 +183,8 @@ public class JFrameUser extends javax.swing.JFrame {
 
         jScrollPane1.setBorder(javax.swing.BorderFactory.createEtchedBorder(new java.awt.Color(153, 102, 255), null));
 
+        jTableAcademicInfo.setBackground(new java.awt.Color(0, 0, 0));
+        jTableAcademicInfo.setForeground(new java.awt.Color(255, 255, 255));
         jTableAcademicInfo.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
 
@@ -192,6 +223,8 @@ public class JFrameUser extends javax.swing.JFrame {
 
         jScrollPane2.setBorder(javax.swing.BorderFactory.createEtchedBorder(new java.awt.Color(153, 102, 255), null));
 
+        jTableExperience.setBackground(new java.awt.Color(0, 0, 0));
+        jTableExperience.setForeground(new java.awt.Color(255, 255, 255));
         jTableExperience.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
 
@@ -304,6 +337,7 @@ public class JFrameUser extends javax.swing.JFrame {
         jPanelUser.add(jScrollPane4, new org.netbeans.lib.awtextra.AbsoluteConstraints(30, 190, 170, 180));
 
         jButtonHome.setBackground(Utils.PURPLE);
+        jButtonHome.setForeground(new java.awt.Color(255, 255, 255));
         jButtonHome.setText("Home");
         jButtonHome.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -311,12 +345,16 @@ public class JFrameUser extends javax.swing.JFrame {
             }
         });
 
+        jLabel1.setIcon(new javax.swing.ImageIcon(getClass().getResource("/img/Link up.png"))); // NOI18N
+
         javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
         jPanel1.setLayout(jPanel1Layout);
         jPanel1Layout.setHorizontalGroup(
             jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel1Layout.createSequentialGroup()
-                .addGap(499, 499, 499)
+                .addContainerGap()
+                .addComponent(jLabel1, javax.swing.GroupLayout.PREFERRED_SIZE, 475, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(18, 18, 18)
                 .addComponent(jPanelUser, javax.swing.GroupLayout.PREFERRED_SIZE, 796, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(280, 280, 280)
                 .addComponent(jButtonHome)
@@ -325,10 +363,15 @@ public class JFrameUser extends javax.swing.JFrame {
         jPanel1Layout.setVerticalGroup(
             jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel1Layout.createSequentialGroup()
-                .addGap(17, 17, 17)
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(jButtonHome)
-                    .addComponent(jPanelUser, javax.swing.GroupLayout.PREFERRED_SIZE, 868, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addGroup(jPanel1Layout.createSequentialGroup()
+                        .addGap(17, 17, 17)
+                        .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(jButtonHome)
+                            .addComponent(jPanelUser, javax.swing.GroupLayout.PREFERRED_SIZE, 868, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                    .addGroup(jPanel1Layout.createSequentialGroup()
+                        .addContainerGap()
+                        .addComponent(jLabel1, javax.swing.GroupLayout.PREFERRED_SIZE, 362, javax.swing.GroupLayout.PREFERRED_SIZE)))
                 .addContainerGap(195, Short.MAX_VALUE))
         );
 
@@ -410,6 +453,7 @@ public class JFrameUser extends javax.swing.JFrame {
     private void refreshTable(JTable table, int option) {
         DefaultTableModel model;
         model = new DefaultTableModel();
+        initTable(table);
         switch (option) {
             case 1:
                 model.addColumn("Título");
@@ -535,7 +579,7 @@ public class JFrameUser extends javax.swing.JFrame {
     private void jLabelDeleteMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jLabelDeleteMouseClicked
 
         String buttons[] = {"Eliminar cuenta", "Cancelar"};
-        String confirmButtons[] = {"SI", "Cancelar"};
+        String confirmButtons[] = {"Cancelar","SI" };
         int option = JOptionPane.showOptionDialog(this, "Esta acción es irreversible, piénsalo dos veces...", "Eliminar cuenta",
                 0, 0, null, buttons, this);
         if (option == JOptionPane.YES_OPTION) {
@@ -561,6 +605,7 @@ public class JFrameUser extends javax.swing.JFrame {
     }//GEN-LAST:event_jLabelDeleteMouseExited
 
     private void jTableAcademicInfoMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jTableAcademicInfoMouseClicked
+        initTable(jTableAcademicInfo);
         int selectedRow = this.jTableAcademicInfo.getSelectedRow();
         if (SwingUtilities.isLeftMouseButton(evt)) {
             try {
@@ -649,15 +694,18 @@ public class JFrameUser extends javax.swing.JFrame {
     }
 
     private void getDeleteItem(JMenuItem item, int option, int selectedRow) {
+        
         switch (option) {
             case 1:
                 item.addActionListener((ActionEvent e) -> { //TODO PREGUNTAR A ISMA PORQUE NO LO BORRA DE LA BBDD
+                    User aux = user;
                     System.out.println("--------------------------------------------------------------");
                     deletedInfo.add(this.user.getAcademics().get(selectedRow));
                     System.out.println("antes del borrado: " + this.user.getAcademics());
                     this.user.getAcademics().remove(selectedRow);
                     System.out.println("antes del actualizado: " + this.user.getAcademics());
-                    this.userController.updateUser(user);
+                    aux = userController.getUserById(user.getId());
+                    this.userController.updateUser(aux);
                     System.out.println("despues del actualizado: " + this.user.getAcademics());
                 });
                 break;
@@ -683,6 +731,7 @@ public class JFrameUser extends javax.swing.JFrame {
     private javax.swing.JButton jButtonAddExperience;
     private javax.swing.JButton jButtonAddSkill;
     private javax.swing.JButton jButtonHome;
+    private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabelDelete;
     private javax.swing.JLabel jLabelHeader;
     private javax.swing.JLabel jLabelLogOut;
