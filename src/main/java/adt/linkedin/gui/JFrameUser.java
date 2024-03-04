@@ -8,6 +8,7 @@ import adt.linkedin.model.*;
 import adt.linkedin.services.CompanyService;
 import adt.linkedin.services.UserService;
 import adt.linkedin.tools.Utils;
+import java.awt.Component;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.io.IOException;
@@ -26,10 +27,9 @@ public class JFrameUser extends javax.swing.JFrame {
     final User user;
     final UserService userController;
     final CompanyService companyController = new CompanyService();
-    boolean firstDeleted = false;
-    private List<AcademicInfo> deletedInfo = new ArrayList<>();
-    private List<Skill> deletedSkills = new ArrayList<>();
-    private List<WorkExperience> deletedExperiences = new ArrayList<>();
+    private final List<AcademicInfo> deletedInfo = new ArrayList<>();
+    private final List<Skill> deletedSkills = new ArrayList<>();
+    private final List<WorkExperience> deletedExperiences = new ArrayList<>();
     private final Timer timer = new Timer(3000, new ActionListener() {
         @Override
         public void actionPerformed(ActionEvent ae) {
@@ -57,7 +57,6 @@ public class JFrameUser extends javax.swing.JFrame {
         this.jButtonHome.setBackground(Utils.PURPLE);
         timer.start();
         this.jLabelUserName.setText(this.user.getName());
-        this.jTextAreaDescription.setLineWrap(true);
         this.jTextAreaDescription.setText(this.user.getDescription());
     }
 
@@ -104,6 +103,14 @@ public class JFrameUser extends javax.swing.JFrame {
         jLabelUserPic.setIcon(new javax.swing.ImageIcon(getClass().getResource("/img/defaultpic.png"))); // NOI18N
         jLabelUserPic.setText("jLabel2");
         jLabelUserPic.setBorder(javax.swing.BorderFactory.createEtchedBorder(null, new java.awt.Color(153, 102, 255)));
+        jLabelUserPic.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                jLabelUserPicMouseClicked(evt);
+            }
+            public void mouseEntered(java.awt.event.MouseEvent evt) {
+                jLabelUserPicMouseEntered(evt);
+            }
+        });
         jPanelUser.add(jLabelUserPic, new org.netbeans.lib.awtextra.AbsoluteConstraints(60, 60, 91, 91));
 
         jLabelHeader.setIcon(new javax.swing.ImageIcon(getClass().getResource("/img/image.png"))); // NOI18N
@@ -276,7 +283,10 @@ public class JFrameUser extends javax.swing.JFrame {
 
         jTextAreaDescription.setEditable(false);
         jTextAreaDescription.setColumns(20);
+        jTextAreaDescription.setLineWrap(true);
         jTextAreaDescription.setRows(5);
+        jTextAreaDescription.setWrapStyleWord(true);
+        jTextAreaDescription.setAlignmentX(Component.CENTER_ALIGNMENT);
         jTextAreaDescription.setBorder(null);
         jTextAreaDescription.addMouseListener(new java.awt.event.MouseAdapter() {
             public void mouseClicked(java.awt.event.MouseEvent evt) {
@@ -329,11 +339,15 @@ public class JFrameUser extends javax.swing.JFrame {
 
     private boolean containsValue(JTable table, Skill skill) {
         String value;
-        if (deletedSkills.contains(skill)) return true;
+        if (deletedSkills.contains(skill)) {
+            return true;
+        }
         if (table.getRowCount() > 0 && table.getColumnCount() > 0) {
             for (int i = 0; i < table.getRowCount(); i++) {
                 value = (String) table.getValueAt(i, 0);
-                if (value != null && value.equals(skill.getName())) return true;
+                if (value != null && value.equals(skill.getName())) {
+                    return true;
+                }
             }
         }
         return false;
@@ -342,7 +356,9 @@ public class JFrameUser extends javax.swing.JFrame {
     private boolean containsValue(JTable table, AcademicInfo info) { //title + "  " + institution.getName() + "  " + meanScore + "  " + initDate + "  " + endDate;
         Object[] value;
         AcademicInfo aux;
-        if (deletedInfo.contains(info)) return true;
+        if (deletedInfo.contains(info)) {
+            return true;
+        }
         if (table.getRowCount() > 0 && table.getColumnCount() > 0) {
             for (int i = 0; i < table.getRowCount(); i++) {
                 value = new Object[5];
@@ -355,7 +371,9 @@ public class JFrameUser extends javax.swing.JFrame {
                     } else {
                         aux = new AcademicInfo((String) value[0], new Institution((String) value[1]), (float) value[2], (LocalDate) value[3]);
                     }
-                    if ((aux.equals(info))) return true;
+                    if ((aux.equals(info))) {
+                        return true;
+                    }
                 }
             }
         }
@@ -365,7 +383,9 @@ public class JFrameUser extends javax.swing.JFrame {
     private boolean containsValue(JTable table, WorkExperience experience) {
         Object[] value;
         WorkExperience aux;
-        if (deletedExperiences.contains(experience))return true;
+        if (deletedExperiences.contains(experience)) {
+            return true;
+        }
         if (table.getRowCount() > 0 && table.getColumnCount() > 0) {
             for (int i = 0; i < table.getRowCount(); i++) {
                 value = new Object[5];
@@ -378,7 +398,9 @@ public class JFrameUser extends javax.swing.JFrame {
                     } else {
                         aux = new WorkExperience((String) value[0], companyController.getCompany((String) value[1]), (String) value[2], (LocalDate) value[3]);
                     }
-                    if ((aux.equals(experience))) return true;
+                    if ((aux.equals(experience))) {
+                        return true;
+                    }
                 }
             }
         }
@@ -460,63 +482,81 @@ public class JFrameUser extends javax.swing.JFrame {
     }
 
     private void jButtonHomeActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButtonHomeActionPerformed
-        // TODO add your handling code here:
-        this.setVisible(false);
         new Feed(user, userController).setVisible(true);
+        dispose();
     }//GEN-LAST:event_jButtonHomeActionPerformed
 
     private void jLabelLogOutMouseEntered(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jLabelLogOutMouseEntered
-        // TODO add your handling code here:
+
         Utils.mouseEntered(this.jLabelLogOut);
     }//GEN-LAST:event_jLabelLogOutMouseEntered
 
     private void jLabelLogOutMouseExited(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jLabelLogOutMouseExited
-        // TODO add your handling code here:
+
         Utils.mouseExited(this.jLabelLogOut);
     }//GEN-LAST:event_jLabelLogOutMouseExited
 
     private void jLabelLogOutMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jLabelLogOutMouseClicked
-        // TODO add your handling code here:
+
+        String buttons[] = {"Salir", "Cancelar"};
+        int option = JOptionPane.showOptionDialog(this, "¿Realmente desea cerrar la sesión?", "Cierre de sesión",
+                0, 0, null, buttons, this);
+        if (option == JOptionPane.YES_OPTION) {
+            new LogIn().setVisible(true);
+            dispose();
+        }
     }//GEN-LAST:event_jLabelLogOutMouseClicked
 
     private void jButtonAddAIActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButtonAddAIActionPerformed
-        // TODO add your handling code here:
+
         new JDialogAddAcademicInfo(userController, user, this, true).setVisible(true);
     }//GEN-LAST:event_jButtonAddAIActionPerformed
 
     private void jButtonAddSkillActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButtonAddSkillActionPerformed
-        // TODO add your handling code here:
+
         new JDialogAddSkill(userController, user, this, true).setVisible(true);
     }//GEN-LAST:event_jButtonAddSkillActionPerformed
 
     private void jTextAreaDescriptionMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jTextAreaDescriptionMouseClicked
-        // TODO add your handling code here:
+
         new JDialogAddDescription(userController, user, this, true, this.jTextAreaDescription).setVisible(true);
     }//GEN-LAST:event_jTextAreaDescriptionMouseClicked
 
     private void jTextAreaDescriptionMouseEntered(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jTextAreaDescriptionMouseEntered
-        // TODO add your handling code here:
+
         this.jTextAreaDescription.setToolTipText("Click para cambiar la descripción");
 
     }//GEN-LAST:event_jTextAreaDescriptionMouseEntered
 
     private void jTextAreaDescriptionMouseExited(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jTextAreaDescriptionMouseExited
         // TODO add your handling code here:
-
     }//GEN-LAST:event_jTextAreaDescriptionMouseExited
 
     private void jLabelDeleteMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jLabelDeleteMouseClicked
-        // TODO add your handling code here:
+
+        String buttons[] = {"Eliminar cuenta", "Cancelar"};
+        String confirmButtons[] = {"SI", "Cancelar"};
+        int option = JOptionPane.showOptionDialog(this, "Esta acción es irreversible, piénsalo dos veces...", "Eliminar cuenta",
+                0, 0, null, buttons, this);
+        if (option == JOptionPane.YES_OPTION) {
+            int confirmOption = JOptionPane.showOptionDialog(this, "¿Seguro que quieres borrar tu cuenta?",
+                    "Eliminar cuenta", 0, 0, null, confirmButtons, this);
+            if (confirmOption == JOptionPane.YES_OPTION) {
+                this.userController.removeUser(user);
+                new LogIn().setVisible(true);
+                dispose();
+            }
+        }
 
     }//GEN-LAST:event_jLabelDeleteMouseClicked
 
     private void jLabelDeleteMouseEntered(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jLabelDeleteMouseEntered
-        // TODO add your handling code here:
+
         Utils.mouseEntered(jLabelDelete);
     }//GEN-LAST:event_jLabelDeleteMouseEntered
 
     private void jLabelDeleteMouseExited(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jLabelDeleteMouseExited
-        // TODO add your handling code here:
+
         Utils.mouseExited(jLabelDelete);
     }//GEN-LAST:event_jLabelDeleteMouseExited
 
@@ -558,9 +598,18 @@ public class JFrameUser extends javax.swing.JFrame {
     }//GEN-LAST:event_jTableExperienceMouseClicked
 
     private void jButtonAddExperienceActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButtonAddExperienceActionPerformed
-        // TODO add your handling code here:
+
         new JDialogAddExperience(userController, user, this, true).setVisible(true);
     }//GEN-LAST:event_jButtonAddExperienceActionPerformed
+
+    private void jLabelUserPicMouseEntered(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jLabelUserPicMouseEntered
+
+        this.jLabelUserPic.setToolTipText("Click para cambiar foto de perfil");
+    }//GEN-LAST:event_jLabelUserPicMouseEntered
+
+    private void jLabelUserPicMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jLabelUserPicMouseClicked
+        // TODO add your handling code here:
+    }//GEN-LAST:event_jLabelUserPicMouseClicked
 
     private JPopupMenu initPopup(int selectedRow, int option) {
         JPopupMenu pop = new JPopupMenu();
@@ -594,7 +643,7 @@ public class JFrameUser extends javax.swing.JFrame {
             });
         } else {
             item.addActionListener((ActionEvent e) -> {
-                new JDialogSeeInfoDetails(userController, user, this, true, user.getAcademics().get(selectedRow)).setVisible(true);
+                new JDialogSeeExperienceDetails(userController, user, this, true, user.getExperiences().get(selectedRow)).setVisible(true);
             });
         }
     }
