@@ -36,7 +36,7 @@ public class JobOffer {
     private List<Skill> skills = new ArrayList<>();
     @ManyToOne(cascade = CascadeType.ALL, fetch = FetchType.EAGER)
     @JoinColumn(name = "candidature_id", nullable = false)
-    private Candidature candidature;
+    private List<Candidature> candidatures;
     public JobOffer() {
     }
     public JobOffer(String title, String location) {
@@ -131,12 +131,12 @@ public class JobOffer {
         this.skills = skills;
     }
 
-    public Candidature getCandidature() {
-        return candidature;
+    public List<Candidature> getCandidatures() {
+        return candidatures;
     }
 
-    public void setCandidature(Candidature candidature) {
-        this.candidature = candidature;
+    public void setCandidatures(List<Candidature> candidature) {
+        this.candidatures = candidature;
     }
 
     @Override
@@ -153,7 +153,7 @@ public class JobOffer {
                 ", details='" + details + '\'' +
                 ", company=" + company +
                 ", skills=" + skills +
-                ", candidature=" + candidature +
+                ", candidature=" + candidatures +
                 '}';
     }
 }

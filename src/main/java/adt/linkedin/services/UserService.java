@@ -27,7 +27,7 @@ public class UserService {
             CriteriaBuilder cb = session.getCriteriaBuilder();
             CriteriaQuery<Skill> cQuery = cb.createQuery(Skill.class);
             Root<User> root = cQuery.from(User.class);
-            Join<User, Skill> join = root.join("skills"); //aunque no se use se indica
+            Join<User, Skill> join = root.join("skills");
             cQuery.where(cb.equal(root, user));
             Query<Skill> query = session.createQuery(cQuery.select(join));
             return query.list();
@@ -251,9 +251,9 @@ public class UserService {
     public void addCandidature(User user, JobOffer offer, String cvPath, String coverLetterPath){ //igual
         Candidature candidature = new Candidature(cvPath, coverLetterPath);
         candidature.setUser(user);
-        candidature.getOffers().add(offer);
+        candidature.setOffer(offer);
         user.getCandidatures().add(candidature);
-        offer.setCandidature(candidature);
+        offer.getCandidatures().add(candidature);
         userController.updateUser(user);
     }
     
@@ -261,8 +261,8 @@ public class UserService {
         Candidature c = new Candidature();
         user.getCandidatures().add(c);
         c.setUser(user);
-        offer.setCandidature(c);
-        c.getOffers().add(offer);
+        offer.getCandidatures().add(c);
+        c.setOffer(offer);
         userController.updateUser(user);
     }
     

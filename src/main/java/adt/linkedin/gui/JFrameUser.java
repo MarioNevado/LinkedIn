@@ -75,15 +75,6 @@ public class JFrameUser extends javax.swing.JFrame {
         for (int i = 0; i < table.getColumnCount(); i++) {
             table.getColumnModel().getColumn(i).setHeaderRenderer(header);
         }
-        TableCellRenderer rows = (table2, value, isSelected, hasFocus, row, column) -> {
-            
-            Component c = header.getTableCellRendererComponent(table2, value, isSelected, hasFocus, row, column);
-            if (!isSelected && table2.getRowCount() > 0) {
-                c.setBackground(Color.BLACK);
-            }
-            return c;
-        };
-        table.setDefaultRenderer(Object.class, rows);
     }
 
     /**
@@ -209,6 +200,9 @@ public class JFrameUser extends javax.swing.JFrame {
         jTableAcademicInfo.addMouseListener(new java.awt.event.MouseAdapter() {
             public void mouseClicked(java.awt.event.MouseEvent evt) {
                 jTableAcademicInfoMouseClicked(evt);
+            }
+            public void mouseEntered(java.awt.event.MouseEvent evt) {
+                jTableAcademicInfoMouseEntered(evt);
             }
         });
         jScrollPane1.setViewportView(jTableAcademicInfo);
@@ -453,7 +447,7 @@ public class JFrameUser extends javax.swing.JFrame {
     private void refreshTable(JTable table, int option) {
         DefaultTableModel model;
         model = new DefaultTableModel();
-        initTable(table);
+        
         switch (option) {
             case 1:
                 model.addColumn("Título");
@@ -474,6 +468,7 @@ public class JFrameUser extends javax.swing.JFrame {
                 break;
         }
         table.setModel(model);
+        initTable(table);
         fillTable(table, option);
     }
 
@@ -656,6 +651,11 @@ public class JFrameUser extends javax.swing.JFrame {
         // TODO add your handling code here:
     }//GEN-LAST:event_jLabelUserPicMouseClicked
 
+    private void jTableAcademicInfoMouseEntered(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jTableAcademicInfoMouseEntered
+        // TODO add your handling code here:
+        initTable(jTableAcademicInfo);
+    }//GEN-LAST:event_jTableAcademicInfoMouseEntered
+
     private JPopupMenu initPopup(int selectedRow, int option) {
         JPopupMenu pop = new JPopupMenu();
         JMenuItem delete = new JMenuItem("Eliminar Información");
@@ -697,16 +697,10 @@ public class JFrameUser extends javax.swing.JFrame {
         
         switch (option) {
             case 1:
-                item.addActionListener((ActionEvent e) -> { //TODO PREGUNTAR A ISMA PORQUE NO LO BORRA DE LA BBDD
-                    User aux = user;
-                    System.out.println("--------------------------------------------------------------");
+                item.addActionListener((ActionEvent e) -> { 
                     deletedInfo.add(this.user.getAcademics().get(selectedRow));
-                    System.out.println("antes del borrado: " + this.user.getAcademics());
                     this.user.getAcademics().remove(selectedRow);
-                    System.out.println("antes del actualizado: " + this.user.getAcademics());
-                    aux = userController.getUserById(user.getId());
-                    this.userController.updateUser(aux);
-                    System.out.println("despues del actualizado: " + this.user.getAcademics());
+                    this.userController.updateUser(user);
                 });
                 break;
             case 2:

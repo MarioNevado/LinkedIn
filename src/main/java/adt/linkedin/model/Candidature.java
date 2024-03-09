@@ -6,6 +6,7 @@ import org.checkerframework.checker.units.qual.C;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
 
 @Entity
 @Table(name = "candidatures")
@@ -22,8 +23,8 @@ public class Candidature {
     @ManyToOne(cascade = {CascadeType.PERSIST, CascadeType.MERGE, CascadeType.REMOVE})
     @JoinColumn(name = "user_id", nullable = false)
     private User user;
-    @OneToMany(cascade = CascadeType.ALL, fetch = FetchType.EAGER, mappedBy = "candidature")
-    private List<JobOffer> offers = new ArrayList<>();
+    @ManyToOne(cascade = CascadeType.ALL, fetch = FetchType.EAGER)
+    private JobOffer offer;
 
     public Candidature() {
     }
@@ -72,11 +73,11 @@ public class Candidature {
         this.user = user;
     }
 
-    public List<JobOffer> getOffers() {
-        return offers;
+    public JobOffer getOffers() {
+        return offer;
     }
-    public void setOffers(List<JobOffer> offers) {
-        this.offers = offers;
+    public void setOffer(JobOffer offer) {
+        this.offer = offer;
     }
 
     @Override
@@ -86,8 +87,39 @@ public class Candidature {
                 ", status=" + status +
                 ", cvPath='" + cvPath + '\'' +
                 ", coverLetterPath='" + coverLetterPath + '\'' +
-                ", user=" + user +
-                ", offers=" + offers +
-                '}';
+                ", user=" + user;
     }
+
+    @Override
+    public int hashCode() {
+        int hash = 7;
+        return hash;
+    }
+
+    @Override
+    public boolean equals(Object obj) {
+        if (this == obj) {
+            return true;
+        }
+        if (obj == null) {
+            return false;
+        }
+        if (getClass() != obj.getClass()) {
+            return false;
+        }
+        final Candidature other = (Candidature) obj;
+        if (this.status != other.status) {
+            return false;
+        }
+        if (!Objects.equals(this.user, other.user)) {
+            return false;
+        }
+        if (!Objects.equals(this.offer.getCompany().getName(), other.getOffers().getCompany().getName())) {
+            return false;
+        }
+        if (!Objects.equals(this.offer.getLocation(), other.getOffers().getLocation())) {
+            return false;
+        }
+        return Objects.equals(this.offer.getTitle(), other.offer.getTitle());
+    }    
 }

@@ -5,5 +5,8 @@ import adt.linkedin.model.JobOffer;
 import java.util.List;
 
 public interface JobOfferDAO {
+    public void createOffer(JobOffer offer);
+    public void updateOffer(JobOffer offer);
+    public void removeOffer(JobOffer offer);
     
 }

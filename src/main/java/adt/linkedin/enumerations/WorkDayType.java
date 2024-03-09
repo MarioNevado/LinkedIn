@@ -14,4 +14,7 @@ public enum WorkDayType {
         }
         return null;
     }
+    public int getValue() {
+        return code;
+    }
 }
