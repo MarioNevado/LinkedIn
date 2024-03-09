@@ -7,7 +7,9 @@ import adt.linkedin.model.Candidature;
 import adt.linkedin.model.Company;
 import adt.linkedin.model.JobOffer;
 import adt.linkedin.model.Skill;
+import adt.linkedin.model.User;
 import adt.linkedin.tools.HibernateUtil;
+import jakarta.persistence.NoResultException;
 import jakarta.persistence.criteria.*;
 import jakarta.persistence.criteria.CriteriaQuery;
 import java.util.List;
@@ -39,6 +41,8 @@ public class JobOfferService {
             cQuery.where(cb.equal(root, offer));
             Query<Candidature> query = session.createQuery(cQuery.select(join));
             return query.list();
+        }catch(NoResultException no){
+            
         }catch(Exception e){
             e.printStackTrace();
         }
@@ -54,6 +58,8 @@ public class JobOfferService {
             cQuery.where(cb.equal(join, skill));
             Query<JobOffer> query = session.createQuery(cQuery);
             return query.list();
+        }catch(NoResultException no){
+            
         }catch(Exception e){
             e.printStackTrace();
         }
@@ -69,6 +75,8 @@ public class JobOfferService {
             cQuery.where(cb.equal(join.get("name"), name));
             Query<JobOffer> query = session.createQuery(cQuery);
             return query.list();
+        }catch(NoResultException no){
+            
         }catch(Exception e){
             e.printStackTrace();
         }
@@ -83,6 +91,8 @@ public class JobOfferService {
             cQuery.where(cb.equal(root.get("workday_type"), converter.convertToDataBaseColumn(type)));
             Query<JobOffer> query = session.createQuery(cQuery);
             return query.list();
+        }catch(NoResultException no){
+            
         }catch(Exception e){
             e.printStackTrace();
         }
@@ -97,6 +107,8 @@ public class JobOfferService {
             cQuery.where(cb.equal(root.get("title"),title));
             Query<JobOffer> query = session.createQuery(cQuery);
             return query.list();
+        }catch(NoResultException no){
+            
         }catch(Exception e){
             e.printStackTrace();
         }
@@ -111,6 +123,8 @@ public class JobOfferService {
             cQuery.where(cb.greaterThan(root.get("minSalary"), minSalary));
             Query<JobOffer> query = session.createQuery(cQuery);
             return query.list();
+        }catch(NoResultException no){
+            
         }catch(Exception e){
             e.printStackTrace();
         }
@@ -125,6 +139,8 @@ public class JobOfferService {
             cQuery.where(cb.equal(root, id));
             Query<JobOffer> query = session.createQuery(cQuery);
             return query.getSingleResult();
+        }catch(NoResultException no){
+            
         }catch(Exception e){
             e.printStackTrace();
         }
@@ -139,6 +155,8 @@ public class JobOfferService {
             cQuery.where(cb.equal(root.get("companies_id"), company));
             Query<JobOffer> query = session.createQuery(cQuery);
             return query.list();
+        }catch(NoResultException no){
+            
         }catch(Exception e){
             e.printStackTrace();
         }
@@ -153,6 +171,25 @@ public class JobOfferService {
             cQuery.where(cb.equal(root.get("location"), location));
             Query<JobOffer> query = session.createQuery(cQuery);
             return query.list();
+        }catch(NoResultException no){
+            
+        }catch(Exception e){
+            e.printStackTrace();
+        }
+        return null;
+    }
+    
+    public List<Candidature> getCandidaturesByUser(User user){
+        try(Session session = HibernateUtil.getSessionFactory().openSession()){
+            CriteriaBuilder cb = session.getCriteriaBuilder();
+            CriteriaQuery<Candidature> cQuery = cb.createQuery(Candidature.class);
+            Root<JobOffer> root = cQuery.from(JobOffer.class);
+            Join<JobOffer, Candidature> join = root.join("candidatures");
+            cQuery.where(cb.equal(join.get("user_id"), user));
+            Query <Candidature> query = session.createQuery(cQuery.select(join));
+            return query.list();
+        }catch(NoResultException no){
+            
         }catch(Exception e){
             e.printStackTrace();
         }

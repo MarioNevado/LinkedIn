@@ -34,8 +34,8 @@ public class JobOffer {
     @ManyToMany(cascade = CascadeType.ALL)
     @JoinTable(name = "offers_skills", joinColumns = @JoinColumn(name = "job_offer_id"), inverseJoinColumns = @JoinColumn(name = "skill_id"))
     private List<Skill> skills = new ArrayList<>();
-    @ManyToOne(cascade = CascadeType.ALL, fetch = FetchType.EAGER)
-    @JoinColumn(name = "candidature_id", nullable = false)
+    @OneToMany(cascade = CascadeType.ALL, fetch = FetchType.EAGER, mappedBy = "offer")
+    
     private List<Candidature> candidatures;
     public JobOffer() {
     }

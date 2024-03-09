@@ -4,9 +4,13 @@
  */
 package adt.linkedin.gui;
 
+import adt.linkedin.converters.StatusConverter;
+import adt.linkedin.enumerations.Status;
 import adt.linkedin.model.AcademicInfo;
 import adt.linkedin.model.Candidature;
+import adt.linkedin.model.Company;
 import adt.linkedin.model.Institution;
+import adt.linkedin.model.JobOffer;
 import adt.linkedin.model.User;
 import adt.linkedin.services.JobOfferService;
 import adt.linkedin.services.UserService;
@@ -21,6 +25,7 @@ import javax.swing.JTable;
 import javax.swing.Timer;
 import javax.swing.table.DefaultTableCellRenderer;
 import javax.swing.table.DefaultTableModel;
+import jdk.net.SocketFlow;
 
 /**
  *
@@ -31,11 +36,8 @@ public class Feed extends javax.swing.JFrame {
     User user;
     UserService userController;
     JobOfferService offerService;
-    Timer timer = new Timer(3000, new ActionListener() {
-        @Override
-        public void actionPerformed(ActionEvent e) {
-            refreshTable();
-        }
+    Timer timer = new Timer(3000, (ActionEvent e) -> {
+        refreshTable();
     });
 
     /**
@@ -44,7 +46,6 @@ public class Feed extends javax.swing.JFrame {
      * @param user
      * @param service
      */
-
     public Feed(User user, UserService service) {
         this.user = user;
         this.userController = service;
@@ -52,6 +53,7 @@ public class Feed extends javax.swing.JFrame {
         setExtendedState(JFrame.MAXIMIZED_BOTH);
         initComponents();
         initTable();
+        timer.start();
     }
 
     private void initTable() {
@@ -80,7 +82,6 @@ public class Feed extends javax.swing.JFrame {
     private boolean containsValue(Candidature candidature) { //title + "  " + company+ "  " + local + "  " + status
         Object[] value;
         Candidature aux;
-
         if (jTable1.getRowCount() > 0 && jTable1.getColumnCount() > 0) {
             for (int i = 0; i < jTable1.getRowCount(); i++) {
                 value = new Object[4];
@@ -88,11 +89,10 @@ public class Feed extends javax.swing.JFrame {
                     for (int j = 0; j < jTable1.getColumnCount(); j++) {
                         value[j] = jTable1.getValueAt(i, j);
                     }
-                    if (value[4] instanceof LocalDate) {
-                        aux = new Candidature((String) value[0], new Institution((String) value[1]), (float) value[2], (LocalDate) value[3], (LocalDate) value[4]);
-                    } else {
-                        aux = new Candidature((String) value[0], new Institution((String) value[1]), (float) value[2], (LocalDate) value[3]);
-                    }
+                    aux = new Candidature((String) value[0], null);
+                    aux.setOffer(new JobOffer(null, (String) value[2]));
+                    aux.getOffers().setCompany(new Company((String) value[1], null));
+                    aux.setStatus(Status.valueOf((String) value[3]));
                     if ((aux.equals(candidature))) {
                         return true;
                     }
@@ -104,13 +104,10 @@ public class Feed extends javax.swing.JFrame {
 
     private void fillTable() {
         DefaultTableModel model = (DefaultTableModel) jTable1.getModel();
-        for (AcademicInfo info : userController.getUserAcademicInfo(user)) {
-            if (!containsValue(info)) {
-                if (info.getEndDate() != null) {
-                    model.addRow(new Object[]{info.getTitle(), info.getInstitution().getName(), info.getMeanScore(), info.getInitDate(), info.getEndDate()});
-                } else {
-                    model.addRow(new Object[]{info.getTitle(), info.getInstitution().getName(), info.getMeanScore(), info.getInitDate(), "Actual"});
-                }
+        for (Candidature candidature : offerService.getCandidaturesByUser(user)) {
+            if (!containsValue(candidature)) {
+                model.addRow(new Object[]{candidature.getOffers().getTitle(), candidature.getOffers().getCompany().getName(),
+                    candidature.getOffers().getLocation(), candidature.getStatus().toString()});
             }
         }
         jTable1.setModel(model);
@@ -206,10 +203,7 @@ public class Feed extends javax.swing.JFrame {
         jTable1.setForeground(new java.awt.Color(255, 255, 255));
         jTable1.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
-                {null, null, null, null},
-                {null, null, null, null},
-                {null, null, null, null},
-                {null, null, null, null}
+
             },
             new String [] {
                 "Title 1", "Title 2", "Title 3", "Title 4"
@@ -296,7 +290,7 @@ public class Feed extends javax.swing.JFrame {
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
-                .addComponent(jPanelParent, javax.swing.GroupLayout.DEFAULT_SIZE, 1176, Short.MAX_VALUE)
+                .addComponent(jPanelParent, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                 .addContainerGap())
         );
         layout.setVerticalGroup(

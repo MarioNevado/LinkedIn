@@ -24,6 +24,7 @@ public class Candidature {
     @JoinColumn(name = "user_id", nullable = false)
     private User user;
     @ManyToOne(cascade = CascadeType.ALL, fetch = FetchType.EAGER)
+    @JoinColumn(name = "job_offer_id", nullable = false)
     private JobOffer offer;
 
     public Candidature() {
