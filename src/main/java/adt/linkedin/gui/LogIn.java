@@ -6,12 +6,17 @@ package adt.linkedin.gui;
 
 import adt.linkedin.tools.Configurator;
 import adt.linkedin.enumerations.Extension;
+import adt.linkedin.model.Company;
 import adt.linkedin.model.User;
+import adt.linkedin.services.CompanyService;
 import adt.linkedin.services.UserService;
 import adt.linkedin.tools.HibernateUtil;
 import adt.linkedin.tools.Utils;
 import javax.swing.JFrame;
 import javax.swing.JOptionPane;
+import javax.swing.border.Border;
+import javax.swing.border.CompoundBorder;
+import javax.swing.border.TitledBorder;
 
 /**
  *
@@ -20,7 +25,9 @@ import javax.swing.JOptionPane;
 public class LogIn extends javax.swing.JFrame {
 
     UserService userController;
+    CompanyService companyController;
     User user;
+    Company company;
     Configurator c;
 
     /**
@@ -30,6 +37,7 @@ public class LogIn extends javax.swing.JFrame {
         try {
             c = new Configurator();
             userController = new UserService(HibernateUtil.getSessionFactory().openSession());
+            companyController = new CompanyService();
             setExtendedState(JFrame.MAXIMIZED_BOTH);
             initComponents();
         } catch (Exception e) {
@@ -54,6 +62,7 @@ public class LogIn extends javax.swing.JFrame {
         jPasswordField1 = new javax.swing.JPasswordField();
         jButtonLogIn = new javax.swing.JButton();
         jLabelCreateAcc = new javax.swing.JLabel();
+        jToggleButtonCompany = new javax.swing.JToggleButton();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         setBackground(new java.awt.Color(255, 255, 255));
@@ -114,25 +123,34 @@ public class LogIn extends javax.swing.JFrame {
             }
         });
 
+        jToggleButtonCompany.setText("Empresa");
+        jToggleButtonCompany.addItemListener(new java.awt.event.ItemListener() {
+            public void itemStateChanged(java.awt.event.ItemEvent evt) {
+                jToggleButtonCompanyItemStateChanged(evt);
+            }
+        });
+
         javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
         jPanel1.setLayout(jPanel1Layout);
         jPanel1Layout.setHorizontalGroup(
             jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel1Layout.createSequentialGroup()
+                .addGap(42, 42, 42)
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(jLabel1, javax.swing.GroupLayout.PREFERRED_SIZE, 866, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addGroup(jPanel1Layout.createSequentialGroup()
-                        .addGap(42, 42, 42)
                         .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(jTextFieldEmail, javax.swing.GroupLayout.PREFERRED_SIZE, 233, javax.swing.GroupLayout.PREFERRED_SIZE)
                             .addComponent(jPasswordField1, javax.swing.GroupLayout.PREFERRED_SIZE, 233, javax.swing.GroupLayout.PREFERRED_SIZE)
                             .addComponent(jButtonLogIn, javax.swing.GroupLayout.PREFERRED_SIZE, 347, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(jLabel1, javax.swing.GroupLayout.PREFERRED_SIZE, 866, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                    .addGroup(jPanel1Layout.createSequentialGroup()
-                        .addGap(164, 164, 164)
-                        .addComponent(jLabelCreateAcc, javax.swing.GroupLayout.PREFERRED_SIZE, 97, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                .addComponent(jLabelImg, javax.swing.GroupLayout.PREFERRED_SIZE, 395, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(205, 205, 205))
+                            .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                                .addComponent(jToggleButtonCompany)
+                                .addComponent(jTextFieldEmail, javax.swing.GroupLayout.PREFERRED_SIZE, 233, javax.swing.GroupLayout.PREFERRED_SIZE))
+                            .addGroup(jPanel1Layout.createSequentialGroup()
+                                .addGap(122, 122, 122)
+                                .addComponent(jLabelCreateAcc, javax.swing.GroupLayout.PREFERRED_SIZE, 97, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                        .addGap(132, 132, 132)
+                        .addComponent(jLabelImg, javax.swing.GroupLayout.PREFERRED_SIZE, 395, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                .addContainerGap(598, Short.MAX_VALUE))
         );
         jPanel1Layout.setVerticalGroup(
             jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -141,7 +159,9 @@ public class LogIn extends javax.swing.JFrame {
                 .addComponent(jLabel1, javax.swing.GroupLayout.PREFERRED_SIZE, 48, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(jPanel1Layout.createSequentialGroup()
-                        .addGap(92, 92, 92)
+                        .addGap(62, 62, 62)
+                        .addComponent(jToggleButtonCompany)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addComponent(jTextFieldEmail, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addGap(18, 18, 18)
                         .addComponent(jPasswordField1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
@@ -150,9 +170,9 @@ public class LogIn extends javax.swing.JFrame {
                         .addGap(18, 18, 18)
                         .addComponent(jLabelCreateAcc, javax.swing.GroupLayout.PREFERRED_SIZE, 30, javax.swing.GroupLayout.PREFERRED_SIZE))
                     .addGroup(jPanel1Layout.createSequentialGroup()
-                        .addGap(78, 78, 78)
+                        .addGap(52, 52, 52)
                         .addComponent(jLabelImg, javax.swing.GroupLayout.PREFERRED_SIZE, 322, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                .addContainerGap(136, Short.MAX_VALUE))
+                .addContainerGap(162, Short.MAX_VALUE))
         );
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
@@ -200,7 +220,7 @@ public class LogIn extends javax.swing.JFrame {
 
     private void jButtonLogInActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButtonLogInActionPerformed
         // TODO add your handling code here:
-        String email, password;
+        String email = "", password;
         int phone;
         password = new String(this.jPasswordField1.getPassword());
         if (!this.jTextFieldEmail.getText().isEmpty() && this.jPasswordField1.getPassword().length > 0) {
@@ -215,7 +235,10 @@ public class LogIn extends javax.swing.JFrame {
                 this.setVisible(false);
                 new Feed(user, userController).setVisible(true);
             } else {
-                JOptionPane.showMessageDialog(null, c.get("error.WrongLogIn"), "ERROR", JOptionPane.ERROR_MESSAGE);
+                if (companyController.getCompany(email) != null) {
+                    
+                }
+                JOptionPane.showMessageDialog(null, "Datos incorrectos", "ERROR", JOptionPane.ERROR_MESSAGE);
             }
         } else {
             JOptionPane.showMessageDialog(null, "Introduzca datos", "ERROR", JOptionPane.ERROR_MESSAGE);
@@ -228,6 +251,19 @@ public class LogIn extends javax.swing.JFrame {
         this.setVisible(false);
         new CreateAccount(this.userController).setVisible(true);
     }//GEN-LAST:event_jLabelCreateAccMouseClicked
+
+    private void jToggleButtonCompanyItemStateChanged(java.awt.event.ItemEvent evt) {//GEN-FIRST:event_jToggleButtonCompanyItemStateChanged
+        // TODO add your handling code here:
+        if (this.jToggleButtonCompany.isSelected()) {
+            TitledBorder border = (TitledBorder)(((CompoundBorder)this.jTextFieldEmail.getBorder()).getOutsideBorder());
+            border.setTitle("Nombre de la compañía");
+            this.jTextFieldEmail.setBorder(new CompoundBorder(border, null));
+        }else{
+            TitledBorder border = (TitledBorder)(((CompoundBorder)this.jTextFieldEmail.getBorder()).getOutsideBorder());
+            border.setTitle("Email o Teléfono");
+            this.jTextFieldEmail.setBorder(new CompoundBorder(border, null));
+        }
+    }//GEN-LAST:event_jToggleButtonCompanyItemStateChanged
 
     /**
      * @param args the command line arguments
@@ -273,5 +309,6 @@ public class LogIn extends javax.swing.JFrame {
     private javax.swing.JPanel jPanel1;
     private javax.swing.JPasswordField jPasswordField1;
     private javax.swing.JTextField jTextFieldEmail;
+    private javax.swing.JToggleButton jToggleButtonCompany;
     // End of variables declaration//GEN-END:variables
 }

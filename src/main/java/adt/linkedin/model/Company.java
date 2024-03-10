@@ -15,6 +15,8 @@ public class Company {
     private String name;
     @Column(name = "description")
     private String description;
+    @Column(name = "password")
+    private String password;
     @OneToMany(cascade = {CascadeType.PERSIST, CascadeType.MERGE}, fetch = FetchType.EAGER, mappedBy = "company")
     private List<JobOffer> offers = new ArrayList<>();
     @OneToMany(cascade = {CascadeType.ALL}, fetch = FetchType.EAGER, mappedBy = "company")
@@ -68,12 +70,19 @@ public class Company {
         this.experiences = experiences;
     }
 
+    public String getPassword() {
+        return password;
+    }
+
+    public void setPassword(String password) {
+        this.password = password;
+    }
+    
+    
+
     @Override
     public String toString() {
-        return "Company{" +
-                "id=" + id +
-                ", name='" + name + '\'' +
-                ", description='" + description + '\'';
+        return name + "\t" + description;
     }
 }
 
