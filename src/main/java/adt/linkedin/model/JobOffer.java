@@ -141,19 +141,6 @@ public class JobOffer {
 
     @Override
     public String toString() {
-        return "JobOffer{" +
-                "id=" + id +
-                ", minSalary=" + minSalary +
-                ", maxSalary=" + maxSalary +
-                ", open=" + open +
-                ", requiredCandidates=" + requiredCandidates +
-                ", workDayType=" + workDayType +
-                ", title='" + title + '\'' +
-                ", location='" + location + '\'' +
-                ", details='" + details + '\'' +
-                ", company=" + company +
-                ", skills=" + skills +
-                ", candidature=" + candidatures +
-                '}';
+        return title + " " + company.getName() + " " + location + " " + workDayType + " " + minSalary;
     }
 }

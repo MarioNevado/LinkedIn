@@ -7,6 +7,7 @@ import jakarta.persistence.NoResultException;
 import jakarta.persistence.criteria.*;
 
 import java.awt.event.ComponentAdapter;
+import java.util.List;
 import org.hibernate.Session;
 import org.hibernate.query.Query;
 
@@ -32,6 +33,21 @@ public class CompanyService {
             cQuery.where(cb.equal(root.get("name"), name));
             Query<Company> query = session.createQuery(cQuery);
             return query.getSingleResult();
+        }catch(NoResultException nre){
+            return null;
+        }catch(Exception e){
+            e.printStackTrace();
+            return null;
+        }
+    }
+    public List<Company> getCompanies(String name){
+        try(Session session = HibernateUtil.getSessionFactory().openSession()){
+            CriteriaBuilder cb = session.getCriteriaBuilder();
+            CriteriaQuery <Company> cQuery = cb.createQuery(Company.class);
+            Root <Company> root = cQuery.from(Company.class);
+            cQuery.where(cb.like(root.get("name"), "%" + name + "%"));
+            Query<Company> query = session.createQuery(cQuery);
+            return query.list();
         }catch(NoResultException nre){
             return null;
         }catch(Exception e){

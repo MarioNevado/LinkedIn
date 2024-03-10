@@ -104,7 +104,7 @@ public class JobOfferService {
             CriteriaBuilder cb = session.getCriteriaBuilder();
             CriteriaQuery <JobOffer> cQuery = cb.createQuery(JobOffer.class);
             Root<JobOffer> root = cQuery.from(JobOffer.class);
-            cQuery.where(cb.equal(root.get("title"),title));
+            cQuery.where(cb.like(root.get("title"), "%" +title + ""));
             Query<JobOffer> query = session.createQuery(cQuery);
             return query.list();
         }catch(NoResultException no){
@@ -152,7 +152,8 @@ public class JobOfferService {
             CriteriaBuilder cb = session.getCriteriaBuilder();
             CriteriaQuery <JobOffer> cQuery = cb.createQuery(JobOffer.class);
             Root<JobOffer> root = cQuery.from(JobOffer.class);
-            cQuery.where(cb.equal(root.get("companies_id"), company));
+            Join<JobOffer, Company> join = root.join("company");
+            cQuery.where(cb.equal(join.get("id"), company.getId()));
             Query<JobOffer> query = session.createQuery(cQuery);
             return query.list();
         }catch(NoResultException no){
@@ -179,13 +180,28 @@ public class JobOfferService {
         return null;
     }
     
+    public List<JobOffer> getOffers(){
+        try(Session session = HibernateUtil.getSessionFactory().openSession()){
+            CriteriaBuilder cb = session.getCriteriaBuilder();
+            CriteriaQuery <JobOffer> cQuery = cb.createQuery(JobOffer.class);
+            Root<JobOffer> root = cQuery.from(JobOffer.class);
+            Query<JobOffer> query = session.createQuery(cQuery.select(root));
+            return query.list();
+        }catch(NoResultException no){
+            
+        }catch(Exception e){
+            e.printStackTrace();
+        }
+        return null;
+    }
+    
     public List<Candidature> getCandidaturesByUser(User user){
         try(Session session = HibernateUtil.getSessionFactory().openSession()){
             CriteriaBuilder cb = session.getCriteriaBuilder();
             CriteriaQuery<Candidature> cQuery = cb.createQuery(Candidature.class);
             Root<JobOffer> root = cQuery.from(JobOffer.class);
             Join<JobOffer, Candidature> join = root.join("candidatures");
-            cQuery.where(cb.equal(join.get("user_id"), user));
+            cQuery.where(cb.equal(join.get("id"), user.getId()));
             Query <Candidature> query = session.createQuery(cQuery.select(join));
             return query.list();
         }catch(NoResultException no){

@@ -161,7 +161,7 @@ public class UserService {
             CriteriaBuilder cb = session.getCriteriaBuilder();
             CriteriaQuery<User> cQuery = cb.createQuery(User.class);
             Root<User> root = cQuery.from(User.class);
-            cQuery.select(root.get("academics")).where(cb.like(root.get("name"), "%" +  name + "%"));
+            cQuery.where(cb.like(root.get("name"), "%" +  name + "%"));
             Query<User> query = session.createQuery(cQuery);
             return query.list();
         } catch(NoResultException nre){

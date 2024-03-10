@@ -328,6 +328,8 @@ public class Feed extends javax.swing.JFrame {
 
     private void jTextField1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jTextField1ActionPerformed
         // TODO add query
+        new JFrameJobOffers(user, userController, jTextField1.getText()).setVisible(true);
+        dispose();
     }//GEN-LAST:event_jTextField1ActionPerformed
 
 

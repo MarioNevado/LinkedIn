@@ -138,13 +138,12 @@ public class User {
     }
     @Override
     public String toString() {
-        return "User{" +
-                "id=" + id +
-                ", name='" + name + '\'' +
-                ", mail='" + mail + '\'' +
-                ", password='" + password + '\'' +
-                ", phone=" + phone +
-                ", description='" + description + '\'' +
-                '}';
+        if (description == null) description = "";
+        if (mail != null) {
+            return name + " \t" + mail + " \t" + description;
+        }else{
+            return name + " " + phone + " " + description;
+        }
+        
     }
 }
