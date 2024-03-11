@@ -246,7 +246,9 @@ public class JFrameJobOffers extends javax.swing.JFrame {
     private void jListOffersMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jListOffersMouseClicked
         // TODO add your handling code here:
         if (this.jToggleButtonCompanies.isSelected()) {
-            //company
+            Company selectedCompany = (Company)((Object)this.jListOffers.getSelectedValue());
+            new JFrameCompany(selectedCompany, companyController).setVisible(true);
+            dispose();
         } else if (this.jToggleButtonUsers.isSelected()) {
             User selectedUser = (User)((Object)this.jListOffers.getSelectedValue());
             new JFrameUser(selectedUser, userController).setVisible(true);
