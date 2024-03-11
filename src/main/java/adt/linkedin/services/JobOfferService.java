@@ -164,6 +164,25 @@ public class JobOfferService {
         return null;
     }
     
+    public Candidature getOfferByFields(String userName, String title, String location){
+        try(Session session = HibernateUtil.getSessionFactory().openSession()){
+            CriteriaBuilder cb = session.getCriteriaBuilder();
+            CriteriaQuery <Candidature> cQuery = cb.createQuery(Candidature.class);
+            Root<JobOffer> root = cQuery.from(JobOffer.class);
+            Join<Candidature, User> user = root.join("user");
+            Join<Candidature, JobOffer> offer = root.join("offer");
+            cQuery.where(cb.and(cb.equal(user.get("name"), userName), cb.equal(offer.get("title"), title), 
+                    cb.equal(offer.get("location"), location)));
+            Query<Candidature> query = session.createQuery(cQuery);
+            return query.getSingleResult();
+        }catch(NoResultException no){
+            
+        }catch(Exception e){
+            e.printStackTrace();
+        }
+        return null;
+    }
+    
     public List<JobOffer> getOffersByLocation(String location){
         try(Session session = HibernateUtil.getSessionFactory().openSession()){
             CriteriaBuilder cb = session.getCriteriaBuilder();

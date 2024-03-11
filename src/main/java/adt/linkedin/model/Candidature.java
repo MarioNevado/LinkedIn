@@ -109,18 +109,14 @@ public class Candidature {
             return false;
         }
         final Candidature other = (Candidature) obj;
-        if (this.status != other.status) {
+        if (this.status.getValue() != other.status.getValue()) {
             return false;
         }
-        if (!Objects.equals(this.user, other.user)) {
-            return false;
-        }
-        if (!Objects.equals(this.offer.getCompany().getName(), other.getOffers().getCompany().getName())) {
-            return false;
-        }
-        if (!Objects.equals(this.offer.getLocation(), other.getOffers().getLocation())) {
+        if (!Objects.equals(this.user.getName(), other.user.getName())) {
             return false;
         }
         return Objects.equals(this.offer.getTitle(), other.offer.getTitle());
-    }    
+    }
+    
+    
 }

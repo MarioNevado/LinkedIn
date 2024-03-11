@@ -4,6 +4,7 @@
  */
 package adt.linkedin.gui;
 
+import adt.linkedin.enumerations.Status;
 import adt.linkedin.model.*;
 import adt.linkedin.services.CompanyService;
 import adt.linkedin.services.JobOfferService;
@@ -26,13 +27,14 @@ import javax.swing.table.TableCellRenderer;
  * @author dev
  */
 public class JFrameCompany extends javax.swing.JFrame {
-
+    
     final Company company;
     CompanyService companyController = new CompanyService();
     JobOfferService offerController = new JobOfferService();
-    private final List<AcademicInfo> deletedInfo = new ArrayList<>();
-    private final List<Skill> deletedSkills = new ArrayList<>();
-    private final List<WorkExperience> deletedExperiences = new ArrayList<>();
+    private final List<JobOffer> closedOffers = new ArrayList<>();
+    private final List<JobOffer> deletedOffers = new ArrayList<>();
+    private final List<Candidature> rejectedCandidatures = new ArrayList<>();
+    private final List<Candidature> acceptedCandidatures = new ArrayList<>();
     private final Timer timer = new Timer(3000, new ActionListener() {
         @Override
         public void actionPerformed(ActionEvent ae) {
@@ -57,14 +59,13 @@ public class JFrameCompany extends javax.swing.JFrame {
         this.jPanel1.setBounds(2, 2, JFrame.MAXIMIZED_HORIZ, JFrame.MAXIMIZED_VERT);
         fillTable(jTableOffers, 1);
         fillTable(jTableCandidatures, 2);
-        this.jButtonHome.setBackground(Utils.PURPLE);
         timer.start();
         this.jLabelUserName.setText(this.company.getName());
         this.jTextAreaDescription.setText(this.company.getDescription());
         initTable(jTableOffers);
         initTable(jTableCandidatures);
     }
-
+    
     private void initTable(JTable table) {
         DefaultTableCellRenderer header = new DefaultTableCellRenderer();
         header.setBackground(Utils.PURPLE);
@@ -73,7 +74,7 @@ public class JFrameCompany extends javax.swing.JFrame {
             table.getColumnModel().getColumn(i).setHeaderRenderer(header);
         }
     }
-
+    
     @SuppressWarnings("unchecked")
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
@@ -123,7 +124,7 @@ public class JFrameCompany extends javax.swing.JFrame {
 
         jLabelUserName.setFont(new java.awt.Font("Liberation Sans", 1, 18)); // NOI18N
         jLabelUserName.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
-        jLabelUserName.setText("User");
+        jLabelUserName.setText("Company");
         jPanelUser.add(jLabelUserName, new org.netbeans.lib.awtextra.AbsoluteConstraints(20, 160, 180, -1));
 
         jScrollPane1.setBorder(javax.swing.BorderFactory.createEtchedBorder(new java.awt.Color(153, 102, 255), null));
@@ -298,26 +299,10 @@ public class JFrameCompany extends javax.swing.JFrame {
         pack();
     }// </editor-fold>//GEN-END:initComponents
 
-    private boolean containsValue(JTable table, Skill skill) {
-        String value;
-        if (deletedSkills.contains(skill)) {
-            return true;
-        }
-        if (table.getRowCount() > 0 && table.getColumnCount() > 0) {
-            for (int i = 0; i < table.getRowCount(); i++) {
-                value = (String) table.getValueAt(i, 0);
-                if (value != null && value.equals(skill.getName())) {
-                    return true;
-                }
-            }
-        }
-        return false;
-    }
-
-    private boolean containsValue(JTable table, AcademicInfo info) { //title + "  " + institution.getName() + "  " + meanScore + "  " + initDate + "  " + endDate;
+    private boolean containsValue(JTable table, JobOffer offer) { //title + "  " + local + "  " + abierta + "  " + salario + "  " + plazas;
         Object[] value;
-        AcademicInfo aux;
-        if (deletedInfo.contains(info)) {
+        JobOffer aux;
+        if (closedOffers.contains(offer)) {
             return true;
         }
         if (table.getRowCount() > 0 && table.getColumnCount() > 0) {
@@ -327,12 +312,11 @@ public class JFrameCompany extends javax.swing.JFrame {
                     for (int j = 0; j < table.getColumnCount(); j++) {
                         value[j] = table.getValueAt(i, j);
                     }
-                    if (value[4] instanceof LocalDate) {
-                        aux = new AcademicInfo((String) value[0], new Institution((String) value[1]), (float) value[2], (LocalDate) value[3], (LocalDate) value[4]);
-                    } else {
-                        aux = new AcademicInfo((String) value[0], new Institution((String) value[1]), (float) value[2], (LocalDate) value[3]);
-                    }
-                    if ((aux.equals(info))) {
+                    aux = new JobOffer((String) value[0], (String) value[1]);
+                    aux.setOpen((boolean) value[2]);
+                    aux.setMinSalary((int) value[3]);
+                    aux.setRequiredCandidates((int) value[4]);
+                    if ((aux.equals(offer))) {
                         return true;
                     }
                 }
@@ -340,26 +324,31 @@ public class JFrameCompany extends javax.swing.JFrame {
         }
         return false;
     }
-
-    private boolean containsValue(JTable table, WorkExperience experience) {
+    
+    private boolean containsValue(JTable table, Candidature candidature) {
         Object[] value;
-        WorkExperience aux;
-        if (deletedExperiences.contains(experience)) {
+        User user;
+        JobOffer offer;
+        Candidature aux;
+        if (rejectedCandidatures.contains(candidature)) {
             return true;
         }
         if (table.getRowCount() > 0 && table.getColumnCount() > 0) {
             for (int i = 0; i < table.getRowCount(); i++) {
-                value = new Object[5];
+                value = new Object[3];
                 if (table.getValueAt(i, 0) != null) {
                     for (int j = 0; j < table.getColumnCount(); j++) {
                         value[j] = table.getValueAt(i, j);
                     }
-                    if (value[4] instanceof LocalDate) {
-                        aux = new WorkExperience((String) value[0], companyController.getCompany((String) value[1]), (String) value[2], (LocalDate) value[3], (LocalDate) value[4]);
-                    } else {
-                        aux = new WorkExperience((String) value[0], companyController.getCompany((String) value[1]), (String) value[2], (LocalDate) value[3]);
-                    }
-                    if ((aux.equals(experience))) {
+                    aux = new Candidature();
+                    user = new User();
+                    offer = new JobOffer();
+                    offer.setTitle((String) value[1]);
+                    user.setName((String) value[0]);
+                    aux.setUser(user);
+                    aux.setOffer(offer);
+                    aux.setStatus((Status) value[2]);
+                    if ((aux.equals(candidature))) {
                         return true;
                     }
                 }
@@ -367,11 +356,11 @@ public class JFrameCompany extends javax.swing.JFrame {
         }
         return false;
     }
-
+    
     private void refreshTable(JTable table, int option) {
         DefaultTableModel model;
         model = new DefaultTableModel();
-
+        
         switch (option) {
             case 1:
                 model.addColumn("Título");
@@ -392,31 +381,25 @@ public class JFrameCompany extends javax.swing.JFrame {
         initTable(table);
         fillTable(table, option);
     }
-
+    
     private void fillOffers(DefaultTableModel model) {
-        for (AcademicInfo info : userController.getUserAcademicInfo(company)) {
-            if (!containsValue(jTableOffers, info)) {
-                if (info.getEndDate() != null) {
-                    model.addRow(new Object[]{info.getTitle(), info.getInstitution().getName(), info.getMeanScore(), info.getInitDate(), info.getEndDate()});
-                } else {
-                    model.addRow(new Object[]{info.getTitle(), info.getInstitution().getName(), info.getMeanScore(), info.getInitDate(), "Actual"});
-                }
+        for (JobOffer offer : offerController.getOffersByCompany(company)) {
+            if (!containsValue(jTableOffers, offer)) {
+                model.addRow(new Object[]{offer.getTitle(), offer.getLocation(), offer.isOpen(), offer.getMinSalary(), offer.getRequiredCandidates()});
             }
         }
     }
-
+    
     private void fillCandidatures(DefaultTableModel model) {
-        for (WorkExperience experience : userController.getUserLaboralExperience(company)) {
-            if (!containsValue(jTableCandidatures, experience)) {
-                if (experience.getEndDate() != null) {
-                    model.addRow(new Object[]{experience.getJobTitle(), experience.getCompany().getName(), experience.getLocation(), experience.getInitDate(), experience.getEndDate()});
-                } else {
-                    model.addRow(new Object[]{experience.getJobTitle(), experience.getCompany().getName(), experience.getLocation(), experience.getInitDate(), "Actual"});
+        for (JobOffer jobOffer : offerController.getOffersByCompany(company)) {
+            for (Candidature candidature : offerController.getCandidatures(jobOffer)) {
+                if (!containsValue(jTableCandidatures, candidature)) {
+                    model.addRow(new Object[]{candidature.getUser().getName(), candidature.getOffers().getTitle(), candidature.getStatus().toString()});
                 }
             }
         }
     }
-
+    
     private void fillTable(JTable table, int option) {
         DefaultTableModel model = (DefaultTableModel) table.getModel();
         switch (option) {
@@ -433,7 +416,7 @@ public class JFrameCompany extends javax.swing.JFrame {
     }
 
     private void jLabelLogOutMouseEntered(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jLabelLogOutMouseEntered
-
+        
         Utils.mouseEntered(this.jLabelLogOut);
     }//GEN-LAST:event_jLabelLogOutMouseEntered
 
@@ -452,11 +435,11 @@ public class JFrameCompany extends javax.swing.JFrame {
     }//GEN-LAST:event_jLabelLogOutMouseClicked
 
     private void jButtonAddAIActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButtonAddAIActionPerformed
-        new JDialogAddAcademicInfo(userController, company, this, true).setVisible(true);
+        //new JDialogAddAcademicInfo(userController, company, this, true).setVisible(true);
     }//GEN-LAST:event_jButtonAddAIActionPerformed
 
     private void jTextAreaDescriptionMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jTextAreaDescriptionMouseClicked
-        new JDialogAddDescription(userController, company, this, true, this.jTextAreaDescription).setVisible(true);
+        //new JDialogAddDescription(userController, company, this, true, this.jTextAreaDescription).setVisible(true);
     }//GEN-LAST:event_jTextAreaDescriptionMouseClicked
 
     private void jTextAreaDescriptionMouseEntered(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jTextAreaDescriptionMouseEntered
@@ -485,12 +468,10 @@ public class JFrameCompany extends javax.swing.JFrame {
     }//GEN-LAST:event_jLabelDeleteMouseClicked
 
     private void jLabelDeleteMouseEntered(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jLabelDeleteMouseEntered
-
         Utils.mouseEntered(jLabelDelete);
     }//GEN-LAST:event_jLabelDeleteMouseEntered
 
     private void jLabelDeleteMouseExited(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jLabelDeleteMouseExited
-
         Utils.mouseExited(jLabelDelete);
     }//GEN-LAST:event_jLabelDeleteMouseExited
 
@@ -521,7 +502,6 @@ public class JFrameCompany extends javax.swing.JFrame {
     }//GEN-LAST:event_jTableCandidaturesMouseClicked
 
     private void jLabelUserPicMouseEntered(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jLabelUserPicMouseEntered
-
         this.jLabelUserPic.setToolTipText("Click para cambiar foto de perfil");
     }//GEN-LAST:event_jLabelUserPicMouseEntered
 
@@ -530,10 +510,9 @@ public class JFrameCompany extends javax.swing.JFrame {
     }//GEN-LAST:event_jLabelUserPicMouseClicked
 
     private void jTableOffersMouseEntered(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jTableOffersMouseEntered
-        // TODO add your handling code here:
         initTable(jTableOffers);
     }//GEN-LAST:event_jTableOffersMouseEntered
-
+    
     private JPopupMenu initPopup(int selectedRow, int option) {
         JPopupMenu pop = new JPopupMenu();
         JMenuItem delete = new JMenuItem("Eliminar oferta");
@@ -556,11 +535,11 @@ public class JFrameCompany extends javax.swing.JFrame {
         }
         return pop;
     }
-
+    
     private void getCloseItem(JMenuItem item, int option, int selectedRow) {
         if (option == 1) {
             item.addActionListener((ActionEvent e) -> {
-                this.offerController.closeJobOffer(offer);
+                //this.offerController.closeJobOffer(offer);
             });
         } else {
             item.addActionListener((ActionEvent e) -> {
@@ -568,29 +547,42 @@ public class JFrameCompany extends javax.swing.JFrame {
             });
         }
     }
-
+    
     private void getDeleteItem(JMenuItem item, int option, int selectedRow) {
-
+        
         switch (option) {
             case 1:
                 item.addActionListener((ActionEvent e) -> {
-                    deletedInfo.add(this.company.getAcademics().get(selectedRow));
-                    this.company.getAcademics().remove(selectedRow);
-                    this.userController.updateUser(company);
+                    //deletedInfo.add(this.company.getAcademics().get(selectedRow));
+                    //this.company.getAcademics().remove(selectedRow);
+                    //this.userController.updateUser(company);
                 });
                 break;
             case 2:
                 item.addActionListener((ActionEvent e) -> {
-                    this.deletedSkills.add(this.company.getSkills().get(selectedRow));
-                    this.company.getSkills().remove(selectedRow);
-                    this.userController.updateUser(company);
+                    boolean flag = false;
+                    String userName = (String) this.jTableCandidatures.getValueAt(selectedRow, 0);
+                    String title = (String) this.jTableCandidatures.getValueAt(selectedRow, 1);
+                    String location = (String) this.jTableCandidatures.getValueAt(selectedRow, 2);
+                    for (JobOffer offer : this.offerController.getOffersByCompany(company)) {
+                        if (!flag) {
+                            for (Candidature candidature : offer.getCandidatures()) {
+                                if (candidature.equals(this.offerController.getOfferByFields(userName, title, location))) {
+                                    candidature.setStatus(Status.REJECTED);
+                                    flag = true;
+                                    break;
+                                }
+                            }                            
+                        }
+                    }
+                    this.companyController.updateCompany(company);
                 });
                 break;
             default:
                 item.addActionListener((ActionEvent e) -> {
-                    deletedExperiences.add(this.company.getExperiences().get(selectedRow));
+                    rejectedCandidatures.add(this.company.getOffers().get(0).getCandidatures().get(selectedRow));
                     this.company.getExperiences().remove(selectedRow);
-                    this.userController.updateUser(company);
+                    //this.userController.updateUser(company);
                 });
                 break;
         }

@@ -249,6 +249,7 @@ public class JDialogAddAcademicInfo extends javax.swing.JDialog {
                 } else {
                     end = getEndDate();
                     info = new AcademicInfo(this.jTextFieldTitle.getText(), new Institution(this.jTextFieldInstitution.getText()), meanScore, init, end);
+                    System.out.println(init.compareTo(end));
                     if (end != null && init.compareTo(end) >= 1) {
                         JOptionPane.showMessageDialog(null, "La fecha de inicio no puede ser posterior a la fecha de fin", "Error en fechas", JOptionPane.ERROR_MESSAGE);
                     } else if (end != null) {

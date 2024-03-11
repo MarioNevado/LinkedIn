@@ -236,7 +236,7 @@ public class LogIn extends javax.swing.JFrame {
                 new Feed(user, userController).setVisible(true);
             } else {
                 if (companyController.getCompany(email) != null) {
-                    
+
                 }
                 JOptionPane.showMessageDialog(null, "Datos incorrectos", "ERROR", JOptionPane.ERROR_MESSAGE);
             }
@@ -247,19 +247,18 @@ public class LogIn extends javax.swing.JFrame {
     }//GEN-LAST:event_jButtonLogInActionPerformed
 
     private void jLabelCreateAccMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jLabelCreateAccMouseClicked
-        // TODO add your handling code here:
-        this.setVisible(false);
-        new CreateAccount(this.userController).setVisible(true);
+        new CreateAccount(this.userController, this.jToggleButtonCompany.isSelected()).setVisible(true);
+        dispose();
     }//GEN-LAST:event_jLabelCreateAccMouseClicked
 
     private void jToggleButtonCompanyItemStateChanged(java.awt.event.ItemEvent evt) {//GEN-FIRST:event_jToggleButtonCompanyItemStateChanged
         // TODO add your handling code here:
         if (this.jToggleButtonCompany.isSelected()) {
-            TitledBorder border = (TitledBorder)(((CompoundBorder)this.jTextFieldEmail.getBorder()).getOutsideBorder());
+            TitledBorder border = (TitledBorder) (((CompoundBorder) this.jTextFieldEmail.getBorder()).getOutsideBorder());
             border.setTitle("Nombre de la compañía");
             this.jTextFieldEmail.setBorder(new CompoundBorder(border, null));
-        }else{
-            TitledBorder border = (TitledBorder)(((CompoundBorder)this.jTextFieldEmail.getBorder()).getOutsideBorder());
+        } else {
+            TitledBorder border = (TitledBorder) (((CompoundBorder) this.jTextFieldEmail.getBorder()).getOutsideBorder());
             border.setTitle("Email o Teléfono");
             this.jTextFieldEmail.setBorder(new CompoundBorder(border, null));
         }

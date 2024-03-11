@@ -17,6 +17,9 @@ public class CompanyService {
     public void createCompany(Company company){
         controller.createCompany(company);
     }
+    public void updateCompany(Company company){
+        controller.updateCompany(company);
+    }
     public void removeCompany(Company company){
         controller.removeCompany(company);
     }

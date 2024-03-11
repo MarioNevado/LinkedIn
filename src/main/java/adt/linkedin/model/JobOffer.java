@@ -5,6 +5,7 @@ import jakarta.persistence.*;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
 
 @Entity
 @Table(name = "job_offer")
@@ -143,4 +144,36 @@ public class JobOffer {
     public String toString() {
         return title + " " + company.getName() + " " + location + " " + workDayType + " " + minSalary;
     }
+
+    @Override
+    public int hashCode() {
+        int hash = 3;
+        return hash;
+    }
+
+    @Override
+    public boolean equals(Object obj) {
+        if (this == obj) {
+            return true;
+        }
+        if (obj == null) {
+            return false;
+        }
+        if (getClass() != obj.getClass()) {
+            return false;
+        }
+        final JobOffer other = (JobOffer) obj;
+        if (this.minSalary != other.minSalary) {
+            return false;
+        }
+        if (this.open != other.open) {
+            return false;
+        }
+        if (!Objects.equals(this.title, other.title)) {
+            return false;
+        }
+        return Objects.equals(this.location, other.location);
+    }
+    
+    
 }
