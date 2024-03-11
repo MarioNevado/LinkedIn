@@ -25,8 +25,9 @@ public class Company {
     public Company() {
     }
 
-    public Company(String name, String description) {
+    public Company(String name, String password, String description) {
         this.name = name;
+        this.password = password;
         this.description = description;
     }
 

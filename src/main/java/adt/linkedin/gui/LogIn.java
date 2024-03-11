@@ -27,15 +27,12 @@ public class LogIn extends javax.swing.JFrame {
     UserService userController;
     CompanyService companyController;
     User user;
-    Company company;
-    Configurator c;
 
     /**
      * Creates new form LogIn
      */
     public LogIn() {
         try {
-            c = new Configurator();
             userController = new UserService(HibernateUtil.getSessionFactory().openSession());
             companyController = new CompanyService();
             setExtendedState(JFrame.MAXIMIZED_BOTH);
@@ -235,9 +232,6 @@ public class LogIn extends javax.swing.JFrame {
                 this.setVisible(false);
                 new Feed(user, userController).setVisible(true);
             } else {
-                if (companyController.getCompany(email) != null) {
-
-                }
                 JOptionPane.showMessageDialog(null, "Datos incorrectos", "ERROR", JOptionPane.ERROR_MESSAGE);
             }
         } else {

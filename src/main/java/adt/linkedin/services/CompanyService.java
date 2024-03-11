@@ -24,7 +24,7 @@ public class CompanyService {
         controller.removeCompany(company);
     }
     public Company createCompany(String name){
-        Company c = new Company(name, null);
+        Company c = new Company(name, null, null);
         controller.createCompany(c);
         return controller.getCompany(c.getId());
     }
@@ -69,8 +69,8 @@ public class CompanyService {
             System.out.println(offer);
         }
     }
-    public Company createCompany(String name, String description){
-        controller.createCompany(new Company(name, description));
+    public Company createCompany(String name, String password, String description){
+        controller.createCompany(new Company(name, password, description));
         return controller.getCompanyByName(name);
     }
     public void addJobOffer(Company company, JobOffer offer){

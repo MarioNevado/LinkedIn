@@ -91,7 +91,7 @@ public class Feed extends javax.swing.JFrame {
                     }
                     aux = new Candidature((String) value[0], null);
                     aux.setOffer(new JobOffer(null, (String) value[2]));
-                    aux.getOffers().setCompany(new Company((String) value[1], null));
+                    aux.getOffers().setCompany(new Company((String) value[1], null, null));
                     aux.setStatus(Status.valueOf((String) value[3]));
                     if ((aux.equals(candidature))) {
                         return true;

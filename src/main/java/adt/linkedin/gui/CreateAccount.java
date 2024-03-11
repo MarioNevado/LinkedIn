@@ -4,6 +4,7 @@
  */
 package adt.linkedin.gui;
 
+import adt.linkedin.model.Company;
 import adt.linkedin.model.User;
 import adt.linkedin.services.CompanyService;
 import adt.linkedin.services.UserService;
@@ -11,6 +12,9 @@ import adt.linkedin.tools.Utils;
 import java.awt.Color;
 import javax.swing.JFrame;
 import javax.swing.JOptionPane;
+import javax.swing.border.Border;
+import javax.swing.border.CompoundBorder;
+import javax.swing.border.TitledBorder;
 
 /**
  *
@@ -20,20 +24,26 @@ public class CreateAccount extends javax.swing.JFrame {
 
     UserService userController;
     CompanyService companyController = new CompanyService();
-    boolean company;
+    boolean isCompany;
 
     /**
      * Creates new form CreateAccount
+     *
      * @param controller
+     * @param company
      */
     public CreateAccount(UserService controller, boolean company) {
         this.userController = controller;
-        this.company = company;
+        this.isCompany = company;
         System.out.println(userController.getSession().isOpen());
         setExtendedState(JFrame.MAXIMIZED_BOTH);
         initComponents();
+        if (isCompany) {
+            this.jTextFieldUserEmail.setVisible(false);
+            this.jTextFieldUserName.setBorder(new CompoundBorder(new TitledBorder("Nombre de la compañía"), null));
+        }
     }
-    
+
     @SuppressWarnings("unchecked")
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
@@ -118,22 +128,23 @@ public class CreateAccount extends javax.swing.JFrame {
         jPanel1Layout.setHorizontalGroup(
             jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel1Layout.createSequentialGroup()
-                .addContainerGap()
-                .addComponent(jLabelImg, javax.swing.GroupLayout.PREFERRED_SIZE, 450, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(18, 18, 18)
-                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                    .addComponent(jTextFieldUserEmail)
-                    .addComponent(jTextFieldUserName)
-                    .addComponent(jPasswordField1, javax.swing.GroupLayout.DEFAULT_SIZE, 458, Short.MAX_VALUE)
-                    .addComponent(jButtonSignUp, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                    .addComponent(jPasswordFieldRepeat))
+                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(jPanel1Layout.createSequentialGroup()
+                        .addContainerGap()
+                        .addComponent(jLabelImg, javax.swing.GroupLayout.PREFERRED_SIZE, 450, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGap(18, 18, 18)
+                        .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                            .addComponent(jTextFieldUserEmail)
+                            .addComponent(jTextFieldUserName)
+                            .addComponent(jPasswordField1, javax.swing.GroupLayout.DEFAULT_SIZE, 458, Short.MAX_VALUE)
+                            .addComponent(jButtonSignUp, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                            .addComponent(jPasswordFieldRepeat)))
+                    .addGroup(jPanel1Layout.createSequentialGroup()
+                        .addGap(17, 17, 17)
+                        .addComponent(jLabelHome, javax.swing.GroupLayout.PREFERRED_SIZE, 106, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGap(154, 154, 154)
+                        .addComponent(jLabelTitle)))
                 .addContainerGap(115, Short.MAX_VALUE))
-            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel1Layout.createSequentialGroup()
-                .addGap(17, 17, 17)
-                .addComponent(jLabelHome, javax.swing.GroupLayout.PREFERRED_SIZE, 106, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                .addComponent(jLabelTitle)
-                .addGap(227, 227, 227))
         );
         jPanel1Layout.setVerticalGroup(
             jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -183,16 +194,16 @@ public class CreateAccount extends javax.swing.JFrame {
         this.jPasswordField1.setText("");
     }//GEN-LAST:event_jPasswordField1MouseClicked
 
-    private User verifyLogIn() {
+    private User verifyUser() {
         String password = new String(this.jPasswordField1.getPassword());
         String repeat = new String(this.jPasswordFieldRepeat.getPassword());
         String username = this.jTextFieldUserName.getText();
         String email = null;
         int phone = 0;
         User user = userController.getUserByName(username);
-        if (Utils.matchesUsernameRegex(username)&& user == null) {
+        if (Utils.matchesUsernameRegex(username) && user == null) {
             if (Utils.matchesEmailRegex(this.jTextFieldUserEmail.getText()) || Utils.matchesPhoneRegex(this.jTextFieldUserEmail.getText())) {
-                if (Utils.matchesEmailRegex(this.jTextFieldUserEmail.getText()) ) {
+                if (Utils.matchesEmailRegex(this.jTextFieldUserEmail.getText())) {
                     email = this.jTextFieldUserEmail.getText();
                 } else if (Utils.matchesPhoneRegex(this.jTextFieldUserEmail.getText())) {
                     phone = Integer.parseInt(this.jTextFieldUserEmail.getText());
@@ -219,18 +230,47 @@ public class CreateAccount extends javax.swing.JFrame {
         return null;
     }
 
-    private void jButtonSignUpActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButtonSignUpActionPerformed
-        // TODO add your handling code here:
-        User user = verifyLogIn();
-        if (user != null) {
-            userController.createUser(user);
-            new Feed(user, userController).setVisible(true);
-            this.dispose();
+    private Company verifyCompany() {
+        String password = new String(this.jPasswordField1.getPassword());
+        String repeat = new String(this.jPasswordFieldRepeat.getPassword());
+        String username = this.jTextFieldUserName.getText();
+        Company company = companyController.getCompany(username);
+        if (Utils.matchesUsernameRegex(username) && company == null) {
+            if (Utils.matchesPasswordRegex(password, repeat)) {
+                return new Company(username, password, null);
+            } else if (!password.equals(repeat)) {
+                JOptionPane.showMessageDialog(null, "Las contraseñas no coinciden", "Error en validación", JOptionPane.ERROR_MESSAGE);
+            } else {
+                JOptionPane.showMessageDialog(null, "La contraseña debe tener al menos 8 caracteres, y solo debe contener caracteres alfabeticos o numéricos", "Contraseña incorrecta", JOptionPane.ERROR_MESSAGE);
+            }
+        } else if (company != null) {
+            JOptionPane.showMessageDialog(null, "Esa empresa ya existe", "Nombre de usuario no disponible", JOptionPane.ERROR_MESSAGE);
+        } else {
+            JOptionPane.showMessageDialog(null, "El nombre de la empresa debe estar en minúsculas", "Nombre de usuario incorrecto", JOptionPane.ERROR_MESSAGE);
         }
+        return null;
+    }
+
+    private void jButtonSignUpActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButtonSignUpActionPerformed
+        if (!isCompany) {
+            User user = verifyUser();
+            if (user != null) {
+                userController.createUser(user);
+                new Feed(user, userController).setVisible(true);
+                this.dispose();
+            }
+        } else {
+            Company company = verifyCompany();
+            if (company != null) {
+                companyController.createCompany(company);
+                new JFrameCompany(company, companyController).setVisible(true);
+                dispose();
+            }
+        }
+
     }//GEN-LAST:event_jButtonSignUpActionPerformed
 
     private void jTextFieldUserNameMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jTextFieldUserNameMouseClicked
-        // TODO add your handling code here:
         this.jTextFieldUserName.setText("");
         Utils.mouseExited(jTextFieldUserName);
         this.jTextFieldUserName.setForeground(Color.BLACK);
@@ -259,7 +299,7 @@ public class CreateAccount extends javax.swing.JFrame {
         new LogIn().setVisible(true);
     }//GEN-LAST:event_jLabelHomeMouseClicked
 
-    
+
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton jButtonSignUp;
     private javax.swing.JLabel jLabelHome;

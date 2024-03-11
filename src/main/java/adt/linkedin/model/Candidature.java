@@ -2,10 +2,6 @@ package adt.linkedin.model;
 
 import adt.linkedin.enumerations.Status;
 import jakarta.persistence.*;
-import org.checkerframework.checker.units.qual.C;
-
-import java.util.ArrayList;
-import java.util.List;
 import java.util.Objects;
 
 @Entity
