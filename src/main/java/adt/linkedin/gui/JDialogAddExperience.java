@@ -283,26 +283,37 @@ public class JDialogAddExperience extends javax.swing.JDialog {
         return LocalDate.of(yearF, monthF, dayF);
 
     }
-    
+
     /**
-     * Añade la experiencia laboral en función de los datos introducidos por el usuario.
+     * Añade la experiencia laboral en función de los datos introducidos por el
+     * usuario.
+     *
      * @param evt no es usado
      */
     private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
         WorkExperience experience;
         LocalDate init, end = null;
         Company c;
+        String temporalCompany = null;
         init = getInitDate();
         if (init != null) {
             c = companyController.getCompany(this.jTextFieldCompany.getText().trim());
             if (c == null) {
-                c = companyController.createCompany(this.jTextFieldCompany.getText().trim());
+                temporalCompany = this.jTextFieldCompany.getText().trim();
             }
             if (jCheckBox1.isSelected()) {
-                experience = new WorkExperience(this.jTextFieldTitle.getText(), c, this.jTextFieldLocation.getText(), init);
+                if (temporalCompany == null) {
+                    experience = new WorkExperience(this.jTextFieldTitle.getText(), c, this.jTextFieldLocation.getText(), init);
+                }else{
+                    experience = new WorkExperience(this.jTextFieldTitle.getText(), temporalCompany, this.jTextFieldLocation.getText(), init);
+                }
             } else {
                 end = getEndDate();
-                experience = new WorkExperience(this.jTextFieldTitle.getText(), c, this.jTextFieldLocation.getText(), init, end);
+                if (temporalCompany == null) {
+                    experience = new WorkExperience(this.jTextFieldTitle.getText(), c, this.jTextFieldLocation.getText(), init, end);
+                }else{
+                    experience = new WorkExperience(this.jTextFieldTitle.getText(), temporalCompany, this.jTextFieldLocation.getText(), init, end);
+                }
             }
             if (end != null && init.compareTo(end) >= 1) {
                 JOptionPane.showMessageDialog(null, "¿Cómo vas a acabar algo antes de empezarlo?", "Error en fechas", JOptionPane.ERROR_MESSAGE);
