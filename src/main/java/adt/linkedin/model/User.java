@@ -2,48 +2,67 @@ package adt.linkedin.model;
 
 
 import jakarta.persistence.*;
+import org.checkerframework.common.aliasing.qual.Unique;
+
 import java.util.ArrayList;
 import java.util.List;
 
 @Entity
-@Table(name = "users")
+@Table(name = "users", uniqueConstraints = {@UniqueConstraint(columnNames = "name")})
 public class User {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private int id;
-
+    private long id;
     @Column(name = "name", nullable = false)
     private String name;
     @Column(name = "mail")
     private String mail;
+    @Column(name = "password", nullable = false)
+    private String password;
     @Column(name = "phone")
     private int phone;
     @Column(name = "description")
     private String description;
-    @ManyToMany(cascade = {CascadeType.PERSIST, CascadeType.MERGE})
+    @ManyToMany(cascade = {CascadeType.PERSIST, CascadeType.MERGE}, fetch = FetchType.EAGER)
     @JoinTable(name = "users_skills", joinColumns = @JoinColumn(name = "user_id"), inverseJoinColumns = @JoinColumn(name = "skill_id"))
-    private List<Skill> skills;
+    private List<Skill> skills = new ArrayList<>();
 
-    @OneToMany(cascade = {CascadeType.MERGE, CascadeType.REMOVE}, mappedBy = "user")
-    private List<Candidature> candidatures;
+    @OneToMany(cascade = {CascadeType.ALL}, fetch = FetchType.EAGER, mappedBy = "user")
+    private List<Candidature> candidatures= new ArrayList<>();
 
-    @OneToMany(cascade = CascadeType.ALL, mappedBy = "user")
+    @OneToMany(cascade = {CascadeType.ALL}, mappedBy = "user", fetch = FetchType.EAGER)
     private List<WorkExperience> experiences = new ArrayList<>();
 
-    @OneToMany(cascade = {CascadeType.PERSIST, CascadeType.MERGE}, mappedBy = "user")
-    private List<AcademicInfo> academics;
+    @OneToMany(cascade = {CascadeType.ALL}, fetch = FetchType.EAGER, mappedBy = "user")
+    private List<AcademicInfo> academics = new ArrayList<>();
     public User() {
     }
 
-    public User(String name) {
+    public User(String name, String password, String mail, int phone, String description) {
         this.name = name;
+        this.password = password;
+        this.mail = mail;
+        this.phone = phone;
+        this.description = description;
+    }
+    public User(String name, String password, int phone, String description) {
+        this.name = name;
+        this.password = password;
+        this.phone = phone;
+        this.description = description;
+    }
+    public User(String name, String password, String mail, String description) {
+        this.name = name;
+        this.password = password;
+        this.mail = mail;
+        this.description = description;
     }
 
-    public int getId() {
+    public long getId() {
         return id;
     }
 
-    public void setId(int id) {
+    public void setId(long id) {
         this.id = id;
     }
 
@@ -85,5 +104,46 @@ public class User {
 
     public void setAcademics(List<AcademicInfo> academics) {
         this.academics = academics;
+    }
+    public String getMail() {
+        return mail;
+    }
+
+    public void setMail(String mail) {
+        this.mail = mail;
+    }
+
+    public String getPassword() {
+        return password;
+    }
+
+    public void setPassword(String password) {
+        this.password = password;
+    }
+
+    public int getPhone() {
+        return phone;
+    }
+
+    public void setPhone(int phone) {
+        this.phone = phone;
+    }
+
+    public String getDescription() {
+        return description;
+    }
+
+    public void setDescription(String description) {
+        this.description = description;
+    }
+    @Override
+    public String toString() {
+        if (description == null) description = "";
+        if (mail != null) {
+            return name + " \t" + mail + " \t" + description;
+        }else{
+            return name + " " + phone + " " + description;
+        }
+        
     }
 }
