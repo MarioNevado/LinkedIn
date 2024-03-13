@@ -1,5 +1,6 @@
 package adt.linkedin.services;
 
+import adt.linkedin.enumerations.Status;
 import adt.linkedin.implementations.UserImplDAO;
 import adt.linkedin.model.*;
 import jakarta.persistence.NoResultException;
@@ -11,7 +12,6 @@ import org.hibernate.query.Query;
 public class UserService {
     
     private final UserImplDAO userController;
-    
     private final Session session;
 
     public UserService(Session session) {
@@ -22,6 +22,7 @@ public class UserService {
     public Session getSession() {
         return session;
     }
+    
     public List<Skill> getUserSkills(User user) {
         try {
             CriteriaBuilder cb = session.getCriteriaBuilder();
@@ -207,6 +208,10 @@ public class UserService {
         userController.updateUser(user);
     }
     
+    /**
+     * Muestra por pantalla la información del usuario
+     * @param user usuario del cual queremos saber su información
+     */
     public void printUserInfo(User user){
         System.out.println("Usuario: " + getUserById(user.getId()));
         System.out.println("Información Académica: ");
@@ -248,8 +253,9 @@ public class UserService {
         userController.updateUser(user);
     }
     
-    public void addCandidature(User user, JobOffer offer, String cvPath, String coverLetterPath){ //igual
+    public void addCandidature(User user, JobOffer offer, String cvPath, String coverLetterPath){ 
         Candidature candidature = new Candidature(cvPath, coverLetterPath);
+        candidature.setStatus(Status.PENDING);
         candidature.setUser(user);
         candidature.setOffer(offer);
         user.getCandidatures().add(candidature);
@@ -257,12 +263,13 @@ public class UserService {
         userController.updateUser(user);
     }
     
-    public void addCandidature(User user, JobOffer offer){
+    public void addCandidature(User user, JobOffer offer){ 
         Candidature c = new Candidature();
         user.getCandidatures().add(c);
         c.setUser(user);
         offer.getCandidatures().add(c);
         c.setOffer(offer);
+        c.setStatus(Status.PENDING);
         userController.updateUser(user);
     }
     
@@ -276,6 +283,23 @@ public class UserService {
         user.getExperiences().add(experience);
         experience.setUser(user);
         userController.updateUser(user);
+    }
+    
+    /**
+     * Busca si un usuario ha aplicado a una oferta de trabajo recorriendo la lista de candidaturas del usuario y de la oferta
+     * @param user usuario que queremos saber si ha aplicado a una oferta
+     * @param offer oferta de la que queremos saber si entre sus candidaturas se encuentra la del usuario
+     * @return true si la oferta contiene su candidatura, false si no
+     */
+    public boolean hasApplied(User user, JobOffer offer){
+        for (Candidature candidature : offer.getCandidatures()) {
+            for (Candidature aux : user.getCandidatures()) {
+                if (aux.equals(candidature)) {
+                    return true;
+                }
+            }
+        }
+        return false;
     }
     
     public void removeUser(User user){

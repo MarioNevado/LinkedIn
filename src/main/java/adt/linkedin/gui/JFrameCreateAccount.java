@@ -12,15 +12,14 @@ import adt.linkedin.tools.Utils;
 import java.awt.Color;
 import javax.swing.JFrame;
 import javax.swing.JOptionPane;
-import javax.swing.border.Border;
 import javax.swing.border.CompoundBorder;
 import javax.swing.border.TitledBorder;
 
 /**
  *
- * @author dev
+ * @author Mario Nevado
  */
-public class CreateAccount extends javax.swing.JFrame {
+public class JFrameCreateAccount extends javax.swing.JFrame {
 
     UserService userController;
     CompanyService companyController = new CompanyService();
@@ -29,13 +28,12 @@ public class CreateAccount extends javax.swing.JFrame {
     /**
      * Creates new form CreateAccount
      *
-     * @param controller
-     * @param company
+     * @param controller herramienta con la que haremos las consultas y modificaciones
+     * @param company indica si es una empresa o no
      */
-    public CreateAccount(UserService controller, boolean company) {
+    public JFrameCreateAccount(UserService controller, boolean company) {
         this.userController = controller;
         this.isCompany = company;
-        System.out.println(userController.getSession().isOpen());
         setExtendedState(JFrame.MAXIMIZED_BOTH);
         initComponents();
         if (isCompany) {
@@ -60,38 +58,43 @@ public class CreateAccount extends javax.swing.JFrame {
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
-        jPanel1.setBackground(new java.awt.Color(255, 255, 255));
+        jPanel1.setBackground(new java.awt.Color(0, 0, 0));
 
         jLabelTitle.setFont(new java.awt.Font("Liberation Sans", 0, 24)); // NOI18N
         jLabelTitle.setForeground(new java.awt.Color(153, 51, 255));
         jLabelTitle.setText("Saca el máximo partido a tu vida profesional ");
 
-        jTextFieldUserEmail.setBorder(javax.swing.BorderFactory.createCompoundBorder(javax.swing.BorderFactory.createTitledBorder(null, "Email/Teléfono", javax.swing.border.TitledBorder.DEFAULT_JUSTIFICATION, javax.swing.border.TitledBorder.DEFAULT_POSITION, new java.awt.Font("Liberation Sans", 1, 15)), null)); // NOI18N
+        jTextFieldUserEmail.setBackground(new java.awt.Color(0, 0, 0));
+        jTextFieldUserEmail.setForeground(new java.awt.Color(255, 255, 255));
+        jTextFieldUserEmail.setBorder(javax.swing.BorderFactory.createCompoundBorder(javax.swing.BorderFactory.createTitledBorder(null, "Email/Teléfono", javax.swing.border.TitledBorder.DEFAULT_JUSTIFICATION, javax.swing.border.TitledBorder.DEFAULT_POSITION, new java.awt.Font("Liberation Sans", 1, 15), Utils.PURPLE), null)); // NOI18N
         jTextFieldUserEmail.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 jTextFieldUserEmailActionPerformed(evt);
             }
         });
 
+        jPasswordField1.setBackground(new java.awt.Color(0, 0, 0));
+        jPasswordField1.setForeground(new java.awt.Color(255, 255, 255));
         jPasswordField1.setText("jPasswordField1");
-        jPasswordField1.setBorder(javax.swing.BorderFactory.createCompoundBorder(javax.swing.BorderFactory.createTitledBorder(null, "Contraseña", javax.swing.border.TitledBorder.DEFAULT_JUSTIFICATION, javax.swing.border.TitledBorder.DEFAULT_POSITION, new java.awt.Font("Liberation Sans", 1, 15)), null)); // NOI18N
+        jPasswordField1.setBorder(javax.swing.BorderFactory.createCompoundBorder(javax.swing.BorderFactory.createTitledBorder(null, "Contraseña", javax.swing.border.TitledBorder.DEFAULT_JUSTIFICATION, javax.swing.border.TitledBorder.DEFAULT_POSITION, new java.awt.Font("Liberation Sans", 1, 15), Utils.PURPLE), null)); // NOI18N
         jPasswordField1.addMouseListener(new java.awt.event.MouseAdapter() {
             public void mouseClicked(java.awt.event.MouseEvent evt) {
                 jPasswordField1MouseClicked(evt);
             }
         });
 
+        jTextFieldUserName.setBackground(new java.awt.Color(0, 0, 0));
         jTextFieldUserName.setFont(new java.awt.Font("Liberation Sans", 2, 15)); // NOI18N
         jTextFieldUserName.setForeground(new java.awt.Color(204, 204, 204));
         jTextFieldUserName.setText("Introduzca caracteres alfabéticos en minúscula");
-        jTextFieldUserName.setBorder(javax.swing.BorderFactory.createCompoundBorder(javax.swing.BorderFactory.createTitledBorder(null, "Nombre de Usuario", javax.swing.border.TitledBorder.DEFAULT_JUSTIFICATION, javax.swing.border.TitledBorder.DEFAULT_POSITION, new java.awt.Font("Liberation Sans", 1, 15)), null)); // NOI18N
+        jTextFieldUserName.setBorder(javax.swing.BorderFactory.createCompoundBorder(javax.swing.BorderFactory.createTitledBorder(null, "Nombre de Usuario", javax.swing.border.TitledBorder.DEFAULT_JUSTIFICATION, javax.swing.border.TitledBorder.DEFAULT_POSITION, new java.awt.Font("Liberation Sans", 1, 15), Utils.PURPLE), null)); // NOI18N
         jTextFieldUserName.addMouseListener(new java.awt.event.MouseAdapter() {
             public void mouseClicked(java.awt.event.MouseEvent evt) {
                 jTextFieldUserNameMouseClicked(evt);
             }
         });
 
-        jLabelImg.setIcon(new javax.swing.ImageIcon(getClass().getResource("/img/Link_up.png"))); // NOI18N
+        jLabelImg.setIcon(new javax.swing.ImageIcon(getClass().getResource("/img/Link up.png"))); // NOI18N
 
         jButtonSignUp.setBackground(new java.awt.Color(153, 51, 255));
         jButtonSignUp.setForeground(new java.awt.Color(255, 255, 255));
@@ -102,14 +105,17 @@ public class CreateAccount extends javax.swing.JFrame {
             }
         });
 
+        jPasswordFieldRepeat.setBackground(new java.awt.Color(0, 0, 0));
+        jPasswordFieldRepeat.setForeground(new java.awt.Color(255, 255, 255));
         jPasswordFieldRepeat.setText("jPasswordField2");
-        jPasswordFieldRepeat.setBorder(javax.swing.BorderFactory.createCompoundBorder(javax.swing.BorderFactory.createTitledBorder(null, "Repita su contraseña", javax.swing.border.TitledBorder.DEFAULT_JUSTIFICATION, javax.swing.border.TitledBorder.DEFAULT_POSITION, new java.awt.Font("Liberation Sans", 1, 15)), null)); // NOI18N
+        jPasswordFieldRepeat.setBorder(javax.swing.BorderFactory.createCompoundBorder(javax.swing.BorderFactory.createTitledBorder(null, "Repita su contraseña", javax.swing.border.TitledBorder.DEFAULT_JUSTIFICATION, javax.swing.border.TitledBorder.DEFAULT_POSITION, new java.awt.Font("Liberation Sans", 1, 15), Utils.PURPLE), null)); // NOI18N
         jPasswordFieldRepeat.addMouseListener(new java.awt.event.MouseAdapter() {
             public void mouseClicked(java.awt.event.MouseEvent evt) {
                 jPasswordFieldRepeatMouseClicked(evt);
             }
         });
 
+        jLabelHome.setForeground(Utils.PURPLE);
         jLabelHome.setText("Volver a Inicio");
         jLabelHome.addMouseListener(new java.awt.event.MouseAdapter() {
             public void mouseClicked(java.awt.event.MouseEvent evt) {
@@ -189,11 +195,19 @@ public class CreateAccount extends javax.swing.JFrame {
         // TODO add your handling code here:
     }//GEN-LAST:event_jTextFieldUserEmailActionPerformed
 
+    /**
+     * Al pinchar vacía el text field
+     * @param evt no es usado
+     */
     private void jPasswordField1MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jPasswordField1MouseClicked
         // TODO add your handling code here:
         this.jPasswordField1.setText("");
     }//GEN-LAST:event_jPasswordField1MouseClicked
 
+    /**
+     * Verifica que los valores introducidos cumples todas las restricciones internas
+     * @return un usuario en caso de que cumpla las condiciones
+     */
     private User verifyUser() {
         String password = new String(this.jPasswordField1.getPassword());
         String repeat = new String(this.jPasswordFieldRepeat.getPassword());
@@ -230,6 +244,10 @@ public class CreateAccount extends javax.swing.JFrame {
         return null;
     }
 
+    /**
+     * Verifica que los valores introducidos cumples todas las restricciones internas
+     * @return una empresa en caso de que cumpla las condiciones
+     */
     private Company verifyCompany() {
         String password = new String(this.jPasswordField1.getPassword());
         String repeat = new String(this.jPasswordFieldRepeat.getPassword());
@@ -251,12 +269,16 @@ public class CreateAccount extends javax.swing.JFrame {
         return null;
     }
 
+    /**
+     * Añade el usuario o la empresa, y abre un nuevo Frame
+     * @param evt no es usado
+     */
     private void jButtonSignUpActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButtonSignUpActionPerformed
         if (!isCompany) {
             User user = verifyUser();
             if (user != null) {
                 userController.createUser(user);
-                new Feed(user, userController).setVisible(true);
+                new JFrameFeed(user, userController).setVisible(true);
                 this.dispose();
             }
         } else {
@@ -270,33 +292,53 @@ public class CreateAccount extends javax.swing.JFrame {
 
     }//GEN-LAST:event_jButtonSignUpActionPerformed
 
+    /**
+     * Al pinchar vacía el text field, y le cambia el formato
+     * @param evt no es usado
+     */
     private void jTextFieldUserNameMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jTextFieldUserNameMouseClicked
         this.jTextFieldUserName.setText("");
         Utils.mouseExited(jTextFieldUserName);
-        this.jTextFieldUserName.setForeground(Color.BLACK);
+        this.jTextFieldUserName.setForeground(Color.WHITE);
     }//GEN-LAST:event_jTextFieldUserNameMouseClicked
 
+    /**
+     * Vacía el campo de contraseña al pinchar sobre él
+     * @param evt 
+     */
     private void jPasswordFieldRepeatMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jPasswordFieldRepeatMouseClicked
         // TODO add your handling code here:
         this.jPasswordFieldRepeat.setText("");
     }//GEN-LAST:event_jPasswordFieldRepeatMouseClicked
 
+    /**
+     * Pone el texto en negrita y morado al acercar el ratón a él
+     * @param evt no es usado
+     */
     private void jLabelHomeMouseEntered(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jLabelHomeMouseEntered
         // TODO add your handling code here:
         Utils.mouseEntered(jLabelHome);
         this.jLabelHome.setForeground(Utils.PURPLE);
     }//GEN-LAST:event_jLabelHomeMouseEntered
 
+    /**
+     * Vuelve a ponerlo en texto plano y negro al alejar el ratón
+     * @param evt no es usado
+     */
     private void jLabelHomeMouseExited(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jLabelHomeMouseExited
         // TODO add your handling code here:
         Utils.mouseExited(jLabelHome);
         this.jLabelHome.setForeground(Color.BLACK);
     }//GEN-LAST:event_jLabelHomeMouseExited
 
+    /**
+     * Vuelve a la pestaña principal
+     * @param evt no es usado
+     */
     private void jLabelHomeMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jLabelHomeMouseClicked
         // TODO add your handling code here:
         this.setVisible(false);
-        new LogIn().setVisible(true);
+        new JFrameLogIn().setVisible(true);
     }//GEN-LAST:event_jLabelHomeMouseClicked
 
 

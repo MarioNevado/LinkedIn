@@ -1,14 +1,9 @@
 package adt.linkedin.implementations;
 
 import adt.linkedin.dao.CompanyDAO;
-import adt.linkedin.model.Candidature;
-import adt.linkedin.model.Company;
-import adt.linkedin.model.JobOffer;
+import adt.linkedin.model.*;
 import adt.linkedin.tools.HibernateUtil;
-import jakarta.persistence.criteria.CriteriaBuilder;
-import jakarta.persistence.criteria.CriteriaQuery;
-import jakarta.persistence.criteria.Join;
-import jakarta.persistence.criteria.Root;
+import jakarta.persistence.criteria.*;
 import org.hibernate.Session;
 import org.hibernate.Transaction;
 import org.hibernate.query.Query;
@@ -17,7 +12,7 @@ import java.util.List;
 
 public class CompanyImplDAO implements CompanyDAO {
     @Override
-    public Company getCompanyByName(String name) { //UNIQUE en nombre SI
+    public Company getCompanyByName(String name) { 
         try(Session session = HibernateUtil.getSessionFactory().openSession()){
             CriteriaBuilder cb = session.getCriteriaBuilder();
             CriteriaQuery<Company> cQuery = cb.createQuery(Company.class);
@@ -26,13 +21,13 @@ public class CompanyImplDAO implements CompanyDAO {
             Query<Company> query = session.createQuery(cQuery);
             return query.getSingleResult();
         }catch(Exception e){
-            e.printStackTrace();
+            
         }
         return null;
     }
 
     @Override
-    public List<Candidature> getCandidaturesByJobOffer(Company company, JobOffer offer) { // join?
+    public List<Candidature> getCandidaturesByJobOffer(Company company, JobOffer offer) {
         try(Session session = HibernateUtil.getSessionFactory().openSession()){
             CriteriaBuilder cb = session.getCriteriaBuilder();
             CriteriaQuery<Candidature> cQuery = cb.createQuery(Candidature.class);
@@ -43,7 +38,6 @@ public class CompanyImplDAO implements CompanyDAO {
             Query<Candidature> query = session.createQuery(cQuery);
             return query.list();
         }catch(Exception e){
-            e.printStackTrace();
         }
 
         return null;
@@ -66,6 +60,11 @@ public class CompanyImplDAO implements CompanyDAO {
         }
     }
 
+    /**
+     * Obtiene las ofertas de trabajo según la empresa
+     * @param company hace referencia a la compañia de la que queremos saber sus ofertas
+     * @return Lista de ofertas de trabajo
+     */
     @Override
     public List<JobOffer> getJobOffers(Company company) {
         try(Session session = HibernateUtil.getSessionFactory().openSession()){
@@ -76,7 +75,6 @@ public class CompanyImplDAO implements CompanyDAO {
             Query<JobOffer> query = session.createQuery(cQuery);
             return query.list();
         }catch (Exception e){
-            e.printStackTrace();
         }
         return null;
     }
@@ -92,7 +90,6 @@ public class CompanyImplDAO implements CompanyDAO {
             }
         }catch(Exception e){
             if (tx != null) tx.rollback();
-            e.printStackTrace();
         }
     }
 
@@ -107,7 +104,6 @@ public class CompanyImplDAO implements CompanyDAO {
             }
         }catch(Exception e){
             if (tx != null) tx.rollback();
-            e.printStackTrace();
         }
     }
 

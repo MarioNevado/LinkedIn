@@ -4,25 +4,19 @@
  */
 package adt.linkedin.gui;
 
-import adt.linkedin.model.Company;
-import adt.linkedin.model.JobOffer;
-import adt.linkedin.model.User;
-import adt.linkedin.services.CompanyService;
-import adt.linkedin.services.JobOfferService;
-import adt.linkedin.services.UserService;
+import adt.linkedin.model.*;
+import adt.linkedin.services.*;
 import adt.linkedin.tools.Utils;
 import java.awt.Color;
 import java.awt.Font;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
+import java.util.ArrayList;
+import java.util.List;
 import javax.swing.DefaultListModel;
 import javax.swing.JFrame;
-import javax.swing.JMenuItem;
-import javax.swing.JPopupMenu;
 
 /**
  *
- * @author mario
+ * @author Mario Nevado
  */
 public class JFrameJobOffers extends javax.swing.JFrame {
 
@@ -31,7 +25,14 @@ public class JFrameJobOffers extends javax.swing.JFrame {
     CompanyService companyController;
     UserService userController;
     String query;
+    List<JobOffer> availableOffers = new ArrayList<>();
 
+    /**
+     *
+     * @param user hace referencia al usuario que realiza la búsqueda
+     * @param service herramienta para consultar y modificar en la base de datos
+     * @param query hace referencia a la búsqueda
+     */
     public JFrameJobOffers(User user, UserService service, String query) {
         this.user = user;
         this.offerController = new JobOfferService();
@@ -43,6 +44,12 @@ public class JFrameJobOffers extends javax.swing.JFrame {
         fillList(0);
     }
 
+    /**
+     * Rellena la lista según lo que el usuario busque
+     *
+     * @param option será 0 si busca ofertas, 1 si busca empresas y 2 si busca
+     * usuarios
+     */
     private void fillList(int option) {
         int counter = 0;
         DefaultListModel model = new DefaultListModel();
@@ -50,8 +57,11 @@ public class JFrameJobOffers extends javax.swing.JFrame {
             case 0:
                 if (!offerController.getOffersByTitle(query).isEmpty()) {
                     for (JobOffer offer : offerController.getOffersByTitle(query)) {
-                        model.add(counter, offer);
-                        counter++;
+                        if (!userController.hasApplied(user, offer) && offer.isOpen()) {
+                            availableOffers.add(offer);
+                            model.add(counter, offer);
+                            counter++;
+                        }
                     }
                 } else {
                     model.add(0, "No se encontraron ofertas :(");
@@ -87,6 +97,11 @@ public class JFrameJobOffers extends javax.swing.JFrame {
         this.jListOffers.setModel(model);
     }
 
+    /**
+     * Comprueba que en la lista de usuarios la unica coincidencia es él mismo
+     *
+     * @return true si es el único que se llama así, false si hay más similares
+     */
     private boolean onlyContainsThis() {
         return userController.getUsersByName(query).size() == 1 && userController.getUsersByName(query).get(0).equals(user);
     }
@@ -101,6 +116,7 @@ public class JFrameJobOffers extends javax.swing.JFrame {
         jTextField1 = new javax.swing.JTextField();
         jToggleButtonCompanies = new javax.swing.JToggleButton();
         jToggleButtonUsers = new javax.swing.JToggleButton();
+        jButton1 = new javax.swing.JButton();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
@@ -133,21 +149,30 @@ public class JFrameJobOffers extends javax.swing.JFrame {
             }
         });
 
-        jToggleButtonCompanies.setBackground(new java.awt.Color(0, 0, 0));
-        jToggleButtonCompanies.setForeground(Utils.PURPLE);
-        jToggleButtonCompanies.setText("Companies");
+        jToggleButtonCompanies.setBackground(Utils.PURPLE);
+        jToggleButtonCompanies.setForeground(new java.awt.Color(255, 255, 255));
+        jToggleButtonCompanies.setText("Empresas");
         jToggleButtonCompanies.addItemListener(new java.awt.event.ItemListener() {
             public void itemStateChanged(java.awt.event.ItemEvent evt) {
                 jToggleButtonCompaniesItemStateChanged(evt);
             }
         });
 
-        jToggleButtonUsers.setBackground(new java.awt.Color(0, 0, 0));
-        jToggleButtonUsers.setForeground(Utils.PURPLE);
-        jToggleButtonUsers.setText("Users");
+        jToggleButtonUsers.setBackground(Utils.PURPLE);
+        jToggleButtonUsers.setForeground(new java.awt.Color(255, 255, 255));
+        jToggleButtonUsers.setText("Usuarios");
         jToggleButtonUsers.addItemListener(new java.awt.event.ItemListener() {
             public void itemStateChanged(java.awt.event.ItemEvent evt) {
                 jToggleButtonUsersItemStateChanged(evt);
+            }
+        });
+
+        jButton1.setBackground(Utils.PURPLE);
+        jButton1.setForeground(new java.awt.Color(255, 255, 255));
+        jButton1.setText("<<");
+        jButton1.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButton1ActionPerformed(evt);
             }
         });
 
@@ -155,60 +180,79 @@ public class JFrameJobOffers extends javax.swing.JFrame {
         jPanel1.setLayout(jPanel1Layout);
         jPanel1Layout.setHorizontalGroup(
             jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addComponent(jTextField1)
             .addGroup(jPanel1Layout.createSequentialGroup()
-                .addContainerGap()
+                .addGap(339, 339, 339)
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(jScrollPane2, javax.swing.GroupLayout.DEFAULT_SIZE, 700, Short.MAX_VALUE)
+                    .addComponent(jScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, 708, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addGroup(jPanel1Layout.createSequentialGroup()
                         .addComponent(jToggleButtonCompanies)
+                        .addGap(18, 18, 18)
+                        .addComponent(jToggleButtonUsers))
+                    .addGroup(jPanel1Layout.createSequentialGroup()
+                        .addComponent(jTextField1, javax.swing.GroupLayout.PREFERRED_SIZE, 636, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                        .addComponent(jToggleButtonUsers)
-                        .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))))
+                        .addComponent(jButton1, javax.swing.GroupLayout.PREFERRED_SIZE, 54, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                .addContainerGap(214, Short.MAX_VALUE))
         );
         jPanel1Layout.setVerticalGroup(
             jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel1Layout.createSequentialGroup()
-                .addContainerGap()
-                .addComponent(jTextField1, javax.swing.GroupLayout.PREFERRED_SIZE, 16, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addGap(14, 14, 14)
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(jToggleButtonCompanies)
-                    .addComponent(jToggleButtonUsers))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(jScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, 305, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap())
+                    .addComponent(jTextField1, javax.swing.GroupLayout.PREFERRED_SIZE, 20, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(jButton1))
+                .addGap(18, 18, 18)
+                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(jToggleButtonUsers)
+                    .addComponent(jToggleButtonCompanies))
+                .addGap(34, 34, 34)
+                .addComponent(jScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, 304, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addContainerGap(209, Short.MAX_VALUE))
         );
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
-                .addComponent(jPanel1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                .addContainerGap())
+            .addComponent(jPanel1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
+            .addGroup(layout.createSequentialGroup()
                 .addComponent(jPanel1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                .addContainerGap())
+                .addGap(0, 0, 0))
         );
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
 
+    /**
+     * Cambia el formato al textField al pinchar sobre el
+     *
+     * @param evt no usado
+     */
     private void jTextField1MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jTextField1MouseClicked
         this.jTextField1.setText("");
         this.jTextField1.setForeground(Utils.PURPLE);
         this.jTextField1.setFont(new Font(Utils.FONT, 0, 15));
     }//GEN-LAST:event_jTextField1MouseClicked
 
+    /**
+     * Hace una llamada recursiva a si mismo
+     *
+     * @param evt no usado
+     */
     private void jTextField1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jTextField1ActionPerformed
         this.query = jTextField1.getText();
         fillList(0);
     }//GEN-LAST:event_jTextField1ActionPerformed
 
+    /**
+     * Habilita o deshabilita el otro botón en función de si el botón está
+     * seleccionado
+     *
+     * @param evt no usado
+     */
     private void jToggleButtonCompaniesItemStateChanged(java.awt.event.ItemEvent evt) {//GEN-FIRST:event_jToggleButtonCompaniesItemStateChanged
         int option;
         if (this.jToggleButtonCompanies.isSelected()) {
@@ -223,9 +267,14 @@ public class JFrameJobOffers extends javax.swing.JFrame {
             option = 0;
         }
         fillList(option);
-
     }//GEN-LAST:event_jToggleButtonCompaniesItemStateChanged
-
+    
+    /**
+     * Habilita o deshabilita el otro botón en función de si el botón está
+     * seleccionado
+     *
+     * @param evt no usado
+     */
     private void jToggleButtonUsersItemStateChanged(java.awt.event.ItemEvent evt) {//GEN-FIRST:event_jToggleButtonUsersItemStateChanged
         int option;
         if (this.jToggleButtonUsers.isSelected()) {
@@ -243,37 +292,43 @@ public class JFrameJobOffers extends javax.swing.JFrame {
 
     }//GEN-LAST:event_jToggleButtonUsersItemStateChanged
 
+    /**
+     * Dependiendo de qué botón ha sido seleccionado hará diferentes acciones, si se ha pinchado en empresas se
+     * cargará el perfil de esa empresa, si se ha pinchado en usuarios se cargará en el perfil de ese usuario, 
+     * y si no se ha pinchado en ninguno de los dos botones, es decir, lo que se muestra son ofertas, y por lo
+     * tanto añadirá una candidatura a la oferta seleccionada.
+     * @param evt no usado
+     */
     private void jListOffersMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jListOffersMouseClicked
         // TODO add your handling code here:
         if (this.jToggleButtonCompanies.isSelected()) {
-            Company selectedCompany = (Company)((Object)this.jListOffers.getSelectedValue());
+            Company selectedCompany = (Company) ((Object) this.jListOffers.getSelectedValue());
             new JFrameCompany(selectedCompany, companyController).setVisible(true);
             dispose();
         } else if (this.jToggleButtonUsers.isSelected()) {
-            User selectedUser = (User)((Object)this.jListOffers.getSelectedValue());
+            User selectedUser = (User) ((Object) this.jListOffers.getSelectedValue());
             new JFrameUser(selectedUser, userController).setVisible(true);
             dispose();
         } else {
-            //jobOffer
-            initPopup();
+            System.out.println(availableOffers.get(this.jListOffers.getSelectedIndex()));
+            new JDialogAddCandidature(this, true, user, userController, availableOffers.get(this.jListOffers.getSelectedIndex())).setVisible(true);
+            this.availableOffers.remove(this.availableOffers.get(this.jListOffers.getSelectedIndex()));
         }
     }//GEN-LAST:event_jListOffersMouseClicked
 
-    private void apply() {
-        this.userController.addCandidature(user, offerController.getOffer(this.jListOffers.getSelectedIndex()));
-    }
+    /**
+     * Vuelve al feed principal del usuario
+     * @param evt no usado
+     */
+    private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
+        // TODO add your handling code here:
+        new JFrameFeed(user, userController).setVisible(true);
+        dispose();
+    }//GEN-LAST:event_jButton1ActionPerformed
 
-    private JPopupMenu initPopup() {
-        JPopupMenu pop = new JPopupMenu();
-        JMenuItem apply = new JMenuItem("Apuntarse a esta oferta");
-        apply.addActionListener((ActionEvent e) -> {
-            apply();
-        });
-        pop.add(apply);
-        return pop;
-    }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
+    private javax.swing.JButton jButton1;
     private javax.swing.JList<String> jListOffers;
     private javax.swing.JPanel jPanel1;
     private javax.swing.JScrollPane jScrollPane2;

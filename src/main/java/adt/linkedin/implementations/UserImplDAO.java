@@ -30,7 +30,6 @@ public class UserImplDAO implements UserDAO {
             if (session.isOpen()) {
                 session.close();
             }
-            e.printStackTrace();
         }
     }
 
@@ -44,7 +43,6 @@ public class UserImplDAO implements UserDAO {
                 transaction.commit();
             }
         } catch (HibernateException h) {
-            h.printStackTrace();
             if (transaction != null) {
                 transaction.rollback();
             }
@@ -66,14 +64,13 @@ public class UserImplDAO implements UserDAO {
             } else {
                 throw new HibernateException("El producto está vacío");
             }
-        } catch (Exception e) {
+        } catch (HibernateException e) {
             if (tx != null) {
                 tx.rollback();
             }
             if (session.isOpen()) {
                 session.close();
             }
-            e.printStackTrace();
         }
     }
 

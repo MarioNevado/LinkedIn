@@ -19,7 +19,7 @@ public class Candidature {
     @ManyToOne(cascade = {CascadeType.PERSIST, CascadeType.MERGE, CascadeType.REMOVE})
     @JoinColumn(name = "user_id", nullable = false)
     private User user;
-    @ManyToOne(cascade = CascadeType.ALL, fetch = FetchType.EAGER)
+    @ManyToOne(cascade = {CascadeType.PERSIST, CascadeType.REMOVE}, fetch = FetchType.EAGER)
     @JoinColumn(name = "job_offer_id", nullable = false)
     private JobOffer offer;
 
@@ -70,7 +70,7 @@ public class Candidature {
         this.user = user;
     }
 
-    public JobOffer getOffers() {
+    public JobOffer getOffer() {
         return offer;
     }
     public void setOffer(JobOffer offer) {

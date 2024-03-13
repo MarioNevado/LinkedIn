@@ -29,15 +29,14 @@ public class JobOffer {
     private String location;
     @Column(name = "details")
     private String details;
-    @ManyToOne(cascade = CascadeType.ALL)
+    @ManyToOne(cascade = {CascadeType.PERSIST, CascadeType.REMOVE})
     @JoinColumn(name = "companies_id", nullable = false)
     private Company company;
     @ManyToMany(cascade = CascadeType.ALL)
     @JoinTable(name = "offers_skills", joinColumns = @JoinColumn(name = "job_offer_id"), inverseJoinColumns = @JoinColumn(name = "skill_id"))
     private List<Skill> skills = new ArrayList<>();
-    @OneToMany(cascade = CascadeType.ALL, fetch = FetchType.EAGER, mappedBy = "offer")
-    
-    private List<Candidature> candidatures;
+    @OneToMany(cascade = {CascadeType.PERSIST,  CascadeType.REMOVE}, fetch = FetchType.EAGER, mappedBy = "offer")
+    private List<Candidature> candidatures = new ArrayList<>();
     public JobOffer() {
     }
     public JobOffer(String title, String location) {
@@ -81,7 +80,10 @@ public class JobOffer {
     }
 
     public void setRequiredCandidates(int requiredCandidates) {
-        this.requiredCandidates = requiredCandidates;
+        if (this.requiredCandidates >= 1) {
+            this.requiredCandidates = requiredCandidates;
+        }else this.requiredCandidates = 0;
+        
     }
 
     public WorkDayType getWorkDayType() {

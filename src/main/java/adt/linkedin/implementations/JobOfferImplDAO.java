@@ -22,7 +22,6 @@ public class JobOfferImplDAO implements JobOfferDAO{
             if (tx != null){
                 tx.rollback();
             }
-            e.printStackTrace();
         }
     }
 
@@ -39,7 +38,6 @@ public class JobOfferImplDAO implements JobOfferDAO{
             if (tx != null){
                 tx.rollback();
             }
-            e.printStackTrace();
         }
     }
 
@@ -56,7 +54,6 @@ public class JobOfferImplDAO implements JobOfferDAO{
             if (tx != null){
                 tx.rollback();
             }
-            e.printStackTrace();
         }
     }
 

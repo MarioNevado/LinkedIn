@@ -3,11 +3,7 @@ package adt.linkedin.services;
 import adt.linkedin.converters.WorkDayTypeConverter;
 import adt.linkedin.enumerations.WorkDayType;
 import adt.linkedin.implementations.JobOfferImplDAO;
-import adt.linkedin.model.Candidature;
-import adt.linkedin.model.Company;
-import adt.linkedin.model.JobOffer;
-import adt.linkedin.model.Skill;
-import adt.linkedin.model.User;
+import adt.linkedin.model.*;
 import adt.linkedin.tools.HibernateUtil;
 import jakarta.persistence.NoResultException;
 import jakarta.persistence.criteria.*;
@@ -49,6 +45,31 @@ public class JobOfferService {
         return null;
     }
     
+    /**
+     * Obtiene todas las candidaturas de una oferta cuyo estado sea ACCEPTED
+     * @param offer oferta de la que queremos sacar las candidaturas
+     * @return Lista de candidaturas
+     */
+    public List<Candidature> getAcceptedCandidatures(JobOffer offer){
+        try(Session session = HibernateUtil.getSessionFactory().openSession()){
+            CriteriaBuilder cb = session.getCriteriaBuilder();
+            CriteriaQuery <Candidature> cQuery = cb.createQuery(Candidature.class);
+            Root<Candidature> root = cQuery.from(Candidature.class);
+            Join<Candidature, JobOffer> join = root.join("offer");
+            cQuery.where(cb.and(cb.equal(join, offer), cb.equal(root.get("status"), 2)));
+            Query<Candidature> query = session.createQuery(cQuery.select(root));
+            return query.list();
+        }catch(Exception e){
+        return null;
+        }
+        
+    }
+    
+    /**
+     * 
+     * @param skill habilidad necesaria
+     * @return Lista con todas las ofertas que requieran de esa skill
+     */
     public List<JobOffer> getOffersBySkill(Skill skill){
         try(Session session = HibernateUtil.getSessionFactory().openSession()){
             CriteriaBuilder cb = session.getCriteriaBuilder();
@@ -83,6 +104,11 @@ public class JobOfferService {
         return null;
     }
     
+    /**
+     * 
+     * @param type tipo de jornada
+     * @return obtiene una lista de ofertas de trabajo con la jornada especificada
+     */
     public List<JobOffer> getOffersByWorkDayType(WorkDayType type){
         try(Session session = HibernateUtil.getSessionFactory().openSession()){
             CriteriaBuilder cb = session.getCriteriaBuilder();
@@ -136,7 +162,7 @@ public class JobOfferService {
             CriteriaBuilder cb = session.getCriteriaBuilder();
             CriteriaQuery <JobOffer> cQuery = cb.createQuery(JobOffer.class);
             Root<JobOffer> root = cQuery.from(JobOffer.class);
-            cQuery.where(cb.equal(root, id));
+            cQuery.where(cb.equal(root.get("id"), id));
             Query<JobOffer> query = session.createQuery(cQuery);
             return query.getSingleResult();
         }catch(NoResultException no){
@@ -164,15 +190,20 @@ public class JobOfferService {
         return null;
     }
     
-    public Candidature getOfferByFields(String userName, String title, String location){
+    /**
+     * Busca la candidatura cuyo usario se llame de una específica manera y cuya oferta tenga determinado título
+     * @param userName nombre del usuario
+     * @param title título de la oferta
+     * @return la candidatura si hay coincidencias
+     */
+    public Candidature getCandidatureByFields(String userName, String title){
         try(Session session = HibernateUtil.getSessionFactory().openSession()){
             CriteriaBuilder cb = session.getCriteriaBuilder();
             CriteriaQuery <Candidature> cQuery = cb.createQuery(Candidature.class);
-            Root<JobOffer> root = cQuery.from(JobOffer.class);
+            Root<Candidature> root = cQuery.from(Candidature.class);
             Join<Candidature, User> user = root.join("user");
             Join<Candidature, JobOffer> offer = root.join("offer");
-            cQuery.where(cb.and(cb.equal(user.get("name"), userName), cb.equal(offer.get("title"), title), 
-                    cb.equal(offer.get("location"), location)));
+            cQuery.where(cb.and(cb.equal(user.get("name"), userName), cb.equal(offer.get("title"), title)));
             Query<Candidature> query = session.createQuery(cQuery);
             return query.getSingleResult();
         }catch(NoResultException no){
@@ -241,8 +272,5 @@ public class JobOfferService {
         offer.setCompany(company);
         createOffer(offer);
     }
-    
-    
-
     
 }

@@ -4,34 +4,24 @@
  */
 package adt.linkedin.gui;
 
-import adt.linkedin.converters.StatusConverter;
 import adt.linkedin.enumerations.Status;
-import adt.linkedin.model.AcademicInfo;
-import adt.linkedin.model.Candidature;
-import adt.linkedin.model.Company;
-import adt.linkedin.model.Institution;
-import adt.linkedin.model.JobOffer;
-import adt.linkedin.model.User;
+import adt.linkedin.model.*;
 import adt.linkedin.services.JobOfferService;
 import adt.linkedin.services.UserService;
 import adt.linkedin.tools.Utils;
 import java.awt.Color;
 import java.awt.Font;
 import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
-import java.time.LocalDate;
 import javax.swing.JFrame;
-import javax.swing.JTable;
 import javax.swing.Timer;
 import javax.swing.table.DefaultTableCellRenderer;
 import javax.swing.table.DefaultTableModel;
-import jdk.net.SocketFlow;
 
 /**
  *
- * @author dev
+ * @author Mario Nevado
  */
-public class Feed extends javax.swing.JFrame {
+public class JFrameFeed extends javax.swing.JFrame {
 
     User user;
     UserService userController;
@@ -43,10 +33,11 @@ public class Feed extends javax.swing.JFrame {
     /**
      * Creates new form Feed
      *
-     * @param user
-     * @param service
+     * @param user hace referencia al usuario del que deberemos cargar la
+     * información
+     * @param service herramienta para consultar y modificar la base de datos
      */
-    public Feed(User user, UserService service) {
+    public JFrameFeed(User user, UserService service) {
         this.user = user;
         this.userController = service;
         this.offerService = new JobOfferService();
@@ -56,6 +47,9 @@ public class Feed extends javax.swing.JFrame {
         timer.start();
     }
 
+    /**
+     * Inicializa la tabla
+     */
     private void initTable() {
         DefaultTableCellRenderer header = new DefaultTableCellRenderer();
         header.setBackground(Utils.PURPLE);
@@ -65,11 +59,14 @@ public class Feed extends javax.swing.JFrame {
         }
     }
 
+    /**
+     * Actualiza la tabla
+     */
     private void refreshTable() {
         DefaultTableModel model;
         model = new DefaultTableModel();
 
-        model.addColumn("Título");
+        model.addColumn("Puesto");
         model.addColumn("Empresa");
         model.addColumn("Localización");
         model.addColumn("Estado");
@@ -79,7 +76,13 @@ public class Feed extends javax.swing.JFrame {
         fillTable();
     }
 
-    private boolean containsValue(Candidature candidature) { //title + "  " + company+ "  " + local + "  " + status
+    /**
+     * Comprueba si la tabla ya tiene la candidatura, para evitar duplicados
+     *
+     * @param candidature candidatura a comprobar
+     * @return true si la contiene, false si no
+     */
+    private boolean containsValue(Candidature candidature) {
         Object[] value;
         Candidature aux;
         if (jTable1.getRowCount() > 0 && jTable1.getColumnCount() > 0) {
@@ -91,7 +94,7 @@ public class Feed extends javax.swing.JFrame {
                     }
                     aux = new Candidature((String) value[0], null);
                     aux.setOffer(new JobOffer(null, (String) value[2]));
-                    aux.getOffers().setCompany(new Company((String) value[1], null, null));
+                    aux.getOffer().setCompany(new Company((String) value[1], null, null));
                     aux.setStatus(Status.valueOf((String) value[3]));
                     if ((aux.equals(candidature))) {
                         return true;
@@ -102,12 +105,15 @@ public class Feed extends javax.swing.JFrame {
         return false;
     }
 
+    /**
+     * Rellena la tabla
+     */
     private void fillTable() {
         DefaultTableModel model = (DefaultTableModel) jTable1.getModel();
         for (Candidature candidature : offerService.getCandidaturesByUser(user)) {
             if (!containsValue(candidature)) {
-                model.addRow(new Object[]{candidature.getOffers().getTitle(), candidature.getOffers().getCompany().getName(),
-                    candidature.getOffers().getLocation(), candidature.getStatus().toString()});
+                model.addRow(new Object[]{candidature.getOffer().getTitle(), candidature.getOffer().getCompany().getName(),
+                    candidature.getOffer().getLocation(), candidature.getStatus().toString()});
             }
         }
         jTable1.setModel(model);
@@ -191,7 +197,7 @@ public class Feed extends javax.swing.JFrame {
                 .addComponent(jLabelUsername, javax.swing.GroupLayout.PREFERRED_SIZE, 31, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(33, 33, 33)
                 .addComponent(jLabelDescription, javax.swing.GroupLayout.PREFERRED_SIZE, 126, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                .addContainerGap(141, Short.MAX_VALUE))
         );
 
         jPanel1.setBackground(new java.awt.Color(0, 0, 0));
@@ -206,7 +212,7 @@ public class Feed extends javax.swing.JFrame {
 
             },
             new String [] {
-                "Title 1", "Title 2", "Title 3", "Title 4"
+                "Puesto", "Empresa", "Localización", "Estado"
             }
         ) {
             boolean[] canEdit = new boolean [] {
@@ -245,7 +251,7 @@ public class Feed extends javax.swing.JFrame {
         jTextField1.setBackground(new java.awt.Color(0, 0, 0));
         jTextField1.setFont(new java.awt.Font("Liberation Sans", 2, 15)); // NOI18N
         jTextField1.setForeground(new java.awt.Color(204, 204, 204));
-        jTextField1.setText("Buscar usuarios...");
+        jTextField1.setText("Busca ofertas de trabajo y le das una alegría a tus padres...");
         jTextField1.setBorder(javax.swing.BorderFactory.createBevelBorder(javax.swing.border.BevelBorder.RAISED, null, null, null, new java.awt.Color(204, 204, 204)));
         jTextField1.addMouseListener(new java.awt.event.MouseAdapter() {
             public void mouseClicked(java.awt.event.MouseEvent evt) {
@@ -276,13 +282,13 @@ public class Feed extends javax.swing.JFrame {
         jPanelParentLayout.setVerticalGroup(
             jPanelParentLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanelParentLayout.createSequentialGroup()
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addContainerGap()
                 .addComponent(jTextField1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addGroup(jPanelParentLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                    .addComponent(jPanelUser, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                    .addComponent(jPanel1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
-                .addGap(48, 48, 48))
+                .addGroup(jPanelParentLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(jPanelUser, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(jPanel1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addContainerGap(84, Short.MAX_VALUE))
         );
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
@@ -295,30 +301,50 @@ public class Feed extends javax.swing.JFrame {
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addComponent(jPanelParent, javax.swing.GroupLayout.PREFERRED_SIZE, 583, javax.swing.GroupLayout.PREFERRED_SIZE)
+            .addComponent(jPanelParent, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
         );
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
 
+    /**
+     * Abre un frame con la información personal del usuario.
+     *
+     * @param evt no usado
+     */
     private void jLabelUsernameMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jLabelUsernameMouseClicked
         // TODO add your handling code here:
         new JFrameUser(this.user, userController).setVisible(true);
         dispose();
     }//GEN-LAST:event_jLabelUsernameMouseClicked
 
+    /**
+     * Pone el texto en negrita y morado al acercar el ratón
+     *
+     * @param evt no usado
+     */
     private void jLabelUsernameMouseEntered(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jLabelUsernameMouseEntered
         // TODO add your handling code here:
         Utils.mouseEntered(jLabelUsername);
         this.jLabelUsername.setForeground(Utils.PURPLE);
     }//GEN-LAST:event_jLabelUsernameMouseEntered
 
+    /**
+     * Vuelve a poner el texto en plano y blanco al alejar el ratón
+     *
+     * @param evt no usado
+     */
     private void jLabelUsernameMouseExited(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jLabelUsernameMouseExited
         // TODO add your handling code here:
         Utils.mouseExited(jLabelUsername);
         this.jLabelUsername.setForeground(Color.WHITE);
     }//GEN-LAST:event_jLabelUsernameMouseExited
 
+    /**
+     * Cambia el formato del cuadro de búsqueda al pinchar sobre el
+     *
+     * @param evt no usado
+     */
     private void jTextField1MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jTextField1MouseClicked
         // TODO add your handling code here:
         this.jTextField1.setText("");
@@ -326,8 +352,11 @@ public class Feed extends javax.swing.JFrame {
         this.jTextField1.setFont(new Font(Utils.FONT, 0, 15));
     }//GEN-LAST:event_jTextField1MouseClicked
 
+    /**
+     * Abre un nuevo frame con las ofertas, usuarios o empresas cuyo nombre coinciden con el texto.
+     * @param evt no usado
+     */
     private void jTextField1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jTextField1ActionPerformed
-        // TODO add query
         new JFrameJobOffers(user, userController, jTextField1.getText()).setVisible(true);
         dispose();
     }//GEN-LAST:event_jTextField1ActionPerformed

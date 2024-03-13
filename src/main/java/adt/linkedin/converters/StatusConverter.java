@@ -8,13 +8,24 @@ import adt.linkedin.enumerations.Status;
 
 /**
  *
- * @author mario
+ * @author Mario Nevado
  */
 public class StatusConverter {
     
+    /**
+     * Convierte la enumeración Status 
+     * @param status estado a transformar
+     * @return un entero, que es su código
+     */
     public int convertToDataBaseColumn(Status status){
         return status.getValue();
     }
+    
+    /**
+     * Convierte un entero a Status 
+     * @param index entero a transformar
+     * @return un estado correspondiente con su código
+     */
     public Status convertToAttribute(int index){
         return Status.values()[index];
     }

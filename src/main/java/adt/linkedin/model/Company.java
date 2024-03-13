@@ -17,7 +17,7 @@ public class Company {
     private String description;
     @Column(name = "password")
     private String password;
-    @OneToMany(cascade = {CascadeType.PERSIST, CascadeType.MERGE}, fetch = FetchType.EAGER, mappedBy = "company")
+    @OneToMany(cascade = {CascadeType.ALL}, fetch = FetchType.EAGER, mappedBy = "company")
     private List<JobOffer> offers = new ArrayList<>();
     @OneToMany(cascade = {CascadeType.ALL}, fetch = FetchType.EAGER, mappedBy = "company")
     private List<WorkExperience> experiences = new ArrayList<>();

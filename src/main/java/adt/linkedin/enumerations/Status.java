@@ -2,7 +2,7 @@ package adt.linkedin.enumerations;
 
 public enum Status {
     REJECTED(0), PENDING(1), ACCEPTED(2);
-    private int value;
+    private final int value;
     
     private Status(int value){
         if (value != 0 && value != 1 && value != 2) {
@@ -10,6 +10,11 @@ public enum Status {
         }else this.value = value;
     }
     
+    /**
+     * Obtiene estado en función del nombre
+     * @param name nombre del estado
+     * @return devuelve un estado si el nombre de alguno de ellos equivale al pasado por parámetro
+     */
     public Status valOf(String name){
         for (Status status : values()){
             if (status.name().equals(name)){

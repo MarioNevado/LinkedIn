@@ -36,7 +36,7 @@
     <Container class="javax.swing.JPanel" name="jPanel1">
       <Properties>
         <Property name="background" type="java.awt.Color" editor="org.netbeans.beaninfo.editors.ColorEditor">
-          <Color blue="ff" green="ff" red="ff" type="rgb"/>
+          <Color blue="0" green="0" red="0" type="rgb"/>
         </Property>
       </Properties>
 
@@ -113,12 +113,19 @@
         </Component>
         <Component class="javax.swing.JTextField" name="jTextFieldUserEmail">
           <Properties>
+            <Property name="background" type="java.awt.Color" editor="org.netbeans.beaninfo.editors.ColorEditor">
+              <Color blue="0" green="0" red="0" type="rgb"/>
+            </Property>
+            <Property name="foreground" type="java.awt.Color" editor="org.netbeans.beaninfo.editors.ColorEditor">
+              <Color blue="ff" green="ff" red="ff" type="rgb"/>
+            </Property>
             <Property name="border" type="javax.swing.border.Border" editor="org.netbeans.modules.form.editors2.BorderEditor">
               <Border info="org.netbeans.modules.form.compat2.border.CompoundBorderInfo">
                 <CompoundBorder>
                   <Border PropertyName="outside" info="org.netbeans.modules.form.compat2.border.TitledBorderInfo">
                     <TitledBorder title="Email/Tel&#xe9;fono">
                       <Font PropertyName="font" name="Liberation Sans" size="15" style="1"/>
+                      <Connection PropertyName="color" code="Utils.PURPLE" type="code"/>
                     </TitledBorder>
                   </Border>
                 </CompoundBorder>
@@ -131,6 +138,12 @@
         </Component>
         <Component class="javax.swing.JPasswordField" name="jPasswordField1">
           <Properties>
+            <Property name="background" type="java.awt.Color" editor="org.netbeans.beaninfo.editors.ColorEditor">
+              <Color blue="0" green="0" red="0" type="rgb"/>
+            </Property>
+            <Property name="foreground" type="java.awt.Color" editor="org.netbeans.beaninfo.editors.ColorEditor">
+              <Color blue="ff" green="ff" red="ff" type="rgb"/>
+            </Property>
             <Property name="text" type="java.lang.String" value="jPasswordField1"/>
             <Property name="border" type="javax.swing.border.Border" editor="org.netbeans.modules.form.editors2.BorderEditor">
               <Border info="org.netbeans.modules.form.compat2.border.CompoundBorderInfo">
@@ -138,6 +151,7 @@
                   <Border PropertyName="outside" info="org.netbeans.modules.form.compat2.border.TitledBorderInfo">
                     <TitledBorder title="Contrase&#xf1;a">
                       <Font PropertyName="font" name="Liberation Sans" size="15" style="1"/>
+                      <Connection PropertyName="color" code="Utils.PURPLE" type="code"/>
                     </TitledBorder>
                   </Border>
                 </CompoundBorder>
@@ -150,6 +164,9 @@
         </Component>
         <Component class="javax.swing.JTextField" name="jTextFieldUserName">
           <Properties>
+            <Property name="background" type="java.awt.Color" editor="org.netbeans.beaninfo.editors.ColorEditor">
+              <Color blue="0" green="0" red="0" type="rgb"/>
+            </Property>
             <Property name="font" type="java.awt.Font" editor="org.netbeans.beaninfo.editors.FontEditor">
               <Font name="Liberation Sans" size="15" style="2"/>
             </Property>
@@ -163,6 +180,7 @@
                   <Border PropertyName="outside" info="org.netbeans.modules.form.compat2.border.TitledBorderInfo">
                     <TitledBorder title="Nombre de Usuario">
                       <Font PropertyName="font" name="Liberation Sans" size="15" style="1"/>
+                      <Connection PropertyName="color" code="Utils.PURPLE" type="code"/>
                     </TitledBorder>
                   </Border>
                 </CompoundBorder>
@@ -176,7 +194,7 @@
         <Component class="javax.swing.JLabel" name="jLabelImg">
           <Properties>
             <Property name="icon" type="javax.swing.Icon" editor="org.netbeans.modules.form.editors2.IconEditor">
-              <Image iconType="3" name="/img/Link_up.png"/>
+              <Image iconType="3" name="/img/Link up.png"/>
             </Property>
           </Properties>
         </Component>
@@ -196,6 +214,12 @@
         </Component>
         <Component class="javax.swing.JPasswordField" name="jPasswordFieldRepeat">
           <Properties>
+            <Property name="background" type="java.awt.Color" editor="org.netbeans.beaninfo.editors.ColorEditor">
+              <Color blue="0" green="0" red="0" type="rgb"/>
+            </Property>
+            <Property name="foreground" type="java.awt.Color" editor="org.netbeans.beaninfo.editors.ColorEditor">
+              <Color blue="ff" green="ff" red="ff" type="rgb"/>
+            </Property>
             <Property name="text" type="java.lang.String" value="jPasswordField2"/>
             <Property name="border" type="javax.swing.border.Border" editor="org.netbeans.modules.form.editors2.BorderEditor">
               <Border info="org.netbeans.modules.form.compat2.border.CompoundBorderInfo">
@@ -203,6 +227,7 @@
                   <Border PropertyName="outside" info="org.netbeans.modules.form.compat2.border.TitledBorderInfo">
                     <TitledBorder title="Repita su contrase&#xf1;a">
                       <Font PropertyName="font" name="Liberation Sans" size="15" style="1"/>
+                      <Connection PropertyName="color" code="Utils.PURPLE" type="code"/>
                     </TitledBorder>
                   </Border>
                 </CompoundBorder>
@@ -215,6 +240,9 @@
         </Component>
         <Component class="javax.swing.JLabel" name="jLabelHome">
           <Properties>
+            <Property name="foreground" type="java.awt.Color" editor="org.netbeans.modules.form.RADConnectionPropertyEditor">
+              <Connection code="Utils.PURPLE" type="code"/>
+            </Property>
             <Property name="text" type="java.lang.String" value="Volver a Inicio"/>
           </Properties>
           <Events>
