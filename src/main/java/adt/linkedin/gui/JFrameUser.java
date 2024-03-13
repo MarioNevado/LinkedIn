@@ -539,9 +539,19 @@ public class JFrameUser extends javax.swing.JFrame {
         for (WorkExperience experience : userController.getUserLaboralExperience(user)) {
             if (!containsValue(jTableExperience, experience)) {
                 if (experience.getEndDate() != null) {
-                    model.addRow(new Object[]{experience.getJobTitle(), experience.getCompany().getName(), experience.getLocation(), experience.getInitDate(), experience.getEndDate()});
+                    if (experience.getCompany() != null) {
+                        model.addRow(new Object[]{experience.getJobTitle(), experience.getCompany().getName(), experience.getLocation(), experience.getInitDate(), experience.getEndDate()});
+                    } else {
+                        model.addRow(new Object[]{experience.getJobTitle(), experience.getTemporalCompany(), experience.getLocation(), experience.getInitDate(), experience.getEndDate()});
+                    }
+
                 } else {
-                    model.addRow(new Object[]{experience.getJobTitle(), experience.getCompany().getName(), experience.getLocation(), experience.getInitDate(), "Actual"});
+                    if (experience.getCompany() != null) {
+                        model.addRow(new Object[]{experience.getJobTitle(), experience.getCompany().getName(), experience.getLocation(), experience.getInitDate(), "Actual"});
+                    }else{
+                        model.addRow(new Object[]{experience.getJobTitle(), experience.getTemporalCompany(), experience.getLocation(), experience.getInitDate(), "Actual"});                        
+                    }
+                    
                 }
             }
         }
@@ -775,9 +785,11 @@ public class JFrameUser extends javax.swing.JFrame {
     private void jTableAcademicInfoMouseEntered(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jTableAcademicInfoMouseEntered
         initTable(jTableAcademicInfo);
     }//GEN-LAST:event_jTableAcademicInfoMouseEntered
-    
+
     /**
-     * Crea un menu con items funcionales en base a la table sobre la que se pinche
+     * Crea un menu con items funcionales en base a la table sobre la que se
+     * pinche
+     *
      * @param selectedRow hace referencia a la fila seleccionada
      * @param option varía en función de la tabla de la que se trate
      * @return un PopupMenu completamente funcional
@@ -809,6 +821,7 @@ public class JFrameUser extends javax.swing.JFrame {
 
     /**
      * Obtiene el item y le añade funcionalidad según la tabla
+     *
      * @param item item al que dar funcionalidad
      * @param option varía en función de la tabla de la que se trate
      * @param selectedRow hace referencia a la fila seleccionada
@@ -825,8 +838,9 @@ public class JFrameUser extends javax.swing.JFrame {
         }
     }
 
-     /**
+    /**
      * Obtiene el item y le añade funcionalidad según la tabla
+     *
      * @param item item al que dar funcionalidad
      * @param option varía en función de la tabla de la que se trate
      * @param selectedRow hace referencia a la fila seleccionada

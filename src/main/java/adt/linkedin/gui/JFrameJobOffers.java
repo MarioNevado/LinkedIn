@@ -63,6 +63,9 @@ public class JFrameJobOffers extends javax.swing.JFrame {
                             counter++;
                         }
                     }
+                    if (counter == 0) {
+                        model.add(0, "Ya has aplicado a todas las ofertas habidas y por haber, creo que algo haces mal si sigues aquí");
+                    }
                 } else {
                     model.add(0, "No se encontraron ofertas :(");
                 }

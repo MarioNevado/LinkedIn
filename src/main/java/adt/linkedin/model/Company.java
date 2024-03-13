@@ -83,7 +83,10 @@ public class Company {
 
     @Override
     public String toString() {
-        return name + "     " + description;
+        if (description != null) {
+            return name + "     " + description;
+        }else return name;
+        
     }
 }
 

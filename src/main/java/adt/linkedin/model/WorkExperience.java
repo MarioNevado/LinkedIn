@@ -20,8 +20,10 @@ public class WorkExperience {
     private String jobTitle;
     @Column(name = "location")
     private String location;
+    @Column(name = "temporal_company")
+    private String temporalCompany;
     @ManyToOne(cascade = CascadeType.ALL)
-    @JoinColumn(name = "company_id", nullable = false)
+    @JoinColumn(name = "company_id")
     private Company company;
     @ManyToOne(cascade = {CascadeType.PERSIST, CascadeType.MERGE})
     @JoinColumn(name="user_id", nullable = false)
@@ -45,7 +47,32 @@ public class WorkExperience {
         this.company = company;
         this.current = false;
     }
+    public WorkExperience(String jobTitle, String temporalCompany, String location,  LocalDate initDate) {
+        this.current = true;
+        this.initDate = initDate;
+        this.jobTitle = jobTitle;
+        this.location = location;
+        this.temporalCompany = temporalCompany;
+    }
+    public WorkExperience(String jobTitle,String temporalCompany, String location, LocalDate initDate, LocalDate endDate) {
+        this.initDate = initDate;
+        this.endDate = endDate;
+        this.jobTitle = jobTitle;
+        this.location = location;
+        this.temporalCompany = temporalCompany;
+        this.current = false;
+    }
 
+    public String getTemporalCompany() {
+        return temporalCompany;
+    }
+
+    public void setTemporalCompany(String temporalCompany) {
+        this.temporalCompany = temporalCompany;
+    }
+
+    
+    
     public long getId() {
         return id;
     }

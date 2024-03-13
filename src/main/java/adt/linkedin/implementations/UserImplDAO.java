@@ -49,6 +49,7 @@ public class UserImplDAO implements UserDAO {
             if (session.isOpen()) {
                 session.close();
             }
+            h.printStackTrace();
             throw new HibernateException("Error actualizando");
         }
     }
